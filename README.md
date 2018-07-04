@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/cucumber/cucumber-android.svg)](http://travis-ci.org/cucumber/cucumber-android)
+
 # Cucumber-Android
 
 This project implements Android support for Cucumber-JVM
