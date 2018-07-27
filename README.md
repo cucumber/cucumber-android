@@ -21,6 +21,14 @@ Integration-tests are in `examples/android/android-test/cucumber-test/`.
 mvn package -pl android -am
 ```
 
+### Setting up the dependency
+
+The first step is to include cucumber-android into your project, for example, as a Gradle androidTestImplementation dependency:
+
+```groovy
+androidTestImplementation "io.cucumber:cucumber-android:3.x.y"
+```
+
 ### Using Cucumber-Android
 1. Include the following jars into your Android project either through Maven or directly copy into libs folder: cucumber-android.jar, cucumber-core.jar, cucumber-html.jar, cucumber-java.jar, cucumber-junit.jar, cucumber-jvm-deps.jar, gherkin.jar. Also cucumber-picocontainer.jar and picocontainer.jar if you want to use picocontainer. You can download the jar files from the [public maven repo](http://repo1.maven.org/maven2/info/cukes/)
 
