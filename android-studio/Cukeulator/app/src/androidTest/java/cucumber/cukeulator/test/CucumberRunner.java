@@ -30,8 +30,7 @@ public class CucumberRunner extends MonitoringInstrumentation {
 
     @Override
     public void onCreate(final Bundle bundle) {
-//        bundle.putString("features", "features");
-//        bundle.putString("plugin", getPluginConfigurationString());
+        bundle.putString("plugin", getPluginConfigurationString()); // we programmatically create the plugin configuration
         super.onCreate(bundle);
         instrumentationCore.create(bundle);
         start();
