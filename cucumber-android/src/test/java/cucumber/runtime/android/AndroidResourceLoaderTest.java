@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import com.google.common.collect.Lists;
 import cucumber.runtime.io.Resource;
-import java.io.IOException;
-import java.util.List;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -14,6 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.io.IOException;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -22,7 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 16, manifest = Config.NONE)
+@Config(manifest = Config.NONE)
 public class AndroidResourceLoaderTest {
 
     private final Context context = mock(Context.class);

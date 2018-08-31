@@ -5,21 +5,22 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 16, manifest = Config.NONE)
+@Config(manifest = Config.NONE)
 public class AndroidResourceTest {
 
     @Rule
     public final TemporaryFolder temporaryFolder = new TemporaryFolder();
     
-    private final Context context = Robolectric.application;
+    private final Context context = RuntimeEnvironment.application;
 
     @Test
     public void getPath_returns_given_path() {

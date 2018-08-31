@@ -1,0 +1,3 @@
+rootProject.name = 'cucumber-android-parent'
+
+include ':cucumber-android', ':cukeulator'

@@ -13,12 +13,12 @@ Taken from the [maven-android-plugin](https://code.google.com/p/maven-android-pl
 1. JDK 1.6+ installed as required for Android development
 2. [Android SDK](http://developer.android.com/sdk/index.html) (r21 or later, latest is best supported) installed, preferably with all platforms.
 
-Integration-tests are in `examples/android/android-test/cucumber-test/`.
+Integration-tests are in `cukeulator/src/androidTest`.
 
 ### Building
 
 ```sh
-mvn package -pl android -am
+./gradlew assemble
 ```
 
 ### Setting up the dependency
@@ -66,24 +66,7 @@ Please read [the Android documentation on debugging](https://developer.android.c
 
 ### Examples
 
-To *build* all android example modules with maven:
-
-```
-mvn package -pl examples/android -am -amd -P android,android-examples
-```
-
-To *clean* all android example modules with maven:
-
-```
-mvn clean -pl examples/android -amd -P android-examples
-```
-
-The example projects depend on the current (unreleased) Cucumber-JVM modules.
-If any of the examples fail to build, just build the android module and its dependencies once first:
-
-```
-mvn clean install -pl android -am
-```
+Currently there is one example in subproject [cukeulator](https://github.com/cucumber/cucumber-android/tree/master/cukeulator)
 
 To create a virtual device and start an [Android emulator](https://developer.android.com/tools/devices/index.html):
 

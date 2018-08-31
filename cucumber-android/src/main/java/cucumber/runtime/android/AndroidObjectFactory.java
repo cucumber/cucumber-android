@@ -12,6 +12,7 @@ import cucumber.api.java.ObjectFactory;
  * make sure that created test classes have all necessary references to the executing {@link android.app.Instrumentation}
  * and the associated {@link android.content.Context}.
  */
+@SuppressWarnings("deprecation")
 final class AndroidObjectFactory implements ObjectFactory {
 
     /**

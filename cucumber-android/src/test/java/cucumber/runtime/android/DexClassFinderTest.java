@@ -7,10 +7,6 @@ import cucumber.runtime.android.stub.wanted.Manifest;
 import cucumber.runtime.android.stub.wanted.R;
 import cucumber.runtime.android.stub.wanted.SomeClass;
 import dalvik.system.DexFile;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.List;
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Before;
@@ -18,10 +14,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.List;
+
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(shadows = {ShadowDexFile.class}, emulateSdk = 16, manifest = Config.NONE)
+@Config(shadows = {ShadowDexFile.class}, manifest = Config.NONE)
 public class DexClassFinderTest {
 
     private DexFile dexFile;

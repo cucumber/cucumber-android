@@ -1,0 +1,72 @@
+group = 'io.cucumber.android'
+
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'digital.wup:android-maven-publish:3.6.2'
+    }
+}
+
+ext {
+    targetSdkVersion = 27
+    buildToolsVersion = '27.0.3'
+    minSdkVersion = '14'
+
+    snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
+    releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+}
+allprojects {
+    repositories {
+        mavenLocal()
+        jcenter()
+        google()
+        maven {
+            url snapshotRepository
+        }
+        maven {
+            url releaseRepository
+        }
+    }
+    version = "4.0.0-SNAPSHOT"
+
+}
+
+
+subprojects { subproject ->
+
+
+    ext.addAndroidConfig ={
+        android {
+            compileSdkVersion rootProject.ext.targetSdkVersion
+            buildToolsVersion rootProject.ext.buildToolsVersion
+
+            defaultConfig {
+                minSdkVersion rootProject.ext.minSdkVersion
+                targetSdkVersion rootProject.ext.targetSdkVersion
+            }
+
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+
+            lintOptions {
+                abortOnError false
+            }
+
+            testOptions {
+                unitTests {
+                    includeAndroidResources = true
+                }
+            }
+        }
+
+
+    }
+}
