@@ -17,28 +17,15 @@ android:
     - platform-tools
     - tools # Note that the tools section appears twice on purpose as it’s required to get the newest Android SDK tools.
 
-    - build-tools-27.0.3
-
-    # The SDK version used to compile your project
-    - android-27
-
-    # Additional components
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
-    - addon-google_apis-google-26
-
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-27
-
 install:
  - ./gradlew test
 
-
 # Emulator Management: Create, Start and Wait
 before_script:
-  - echo no | android create avd --force -n test -t android-27 --abi armeabi-v7a
+  - sdkmanager --list
+  - yes | sdkmanager --verbose tools
+  - yes | sdkmanager --verbose "system-images;android-27;default;armeabi-v7a"
+  - echo no | avdmanager create avd --force -n test -k "system-images;android-24;default;armeabi-v7a"
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
