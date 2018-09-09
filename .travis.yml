@@ -21,14 +21,14 @@ before_install:
   - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
 
 install:
- - ./gradlew test
+ - ./gradlew build
 
 before_script:
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew build runInstrumentationTests
+  - ./gradlew runInstrumentationTests
 
 deploy:
   provider: script
