@@ -18,7 +18,8 @@ before_install:
   - yes | sdkmanager "build-tools;28.0.2"
   - yes | sdkmanager "system-images;android-28;default;x86_64"
   - echo no | avdmanager create avd --force -n test -k "system-images;android-28;default;x86_64"
-  - emulator -avd test -no-audio -no-window &
+  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
+
 install:
  - ./gradlew test
 
