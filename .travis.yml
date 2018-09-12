@@ -23,7 +23,7 @@ before_install:
   - yes | sdkmanager "build-tools;28.0.2"
   - yes | sdkmanager "system-images;android-21;default;armeabi-v7a"
   - echo no | avdmanager create avd --force -n test -k "system-images;android-21;default;armeabi-v7a"
-  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -no-boot-anim &
+  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -no-boot-anim -logcat *:e &
 
 install:
  - ./gradlew clean build
