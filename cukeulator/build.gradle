@@ -93,6 +93,7 @@ task runInstrumentationTests {
 }
 
 spoon {
+    debug = true
     singleInstrumentationCall = true
     grantAll = true
 }
