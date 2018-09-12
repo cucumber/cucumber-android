@@ -5,8 +5,7 @@ sudo: false
 android:
   components:
     - build-tools-28.0.2
-    - android-26
-    - sys-img-x86-android-26
+    - android-21
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -22,7 +21,8 @@ before_install:
   - yes | sdkmanager "platform-tools"
   - yes | sdkmanager "emulator"
   - yes | sdkmanager "build-tools;28.0.2"
-  - echo no | avdmanager create avd --force -n test -k "system-images;android-26;default;x86"
+  - yes | sdkmanager "system-images;android-21;default;armeabi-v7a"
+  - echo no | avdmanager create avd --force -n test -k "system-images;android-21;default;armeabi-v7a"
   - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -no-boot-anim &
 
 install:
