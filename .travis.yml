@@ -21,7 +21,7 @@ before_install:
   - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
 
 install:
- - ./gradlew build
+ - ./gradlew clean build
 
 before_script:
   - android-wait-for-emulator
