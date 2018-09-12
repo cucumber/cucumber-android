@@ -4,10 +4,8 @@ sudo: false
 
 android:
   components:
-    - tools
-    - platform-tools
-    - emulator
-    - sys-img-armeabi-v7a-android-24
+    - build-tools-28.0.2
+    - android-24
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
