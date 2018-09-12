@@ -23,14 +23,15 @@ before_install:
   - yes | sdkmanager "build-tools;28.0.2"
   - yes | sdkmanager "system-images;android-21;default;armeabi-v7a"
   - echo no | avdmanager create avd --force -n test -k "system-images;android-21;default;armeabi-v7a"
-  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -no-boot-anim -logcat *:e &
+  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -no-boot-anim &
 
 install:
  - ./gradlew clean build
 
 before_script:
   - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+  - adb shell input keyevent 82
+  - adb logcat *:e &
 
 script:
   - ./gradlew runInstrumentationTests
