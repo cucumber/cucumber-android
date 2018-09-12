@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
+apply plugin: "com.jaredsburrows.spoon"
 
 // ==================================================================
 // Android configuration
@@ -83,18 +84,19 @@ dependencies {
 // Custom tasks
 // ==================================================================
 
-/*
- *  Execute instrumented tests without uninstalling app
- */
-task runInstrumentationTests {
-    group "Verification"
-    doLast {
-        println "adb shell am instrument -w "+android.defaultConfig.testApplicationId+"/"+android.defaultConfig.testInstrumentationRunner
 
-        def adb = getAdbPath()
-        exec { commandLine adb, 'shell', 'am', 'instrument','-w', android.defaultConfig.testApplicationId+"/"+android.defaultConfig.testInstrumentationRunner }
-    }
+task runInstrumentationTests {
+    group "verification"
+    mustRunAfter "deleteExistingCucumberReports"
+    dependsOn "deleteExistingCucumberReports","spoonDebugAndroidTest"
+    finalizedBy "downloadCucumberReports"
 }
+
+spoon {
+    singleInstrumentationCall = true
+    grantAll = true
+}
+
 
 /*
  * Downloads all Cucumber reports from the connected device.
@@ -154,21 +156,6 @@ task grantPermissions(dependsOn: 'installDebug') {
     }
 }
 
-// Delete existing Cucumber reports on the device before connected test-run
-runInstrumentationTests.dependsOn deleteExistingCucumberReports
-runInstrumentationTests.mustRunAfter deleteExistingCucumberReports
-
-//install apks
-runInstrumentationTests.dependsOn "installDebug"
-runInstrumentationTests.dependsOn "installDebugAndroidTest"
-
-
-// Grant storage permissions to store Cucumber reports before connected test-run
-runInstrumentationTests.dependsOn grantPermissions
-runInstrumentationTests.mustRunAfter grantPermissions
-
-// Store the new cucumber reports to the reports directory after connected test-run
-runInstrumentationTests.finalizedBy downloadCucumberReports
 
 // ==================================================================
 // Utility methods
