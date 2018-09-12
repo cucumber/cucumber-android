@@ -1,33 +1,73 @@
-## Cukeulator Example App
-This is a simple Android example application for illustration purposes.
+## Cukeulator Example Test
+This is the example test-project for the Cukeulator app for Android Studio 3.0+
 
-### Build with ant
-See ["Building and Running from the Command Line"](https://developer.android.com/tools/building/building-cmdline.html).
+### Setup
+Features must be placed in `assets/features/`. Subdirectories are allowed.
 
-### Build with Eclipse
-See ["Building and Running from Eclipse with ADT"](https://developer.android.com/tools/building/building-eclipse.html).
+The rest of the dependencies are added automatically in `app/build.gradle`.
 
-### Build with Maven
-To build:
+The cucumber-android dependency is added as (see `app/build.gradle`):
 
 ```
-mvn package -pl examples/android/cukeulator -am -P android-examples
+androidTestCompile 'io.cucumber:cucumber-android:<version>'
 ```
 
-To install:
+### Using gradle
+
+To build the test apk:
 
 ```
-mvn android:deploy -pl examples/android/cukeulator -P android-examples
+cd cucumber-jvm/examples/android/android-studio/Cukeulator
+
+./gradlew --parallel :app:assembleDebugTest
 ```
 
-To run:
+The build generates an apk in app/build/outputs/apk/app-debug.apk.
+
+To install the apk on a device:
 
 ```
-mvn android:run -pl examples/android/cukeulator -P android-examples
+adb install -r app/build/outputs/apk/app-debug.apk
 ```
 
-View [all available goals](http://maven-android-plugin-m2site.googlecode.com/svn/plugin-info.html):
+To verify that the test is installed, run:
 
 ```
-mvn android:help -pl examples/android/cukeulator -P android-examples
+adb shell pm list instrumentation
 ```
+
+The command output should display;
+
+```
+instrumentation:cucumber.cukeulator.test/cucumber.api.android.CucumberInstrumentation (target=cucumber.cukeulator)
+```
+
+To run the test:
+
+```
+cd cucumber-jvm/examples/android/android-studio/Cukeulator;
+./gradlew connectedCheck
+```
+
+As an alternative option, the test can be run with adb:
+
+```
+adb shell am instrument -w cucumber.cukeulator.test/cucumber.cukeulator.test.Instrumentation
+```
+
+### Using an Android Studio IDE
+1. Import the example to Android Studio: `File > Import Project`.
+2. Create a test run configuration:
+    1.  Run > Edit Configurations
+    2. Click `+` button and select Android Tests
+    3. Specify test name: `CalculatorTest`
+    4. Select module: `app`
+    5. Enter a Specific instrumentation runner: `cucumber.cukeulator.test.Instrumentation`
+    6. Click Ok
+
+### Output
+Filter for the logcat tag `cucumber-android` in [DDMS](https://developer.android.com/tools/debugging/ddms.html).
+
+### Using this project with locally built Cucumber-JVM
+See [app/build.gradle](build.gradle) under `dependencies`.  
+There is a source-code comment which explains how to use a locally built Cucumber-JVM Android library.

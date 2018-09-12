@@ -1,0 +1,69 @@
+apply plugin: 'com.android.library'
+apply plugin: 'digital.wup.android-maven-publish'
+
+addAndroidConfig()
+
+configurations.all {
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+dependencies {
+    api "io.cucumber:cucumber-java:$version"
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.robolectric:robolectric:3.8"
+    //noinspection GradleDependency compatibility with PowerMock
+    testImplementation "org.mockito:mockito-core:2.8.9"
+    testImplementation "org.powermock:powermock-api-mockito2:1.7.3"
+    testImplementation "org.powermock:powermock-module-junit4:1.7.3"
+}
+
+task("generateJavadoc", type: Javadoc, group: 'documentation') {
+    source = android.sourceSets.main.java.srcDirs
+    destinationDir = new File("${project.buildDir}/javadoc")
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+task javadocJar(type: Jar, dependsOn: generateJavadoc) {
+    classifier = 'javadoc'
+    from generateJavadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+
+publishing {
+    publications {
+        mavenAar(MavenPublication) {
+            from components.android
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                url = 'https://github.com/cucumber/cucumber-android/'
+                scm {
+                    connection = 'scm:git:https://github.com/cucumber/cucumber-android.git'
+                    developerConnection = 'scm:git:git@github.com:cucumber/cucumber-android.git'
+                    url = 'https://github.com/cucumber/cucumber-android'
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'http://www.opensource.org/licenses/mit-license'
+                        distribution = 'repo'
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url project.version.endsWith('-SNAPSHOT') ? snapshotRepository : releaseRepository
+        }
+    }
+}

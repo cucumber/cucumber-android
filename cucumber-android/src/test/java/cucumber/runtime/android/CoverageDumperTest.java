@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 16, manifest = Config.NONE)
+@Config(manifest = Config.NONE)
 public class CoverageDumperTest {
 
     @Rule

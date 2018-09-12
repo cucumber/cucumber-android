@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+*.iml
+local.properties
+.gradle
+/cucumber-android/build/
+

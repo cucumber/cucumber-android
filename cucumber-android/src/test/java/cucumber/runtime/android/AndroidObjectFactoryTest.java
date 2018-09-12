@@ -9,14 +9,17 @@ import android.test.InstrumentationTestCase;
 import cucumber.api.java.ObjectFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.internal.stubbing.answers.Returns;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("deprecation")
 @RunWith(RobolectricTestRunner.class)
-@Config(emulateSdk = 16, manifest = Config.NONE)
+@Config(manifest = Config.NONE)
 public class AndroidObjectFactoryTest {
 
     private final ObjectFactory delegate = mock(ObjectFactory.class);
@@ -76,7 +79,7 @@ public class AndroidObjectFactoryTest {
         // given
         final Class<?> activityInstrumentationTestCase2Class = ActivityInstrumentationTestCase2.class;
         final ActivityInstrumentationTestCase2 activityInstrumentationTestCase2 = mock(ActivityInstrumentationTestCase2.class);
-        when(delegate.getInstance(activityInstrumentationTestCase2Class)).thenReturn(activityInstrumentationTestCase2);
+        when(delegate.getInstance(activityInstrumentationTestCase2Class)).then(new Returns(activityInstrumentationTestCase2));
 
         // when
         androidObjectFactory.getInstance(activityInstrumentationTestCase2Class);
@@ -91,14 +94,13 @@ public class AndroidObjectFactoryTest {
         // given
         final Class<?> activityInstrumentationTestCase2Class = ActivityInstrumentationTestCase2.class;
         final ActivityInstrumentationTestCase2 activityInstrumentationTestCase2 = mock(ActivityInstrumentationTestCase2.class);
-        when(delegate.getInstance(activityInstrumentationTestCase2Class)).thenReturn(activityInstrumentationTestCase2);
-        final Intent intent = new Intent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        when(delegate.getInstance(activityInstrumentationTestCase2Class)).then(new Returns(activityInstrumentationTestCase2));
 
         // when
         androidObjectFactory.getInstance(activityInstrumentationTestCase2Class);
 
         // then
-        verify(activityInstrumentationTestCase2).setActivityIntent(intent);
+        verify(activityInstrumentationTestCase2).setActivityIntent(Mockito.argThat(argument -> argument.getFlags()==Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     @Test
@@ -107,7 +109,7 @@ public class AndroidObjectFactoryTest {
         // given
         final Class<?> instrumentationTestCaseClass = InstrumentationTestCase.class;
         final InstrumentationTestCase instrumentationTestCase = mock(InstrumentationTestCase.class);
-        when(delegate.getInstance(instrumentationTestCaseClass)).thenReturn(instrumentationTestCase);
+        when(delegate.getInstance(instrumentationTestCaseClass)).then(new Returns(instrumentationTestCase));
 
         // when
         androidObjectFactory.getInstance(instrumentationTestCaseClass);
@@ -122,7 +124,7 @@ public class AndroidObjectFactoryTest {
         // given
         final Class<?> androidTestCaseClass = AndroidTestCase.class;
         final AndroidTestCase androidTestCase = mock(AndroidTestCase.class);
-        when(delegate.getInstance(androidTestCaseClass)).thenReturn(androidTestCase);
+        when(delegate.getInstance(androidTestCaseClass)).then(new Returns(androidTestCase));
         final Context context = mock(Context.class);
         when(instrumentation.getTargetContext()).thenReturn(context);
 
