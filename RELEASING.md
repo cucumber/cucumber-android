@@ -60,9 +60,9 @@ Finally both your OSSRH credentials and private key must be setup in your `~/.gr
 for example:
 
 ```
-ossrhUsername=cukebot
-ossrhPassword=*****
-signing.keyId=123456AB
+ossrhUsername=sonatype-user-name
+ossrhPassword=sonatype-password
+signing.keyId=123456AB # dev@cucumber.io id
 signing.password=*****
 signing.secretKeyRingFile=/home/cukebot/.gnupg/secring.gpg
 ```
