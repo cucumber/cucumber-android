@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'digital.wup.android-maven-publish'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 addAndroidConfig()
 
@@ -34,36 +35,57 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+artifacts {
+    archives javadocJar, sourcesJar
+}
 
-publishing {
-    publications {
-        mavenAar(MavenPublication) {
-            from components.android
-            artifact sourcesJar
-            artifact javadocJar
+signing {
+    sign configurations.archives
+}
 
-            pom {
-                url = 'https://github.com/cucumber/cucumber-android/'
+archivesBaseName = "cucumber-android"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Cucumber-JVM: Android'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'Android support for Cucumber-JVM'
+                url 'https://github.com/cucumber/cucumber-android'
+
                 scm {
-                    connection = 'scm:git:https://github.com/cucumber/cucumber-android.git'
-                    developerConnection = 'scm:git:git@github.com:cucumber/cucumber-android.git'
-                    url = 'https://github.com/cucumber/cucumber-android'
+                    connection 'scm:git:https://github.com/cucumber/cucumber-android.git'
+                    developerConnection 'scm:git:git@github.com:cucumber/cucumber-android.git'
+                    url 'https://github.com/cucumber/cucumber-android'
                 }
 
                 licenses {
                     license {
-                        name = 'MIT License'
-                        url = 'http://www.opensource.org/licenses/mit-license'
-                        distribution = 'repo'
+                        name 'MIT License'
+                        url 'http://www.opensource.org/licenses/mit-license'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'lsuski'
+                        name 'Łukasz Suski'
+                        email 'lukasz.suski@finanteq.com'
                     }
                 }
             }
-        }
-    }
-
-    repositories {
-        maven {
-            url project.version.endsWith('-SNAPSHOT') ? snapshotRepository : releaseRepository
         }
     }
 }

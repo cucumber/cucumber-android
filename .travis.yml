@@ -1,44 +1,46 @@
 language: android
 jdk: oraclejdk8
 sudo: false
-
 android:
   components:
-    - build-tools-28.0.2
-    - android-21
-
+  - build-tools-28.0.2
+  - android-21
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
-
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
 before_install:
-  - yes | sdkmanager tools
-  - yes | sdkmanager "platform-tools"
-  - yes | sdkmanager "emulator"
-  - yes | sdkmanager "build-tools;28.0.2"
-  - yes | sdkmanager "system-images;android-21;default;armeabi-v7a"
-  - echo no | avdmanager create avd --force -n test -k "system-images;android-21;default;armeabi-v7a" -c 200M
-  - $ANDROID_HOME/emulator/emulator -avd test -skin 1920x1080 -no-audio -no-window -no-boot-anim &
-
+- yes | sdkmanager tools
+- yes | sdkmanager "platform-tools"
+- yes | sdkmanager "emulator"
+- yes | sdkmanager "build-tools;28.0.2"
+- yes | sdkmanager "system-images;android-21;default;armeabi-v7a"
+- echo no | avdmanager create avd --force -n test -k "system-images;android-21;default;armeabi-v7a"
+  -c 200M
+- "$ANDROID_HOME/emulator/emulator -avd test -skin 1920x1080 -no-audio -no-window
+  -no-boot-anim &"
+- continuous-deployment/setup-environment.sh
 install:
- - ./gradlew clean build
-
+- "./gradlew clean build"
 before_script:
-  - android-wait-for-emulator
-  - adb shell input keyevent 82
-  - adb logcat *:e &
-  - adb shell settings put secure long_press_timeout 1500
-
+- android-wait-for-emulator
+- adb shell input keyevent 82
+- adb logcat *:e &
+- adb shell settings put secure long_press_timeout 1500
 script:
-  - ./gradlew runInstrumentationTests
-
+- "./gradlew runInstrumentationTests"
 deploy:
   provider: script
-  script: ./gradlew publish
+  script: "./gradlew uploadArchives"
   on:
     branch: master
+env:
+  global:
+  - secure: Cekskn1AHZq2BXbJAb/tg3BDVoVNEdtfv0zlVsQizjxhbPXlYUmxSF/QoefVKgXWVtyV59qM6L7fCfGqPLRjwnzHyW5a02WJ/U1MGOfTmwfZ1kvFRA8ZRB6XSE1hp0RHro49n3AsDQkTIoVhSEtHeWFHXcM2W2XfLkW7TBrEiHRFDhEONmkUCrLauCIL16VVnc88kuDfYzsQ0sXgiWh1XcwI3VPe5+J6nwYYYFrGnIn1lZStwBi9HEPTECtlmG8WvURJlA32QQ5HUg0xXkL2bA+Qvw5/iEkvsk1foPQQE388CJcNu32fSZD8wmeHHsQ34STX71NUYONcHz7kWkrsJ85/T9TwdhJKK4qEbKkvf9yxMVlOWLKDaMRQJpc3waEU81DYLhQ31Oy/T+KsHys3n97wqSuJmQPJSMi8uvNAlWiCnzlz5Pru+aCOx58EHRSz7YGGwluaERraGjZfBaZZzQbfthUqecjTo+yjaI4cRWxtDeBNO6sDqG4uYEDXGffUUATgqpUWv3lc6ZCIRqImvvcO9T1k+U6uLzJ1oLENfKG5o2IKHzY7VzKT2EMmHquCZ0TH9hcBJhv7D6LSPc6vCSIDkAYdyZBek0sO88lgsF2oAfvQQXgIF6pE6aEG0WX+ci+K2aPpE/qfcKqOkZf0jYuepq3GBq5oGNb1KOuY9Ds=
+  - secure: YqwGPn0z4QfHRlJTtkfwEHuM/JSYUU7bwURE/+zjNzEA+1czBds2kTDfw3tXMbSc0FCgqY1RR+flXD8+OWJZJ/azAav2MlbCH1MlyLiPMLZrgFGYKlVOgUquA0chPvvHbbwKOYvsMLiBSrvG2e3lwOYtE4rhQCeHxSuoMjfnsvL6DaXsPOhxitsVDawimOAPs411XGDXpoF65L068KMRRCIO3keBOkrxtl42OY/mn3LY4UKt94VArsolqbvq2/dfdjEBDRRx9lCqwVJ9BTweIFM+sregzky5UHWDQFv/itJS9gDriUR/R5/IzHmzGoaSNLUrOI7UuX1EfKME7wcR0QfR5KZYr3dkmdgI3CEk8F9oOZgGgkB3+mH6+QeSAnlk/lELepvgxegdIz8zEm6c5NnarXA4SGFa3YCTtfykvhEhIHshnRXthLzNtOUeMPL5qhmVADgTAULLQBUfWwsUjeWv9S1UMsReUV0CJ09SYpVHQXPKGemId03xcsdOWANd2s+Sgwpfl+NyELjEWRtHhDd3Upr+NHgX8GFSJrgBmdnrxKxBKIOvj9M30ZtcgCAOK7JnuLu962vYmPn6Rr6TWiHmLn55cDqKKeCLXDqhBFOrHMMAJPmiIRYMzilfkBE6Zi/m99megPK96JQSRCdtGv7SIlgJOCHLJbi7+ieZ5Lo=
+  - secure: YvPF/h8y246I6w7gOQbQgzUSFS3YTcDvyxdU6uU/l2IAS7bFlyCjvheHKEeKxP749gO/UiY7imtcgP/di0AId9BiqlufaGqn1XE99nxu7iEW1HsPkVX2o/3rJ2FW7AvljULOsaq/nxpbSewQOY/QKlrgwXi3zzArzR0ORmzkYL/hmca8+/srfcU4ONwkVH13sO62zM5c1ujYnnVum5+9TWbAgGmxTL8nJxFVa9awLAt5jvqAgUzqsoG6dCl53VPRn6sX4FDip3VkaefRZ+CTL8sTggUXX+s5PUeOj/+4cRl9XmO5E+r6yMBClPfgHB9YV9mjBAfqYeKB07D6U+gMgZqRHHtnStXm7rMW+wPx7Ro5KjTPBPWotAhrWXom7YhTRxmGGEvP/cKm7Nj0sus2ROdZpBge3AREDLyE7YboL/EsKCgyVMu8XBsFSfxo0JhlaYC6XdhfcjmnmTACSAZxbaPnCBP+dY8rQV4pEQpdBnvzMbOwO5ADzHKNarbrpOmx7fflZ08fuVbMhEJ4LLfcCLuee7FtqtfdFacdXWu6dNP9xBVPNCKHPdRa6k0se1wgWuGs8o6yH/Kjd7da1d3CKbGp594qaejU1sQvhOjsxSDVX6N31iMpfSWMUw+kx3JUU2zxEqNqpEvv5Cj25Cq+CFbywC6MXwT1IwjHB6lkENY=
+  - secure: gWs26mmSmxqa5LPWsadvZUMEIFXT/LXbdLJEjPzsIHl7p2gIYhxnpLtbfJBB4iUTF7rF/8Ovv0RMJDN8t3KcPT1vXby4WLVL8xGG3dDhH4uSZUTtq029Yjq+5GITv2hY902/xfZXqY2RexB71Db4A60aQ8tOEpqYyLNI9l/iCjuns6kue87WoDRPNKNn2UpI5rDfnrqh3+Q+Qw3TSqSE55uLfUwzh+6jswwGv6kCD1Rdn0B0EfI25viqqJr71ompIXrDZcNCRvfISNyssZ/ytvNS3rVtBLyJrUF6J4m7mJXqayiBeRIiUH1hZElhsX1TdeZpoKa1Qr0D2PiY+DUema6kVaclW0ekbaeZMt9GqtSDZeuVh8PLtPhJe+f8O0Pmd2TDunNDr/kCZYPyvfCAjp89pnJlcRbryTh+xoAXD4iVSBsMeotaw+7xlw6HGmXQxH4OGA6R7pbbf2lUo8bXyCw/hXBhqPq1xy/r16qKKb2dF3P03YJG64+G/TGq6UuuhAJ5peaaxu3Hra+X0OEevqV48C/+OdroK2hnuFOrymt+u9vzJeEIEovXSjyMT1mjHTOLEy2+NNzC+VNusVMVrsp1E39ffgikjAo2cm+xTnknNs4vxTskRfVmPrylDaUKokIOLCIb1K6GLRoca9WRODfeYiriq2Llo3aInWZwNQs=
