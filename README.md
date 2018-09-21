@@ -10,7 +10,7 @@ This project implements Android support for Cucumber-JVM
 
 Taken from the [maven-android-plugin](https://code.google.com/p/maven-android-plugin/wiki/GettingStarted) documentation.
 
-1. JDK 1.6+ installed as required for Android development
+1. JDK 1.7+ installed as required for Android development
 2. [Android SDK](http://developer.android.com/sdk/index.html) (r21 or later, latest is best supported) installed, preferably with all platforms.
 
 Integration-tests are in `cukeulator/src/androidTest`.
