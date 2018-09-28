@@ -51,6 +51,7 @@ public final class AndroidInstrumentationReporter implements ConcurrentEventList
         static final String CLASS = "class";
         static final String STACK = "stack";
         static final String NUMTESTS = "numtests";
+        static final String CURRENT = "current";
     }
 
     /**
@@ -98,6 +99,11 @@ public final class AndroidInstrumentationReporter implements ConcurrentEventList
      * The name of the current test case.
      */
     private String currentTestCaseName;
+
+    /**
+     * The number of the current test case (from 1 to {@link #numberOfTests}).
+     */
+    private int currentTestCaseNumber;
 
     /**
      * The event handler for the {@link TestSourceRead} events.
@@ -173,6 +179,7 @@ public final class AndroidInstrumentationReporter implements ConcurrentEventList
             currentUri = testCase.getUri();
             currentFeatureName = testSources.getFeatureName(currentUri);
         }
+        currentTestCaseNumber++;
         // Since the names of test cases are not guaranteed to be unique, we must check for unique names
         currentTestCaseName = calculateUniqueTestName(testCase);
         resetSeverestResult();
@@ -230,6 +237,7 @@ public final class AndroidInstrumentationReporter implements ConcurrentEventList
         bundle.putInt(StatusKeys.NUMTESTS, numberOfTests);
         bundle.putString(StatusKeys.CLASS, String.format("%s", path));
         bundle.putString(StatusKeys.TEST, String.format("%s", testCaseName));
+        bundle.putInt(StatusKeys.CURRENT, currentTestCaseNumber);
         return bundle;
     }
 

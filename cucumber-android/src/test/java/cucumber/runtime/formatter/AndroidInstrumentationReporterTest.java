@@ -24,11 +24,13 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -143,6 +145,37 @@ public class AndroidInstrumentationReporterTest {
         final Bundle actualBundle = captor.getValue();
 
         assertThat(actualBundle.getString(AndroidInstrumentationReporter.StatusKeys.TEST), containsString(testCase.getName()));
+    }
+
+    @Test
+    public void current_number_is_contained_in_start_and_end_signal() {
+
+        final AndroidInstrumentationReporter formatter = new AndroidInstrumentationReporter(runtime, instrumentation);
+        ArgumentCaptor<Bundle> captor = ArgumentCaptor.forClass(Bundle.class);
+
+        formatter.setNumberOfTests(2);
+
+        current_number_is_contained_instart_and_end_signal(formatter, captor, 1);
+        current_number_is_contained_instart_and_end_signal(formatter, captor, 2);
+    }
+
+    private void current_number_is_contained_instart_and_end_signal(AndroidInstrumentationReporter formatter, ArgumentCaptor<Bundle> captor, int expectedCurrent) {
+
+        formatter.startTestCase(testCase);
+        firstResult=createResultStatus(Result.Type.PASSED,null);
+
+        verify(instrumentation,times(expectedCurrent)).sendStatus(eq(StatusCodes.START), captor.capture());
+
+        Bundle actualBundle = captor.getValue();
+
+        assertEquals(expectedCurrent, actualBundle.getInt(AndroidInstrumentationReporter.StatusKeys.CURRENT));
+
+        formatter.finishTestStep(firstResult);
+        formatter.finishTestCase();
+
+        verify(instrumentation,times(expectedCurrent)).sendStatus(eq(StatusCodes.OK), captor.capture());
+
+        assertEquals(expectedCurrent,captor.getValue().getInt(AndroidInstrumentationReporter.StatusKeys.CURRENT));
     }
 
     @Test
