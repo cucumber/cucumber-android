@@ -22,7 +22,6 @@ ext {
 allprojects {
     repositories {
         mavenLocal()
-        jcenter()
         google()
         maven {
             url snapshotRepository
@@ -30,8 +29,9 @@ allprojects {
         maven {
             url releaseRepository
         }
+        jcenter()
     }
-    version = "4.0.0"
+    version = "4.0.2-SNAPSHOT"
     group = 'io.cucumber'
 }
 
