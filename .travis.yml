@@ -36,7 +36,7 @@ script:
 deploy:
   skip_cleanup: true
   provider: script
-  script: "./gradlew uploadArchives"
+  script: "./gradlew uploadArchives closeAndReleaseRepository"
   on:
     branch: master
 env:
