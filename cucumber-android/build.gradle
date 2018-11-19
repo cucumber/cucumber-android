@@ -39,6 +39,7 @@ task sourcesJar(type: Jar) {
 archivesBaseName = "cucumber-android"
 
 nexusPublishing {
+    packageGroup = project.group
     serverUrl = uri(releaseRepository)
     snapshotRepositoryUrl = uri(snapshotRepository)
     username = ossrhUsername
