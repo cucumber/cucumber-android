@@ -28,7 +28,6 @@ ext {
 }
 
 nexusStaging {
-    serverUrl = releaseRepository
     username = ossrhUsername 
     password = ossrhPassword 
 }
