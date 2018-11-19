@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
+apply plugin: 'de.marcphilipp.nexus-publish'
 apply plugin: 'signing'
 
 addAndroidConfig()
@@ -35,57 +35,75 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
-artifacts {
-    archives javadocJar, sourcesJar
-}
 
-signing {
-    sign configurations.archives
-}
+
+ext.isSnapshot = {project.version.endsWith('-SNAPSHOT')}
 
 archivesBaseName = "cucumber-android"
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+nexusPublishing {
+    packageGroup = rootProject.nexusStaging.packageGroup
+    stagingProfileId = rootProject.nexusStaging.stagingProfileId
+    username = rootProject.nexusStaging.username
+    password = rootProject.nexusStaging.password
+}
 
-            repository(url: rootProject.ext.releaseRepository) {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
+publishing {
+    publications {
+        maven(MavenPublication) {
+            //we need to defer it until variants are available
+            android.libraryVariants.all { v ->
+                if (v.name=='release') {
+                    artifact tasks."bundleReleaseAar"
+                    artifact sourcesJar
+                    artifact javadocJar
 
-            snapshotRepository(url: rootProject.ext.snapshotRepository) {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
+                    pom {
+                        name = 'Cucumber-JVM: Android'
+                        packaging = 'aar'
+                        // optionally artifactId can be defined here
+                        description = 'Android support for Cucumber-JVM'
+                        url = 'https://github.com/cucumber/cucumber-android'
 
-            pom.project {
-                name 'Cucumber-JVM: Android'
-                packaging 'jar'
-                // optionally artifactId can be defined here
-                description 'Android support for Cucumber-JVM'
-                url 'https://github.com/cucumber/cucumber-android'
+                        scm {
+                            connection = 'scm:git:https://github.com/cucumber/cucumber-android.git'
+                            developerConnection = 'scm:git:git@github.com:cucumber/cucumber-android.git'
+                            url = 'https://github.com/cucumber/cucumber-android'
+                        }
 
-                scm {
-                    connection 'scm:git:https://github.com/cucumber/cucumber-android.git'
-                    developerConnection 'scm:git:git@github.com:cucumber/cucumber-android.git'
-                    url 'https://github.com/cucumber/cucumber-android'
-                }
+                        licenses {
+                            license {
+                                name = 'MIT License'
+                                url = 'http://www.opensource.org/licenses/mit-license'
+                            }
+                        }
 
-                licenses {
-                    license {
-                        name 'MIT License'
-                        url 'http://www.opensource.org/licenses/mit-license'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'lsuski'
-                        name 'Łukasz Suski'
-                        email 'lukasz.suski@finanteq.com'
+                        developers {
+                            developer {
+                                id = 'lsuski'
+                                name = 'Łukasz Suski'
+                                email = 'lukasz.suski@finanteq.com'
+                            }
+                        }
                     }
                 }
             }
         }
     }
+    
+    repositories {
+        maven {
+            url isSnapshot() ?  snapshotRepository : releaseRepository
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
+        }
+    }
 }
+
+signing {
+    sign publishing.publications.maven
+}
+
+task closeAndReleaseRepositoryIfRelease(dependsOn: isSnapshot()?null:['closeAndReleaseRepository'])

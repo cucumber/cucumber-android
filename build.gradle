@@ -4,11 +4,13 @@ buildscript {
         jcenter()
         mavenLocal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.4.0"
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.12.0"
+        classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.1.0"
     }
 }
 apply plugin: 'io.codearte.nexus-staging'
@@ -22,6 +24,13 @@ ext {
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
     releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 }
+
+nexusStaging {
+    serverUrl = releaseRepository
+    username = ossrhUsername 
+    password = ossrhPassword 
+}
+
 allprojects {
     repositories {
         mavenLocal()
