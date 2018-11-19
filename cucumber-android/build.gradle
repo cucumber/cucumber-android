@@ -36,9 +36,6 @@ task sourcesJar(type: Jar) {
 }
 
 
-
-ext.isSnapshot = {project.version.endsWith('-SNAPSHOT')}
-
 archivesBaseName = "cucumber-android"
 
 nexusPublishing {
@@ -106,4 +103,3 @@ signing {
     sign publishing.publications.maven
 }
 
-task closeAndReleaseRepositoryIfRelease(dependsOn: isSnapshot()?null:['closeAndReleaseRepository'])

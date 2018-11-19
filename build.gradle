@@ -23,6 +23,8 @@ ext {
 
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
     releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+    isSnapshot = {project.version.endsWith('-SNAPSHOT')}
 }
 
 nexusStaging {
@@ -30,6 +32,8 @@ nexusStaging {
     username = ossrhUsername 
     password = ossrhPassword 
 }
+
+task closeAndReleaseRepositoryIfRelease(dependsOn: isSnapshot()?null:['closeAndReleaseRepository'])
 
 allprojects {
     repositories {
