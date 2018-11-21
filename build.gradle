@@ -33,7 +33,6 @@ nexusStaging {
     password = ossrhPassword 
 }
 
-task closeAndReleaseRepositoryIfRelease(dependsOn: isSnapshot()?null:['closeAndReleaseRepository'])
 
 allprojects {
     repositories {
@@ -51,6 +50,8 @@ allprojects {
     ext.cucumber_javaVersion = version
     group = 'io.cucumber'
 }
+
+task closeAndReleaseRepositoryIfRelease(group: 'release',dependsOn: isSnapshot()?null:['closeAndReleaseRepository'])
 
 
 subprojects { subproject ->
