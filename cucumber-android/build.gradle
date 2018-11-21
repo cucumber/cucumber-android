@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'de.marcphilipp.nexus-publish'
 apply plugin: 'signing'
+apply plugin: 'digital.wup.android-maven-publish'
 
 addAndroidConfig()
 
@@ -9,8 +10,10 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
+ext.cucumber_javaVersion = '4.1.1'
+
 dependencies {
-    api "io.cucumber:cucumber-java:$version"
+    api "io.cucumber:cucumber-java:$cucumber_javaVersion"
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.8"
     //noinspection GradleDependency compatibility with PowerMock
@@ -51,6 +54,8 @@ publishing {
             //we need to defer it until variants are available
             android.libraryVariants.all { v ->
                 if (v.name=='release') {
+                    from components.android
+                    setArtifacts([])
                     artifact tasks."bundleReleaseAar"
                     artifact sourcesJar
                     artifact javadocJar

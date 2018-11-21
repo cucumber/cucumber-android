@@ -11,6 +11,7 @@ buildscript {
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.4.0"
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.12.0"
         classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.1.0"
+        classpath 'digital.wup:android-maven-publish:3.6.2'
     }
 }
 apply plugin: 'io.codearte.nexus-staging'
@@ -46,7 +47,7 @@ allprojects {
             url releaseRepository
         }
     }
-    version = "4.1.1"
+    version = "4.1.2"
     group = 'io.cucumber'
 }
 
