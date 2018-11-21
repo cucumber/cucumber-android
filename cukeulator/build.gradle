@@ -77,7 +77,7 @@ dependencies {
 
     // Use the stable Cucumber version
     androidTestImplementation project(":cucumber-android")
-    androidTestImplementation "io.cucumber:cucumber-picocontainer:$version"
+    androidTestImplementation "io.cucumber:cucumber-picocontainer:$cucumber_javaVersion"
 }
 
 // ==================================================================

@@ -48,6 +48,7 @@ allprojects {
         }
     }
     version = "4.1.2"
+    ext.cucumber_javaVersion = '4.1.1'
     group = 'io.cucumber'
 }
 

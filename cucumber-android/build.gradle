@@ -10,7 +10,6 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-ext.cucumber_javaVersion = '4.1.1'
 
 dependencies {
     api "io.cucumber:cucumber-java:$cucumber_javaVersion"
