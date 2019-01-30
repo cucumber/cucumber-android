@@ -26,7 +26,6 @@ import cucumber.runtime.RuntimeOptions;
 import cucumber.runtime.RuntimeOptionsFactory;
 import cucumber.runtime.UndefinedStepsTracker;
 import cucumber.runtime.filter.Filters;
-import cucumber.runtime.filter.RerunFilters;
 import cucumber.runtime.formatter.AndroidInstrumentationReporter;
 import cucumber.runtime.formatter.AndroidLogcatReporter;
 import cucumber.runtime.formatter.PluginFactory;
@@ -88,7 +87,7 @@ public final class CucumberExecutor {
      *
      * @param arguments       the {@link cucumber.runtime.android.Arguments} which configure this
      *                        execution
-     * @param instrumentation the {@link android.app.Instrumentation} to report to
+     * @param instrumentation the {@link Instrumentation} to report to
      */
     public CucumberExecutor(final Arguments arguments, final Instrumentation instrumentation) {
 
@@ -106,8 +105,7 @@ public final class CucumberExecutor {
         this.runner = new ThreadLocalRunnerSupplier(runtimeOptions, bus, createBackends()).get();
         FeatureLoader featureLoader = new FeatureLoader(resourceLoader);
         FeaturePathFeatureSupplier featureSupplier = new FeaturePathFeatureSupplier(featureLoader, runtimeOptions);
-        RerunFilters rerunFilters = new RerunFilters(runtimeOptions, featureLoader);
-        Filters filters = new Filters(runtimeOptions, rerunFilters);
+        Filters filters = new Filters(runtimeOptions);
         UndefinedStepsTracker undefinedStepsTracker = new UndefinedStepsTracker();
         undefinedStepsTracker.setEventPublisher(bus);
         Stats stats = new Stats();

@@ -9,12 +9,12 @@ import java.io.InputStream;
 
 /**
  * Android specific implementation of {@link cucumber.runtime.io.Resource} which is apple
- * to create {@link java.io.InputStream}s for android assets.
+ * to create {@link InputStream}s for android assets.
  */
 public final class AndroidResource implements Resource {
 
     /**
-     * The {@link android.content.Context} to get the {@link java.io.InputStream} from
+     * The {@link Context} to get the {@link InputStream} from
      */
     private final Context context;
 
@@ -26,7 +26,7 @@ public final class AndroidResource implements Resource {
     /**
      * Creates a new instance for the given parameters.
      *
-     * @param context the {@link android.content.Context} to create the {@link java.io.InputStream} from
+     * @param context the {@link Context} to create the {@link InputStream} from
      * @param path the path to the ressource
      */
     AndroidResource(final Context context, final String path) {
@@ -40,18 +40,8 @@ public final class AndroidResource implements Resource {
     }
 
     @Override
-    public String getAbsolutePath() {
-        return getPath();
-    }
-
-    @Override
     public InputStream getInputStream() throws IOException {
         return context.getAssets().open(path, AssetManager.ACCESS_UNKNOWN);
-    }
-
-    @Override
-    public String getClassName(final String extension) {
-        return path.substring(0, path.length() - extension.length()).replace('/', '.');
     }
 
     @Override

@@ -20,9 +20,8 @@ final class FeatureCompiler {
      */
     static List<PickleEvent> compile(final List<CucumberFeature> cucumberFeatures, final Filters filters) {
         List<PickleEvent> pickles = new ArrayList<PickleEvent>();
-        cucumber.runtime.FeatureCompiler compiler = new cucumber.runtime.FeatureCompiler();
         for (final CucumberFeature feature : cucumberFeatures) {
-            for (final PickleEvent pickleEvent : compiler.compileFeature(feature)) {
+            for (final PickleEvent pickleEvent : feature.getPickles()) {
                 if (filters.matchesFilters(pickleEvent)) {
                     pickles.add(pickleEvent);
                 }

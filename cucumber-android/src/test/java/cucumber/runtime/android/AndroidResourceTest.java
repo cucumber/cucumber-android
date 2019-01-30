@@ -36,20 +36,7 @@ public class AndroidResourceTest {
         assertThat(result, is(path));
     }
 
-    @Test
-    public void getAbsolutePath_returns_given_path() {
-
-        // given
-        final String path = "some/path.feature";
-        final AndroidResource androidResource = new AndroidResource(context, path);
-
-        // when
-        final String result = androidResource.getAbsolutePath();
-
-        // then
-        assertThat(result, is(path));
-    }
-
+   
     @Test
     public void toString_outputs_the_path() {
 
