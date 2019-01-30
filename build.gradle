@@ -7,10 +7,10 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath "com.jaredsburrows:gradle-spoon-plugin:1.4.0"
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.12.0"
-        classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.1.0"
+        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath "com.jaredsburrows:gradle-spoon-plugin:1.5.0"
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.20.0"
+        classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.1.1"
         classpath 'digital.wup:android-maven-publish:3.6.2'
     }
 }
@@ -46,7 +46,7 @@ allprojects {
             url releaseRepository
         }
     }
-    version = "4.2.2"
+    version = "4.2.3-SNAPSHOT"
     ext.cucumber_javaVersion = version
     group = 'io.cucumber'
 }

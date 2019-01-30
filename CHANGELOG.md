@@ -1,4 +1,8 @@
-## 4.2.1-SNAPSHOT
+## 4.2.3-SNAPSHOT
+
+## 4.2.2
+
+ * upgrade cucumber-java to `4.2.2`
 
 ## 4.0.0
 

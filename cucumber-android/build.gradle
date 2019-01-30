@@ -14,7 +14,7 @@ configurations.all {
 dependencies {
     api "io.cucumber:cucumber-java:$cucumber_javaVersion"
     testImplementation 'junit:junit:4.12'
-    testImplementation "org.robolectric:robolectric:3.8"
+    testImplementation "org.robolectric:robolectric:4.1"
     //noinspection GradleDependency compatibility with PowerMock
     testImplementation "org.mockito:mockito-core:2.8.9"
     testImplementation "org.powermock:powermock-api-mockito2:1.7.3"
@@ -28,13 +28,13 @@ task("generateJavadoc", type: Javadoc, group: 'documentation') {
 }
 
 task javadocJar(type: Jar, dependsOn: generateJavadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set 'javadoc'
     from generateJavadoc.destinationDir
 }
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+    archiveClassifier.set 'sources'
 }
 
 
