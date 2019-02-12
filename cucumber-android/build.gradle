@@ -13,7 +13,8 @@ configurations.all {
 
 dependencies {
     api "io.cucumber:cucumber-java:$cucumber_javaVersion"
-    testImplementation 'junit:junit:4.12'
+    api 'junit:junit:4.12'
+    api 'com.android.support.test:runner:1.0.2'
     testImplementation "org.robolectric:robolectric:4.1"
     //noinspection GradleDependency compatibility with PowerMock
     testImplementation "org.mockito:mockito-core:2.8.9"

@@ -81,6 +81,7 @@ public final class CucumberExecutor {
     private final EventBus bus;
     private final Plugins plugins;
     private final Runner runner;
+    private final AndroidInstrumentationReporter instrumentationReporter;
 
     /**
      * Creates a new instance for the given parameters.
@@ -111,7 +112,7 @@ public final class CucumberExecutor {
         Stats stats = new Stats();
         stats.setEventPublisher(bus);
 
-        AndroidInstrumentationReporter instrumentationReporter = new AndroidInstrumentationReporter(undefinedStepsTracker, instrumentation);
+        instrumentationReporter = new AndroidInstrumentationReporter(undefinedStepsTracker, instrumentation);
         plugins.addPlugin(instrumentationReporter);
         plugins.addPlugin(new AndroidLogcatReporter(stats, undefinedStepsTracker, TAG));
 
@@ -123,13 +124,20 @@ public final class CucumberExecutor {
             feature.sendTestSourceRead(bus);
         }
         this.pickleEvents = FeatureCompiler.compile(features, filters);
-        instrumentationReporter.setNumberOfTests(getNumberOfConcreteScenarios());
+    }
+
+    /**
+     * Only for internal usage: exposes the list of future tests
+     */
+    List<PickleEvent> getPickleEvents() {
+        return pickleEvents;
     }
 
     /**
      * Runs the cucumber scenarios with the specified arguments.
      */
     public void execute() {
+        instrumentationReporter.setNumberOfTests(getNumberOfConcreteScenarios());
         final StepDefinitionReporter stepDefinitionReporter = plugins.stepDefinitionReporter();
         runner.reportStepDefinitions(stepDefinitionReporter);
         for (final PickleEvent pickleEvent : pickleEvents) {

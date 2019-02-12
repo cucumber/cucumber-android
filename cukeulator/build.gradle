@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId "cucumber.cukeulator"
         testApplicationId "cucumber.cukeulator.test"
-        testInstrumentationRunner "cucumber.cukeulator.test.CucumberRunner"
+        testInstrumentationRunner "cucumber.api.android.CucumberAndroidJUnitRunner"
     }
 
     packagingOptions {
@@ -96,6 +96,7 @@ spoon {
     debug = true
     singleInstrumentationCall = true
     grantAll = true
+    shard = true
 }
 
 
