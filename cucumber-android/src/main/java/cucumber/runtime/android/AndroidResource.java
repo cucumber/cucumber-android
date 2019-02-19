@@ -6,6 +6,7 @@ import cucumber.runtime.io.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 
 /**
  * Android specific implementation of {@link cucumber.runtime.io.Resource} which is apple
@@ -21,31 +22,32 @@ public final class AndroidResource implements Resource {
     /**
      * The path of the resource.
      */
-    private final String path;
+    private final URI path;
+    private final String pathInAssets;
 
     /**
      * Creates a new instance for the given parameters.
-     *
      * @param context the {@link Context} to create the {@link InputStream} from
-     * @param path the path to the ressource
+     * @param path the path to the resource
      */
-    AndroidResource(final Context context, final String path) {
+    AndroidResource(final Context context, final URI path) {
         this.context = context;
         this.path = path;
+        this.pathInAssets = path.getSchemeSpecificPart();
     }
 
     @Override
-    public String getPath() {
+    public URI getPath() {
         return path;
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return context.getAssets().open(path, AssetManager.ACCESS_UNKNOWN);
+        return context.getAssets().open(pathInAssets, AssetManager.ACCESS_UNKNOWN);
     }
 
     @Override
     public String toString() {
-        return "AndroidResource (" + path + ")";
+        return "AndroidResource (" + pathInAssets + ")";
     }
 }
