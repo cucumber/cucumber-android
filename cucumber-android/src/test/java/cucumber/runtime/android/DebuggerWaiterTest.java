@@ -31,7 +31,7 @@ public class DebuggerWaiterTest {
         waiter.requestWaitForDebugger();
 
         // then
-        verifyStatic();
+        verifyStatic(Debug.class);
         Debug.waitForDebugger();
     }
 
@@ -49,7 +49,7 @@ public class DebuggerWaiterTest {
         waiter.requestWaitForDebugger();
 
         // then
-        verifyStatic(never());
+        verifyStatic(Debug.class,never());
         Debug.waitForDebugger();
     }
 }

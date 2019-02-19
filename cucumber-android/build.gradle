@@ -15,10 +15,8 @@ dependencies {
     api "io.cucumber:cucumber-java:$cucumber_javaVersion"
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:4.1"
-    //noinspection GradleDependency compatibility with PowerMock
-    testImplementation "org.mockito:mockito-core:2.8.9"
-    testImplementation "org.powermock:powermock-api-mockito2:1.7.3"
-    testImplementation "org.powermock:powermock-module-junit4:1.7.3"
+    testImplementation "org.powermock:powermock-api-mockito2:2.0.0"
+    testImplementation "org.powermock:powermock-module-junit4:2.0.0"
 }
 
 task("generateJavadoc", type: Javadoc, group: 'documentation') {

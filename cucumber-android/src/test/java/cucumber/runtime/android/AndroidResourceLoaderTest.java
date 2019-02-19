@@ -14,6 +14,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -40,7 +41,7 @@ public class AndroidResourceLoaderTest {
     public void retrieves_resource_by_given_path_and_suffix() {
 
         // given
-        final String path = "some/path/some.feature";
+        final URI path = URI.create("file:some/path/some.feature");
         final String suffix = "feature";
 
         // when
@@ -65,7 +66,7 @@ public class AndroidResourceLoaderTest {
         when(assetManager.list(dir + "/" + subDir)).thenReturn(new String[]{subDirFile});
 
         // when
-        final List<Resource> resources = Lists.newArrayList(androidResourceLoader.resources(dir, suffix));
+        final List<Resource> resources = Lists.newArrayList(androidResourceLoader.resources(URI.create("file:"+dir), suffix));
 
         // then
         assertThat(resources.size(), is(2));
@@ -84,7 +85,7 @@ public class AndroidResourceLoaderTest {
         when(assetManager.list(dir)).thenReturn(new String[]{expected, unexpected});
 
         // when
-        final List<Resource> resources = Lists.newArrayList(androidResourceLoader.resources(dir, suffix));
+        final List<Resource> resources = Lists.newArrayList(androidResourceLoader.resources(URI.create("file:"+dir), suffix));
 
         // then
         assertThat(resources.size(), is(1));
@@ -95,7 +96,7 @@ public class AndroidResourceLoaderTest {
         return new TypeSafeMatcher<Resource>() {
             @Override
             protected boolean matchesSafely(final Resource item) {
-                return item.getPath().equals(path);
+                return item.getPath().toString().equals(path);
             }
 
             @Override

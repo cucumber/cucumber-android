@@ -7,6 +7,7 @@ import cucumber.runtime.io.Resource;
 import cucumber.runtime.io.ResourceLoader;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,23 +22,23 @@ final class AndroidResourceLoader implements ResourceLoader {
     private static final String RESOURCE_PATH_FORMAT = "%s/%s";
 
     /**
-     * The {@link android.content.Context} to get the resources from.
+     * The {@link Context} to get the resources from.
      */
     private final Context context;
 
     /**
      * Creates a new instance for the given parameter.
      *
-     * @param context the {@link android.content.Context} to get resources from
+     * @param context the {@link Context} to get resources from
      */
     AndroidResourceLoader(final Context context) {
         this.context = context;
     }
 
     @Override
-    public Iterable<Resource> resources(final String path, final String suffix) {
+    public Iterable<Resource> resources(final URI path, final String suffix) {
         try {
-            final List<Resource> resources = new ArrayList<Resource>();
+            final List<Resource> resources = new ArrayList<>();
             final AssetManager assetManager = context.getAssets();
             addResourceRecursive(resources, assetManager, path, suffix);
             return resources;
@@ -48,15 +49,17 @@ final class AndroidResourceLoader implements ResourceLoader {
 
     private void addResourceRecursive(final List<Resource> resources,
                                       final AssetManager assetManager,
-                                      final String path,
+                                      final URI path,
                                       final String suffix) throws IOException {
-        if (path.endsWith(suffix)) {
+        String schemeSpecificPart = path.getSchemeSpecificPart();
+        if (schemeSpecificPart.endsWith(suffix)) {
             resources.add(new AndroidResource(context, path));
             return;
         }
 
-        for (final String name : assetManager.list(path)) {
-            addResourceRecursive(resources, assetManager, String.format(RESOURCE_PATH_FORMAT, path, name), suffix);
+        for (final String name : assetManager.list(schemeSpecificPart)) {
+            String subPath = String.format(RESOURCE_PATH_FORMAT, schemeSpecificPart, name);
+            addResourceRecursive(resources, assetManager, URI.create(subPath), suffix);
         }
     }
 }
