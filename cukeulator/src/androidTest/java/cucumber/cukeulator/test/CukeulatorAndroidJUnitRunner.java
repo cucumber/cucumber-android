@@ -1,40 +1,27 @@
 package cucumber.cukeulator.test;
 
 import android.os.Bundle;
-import android.support.test.runner.MonitoringInstrumentation;
 import cucumber.api.CucumberOptions;
-import cucumber.api.android.CucumberInstrumentationCore;
+import cucumber.api.android.CucumberAndroidJUnitRunner;
 
 import java.io.File;
 
 /**
- * A modern replacement for {@link cucumber.api.android.CucumberInstrumentation}.
- * Supports Cucumber steps without base classes plus activity test rules.
- * <p/>
+ * Android JUnit compatible replacement for {@link cucumber.api.android.CucumberInstrumentation}.
  * The CucumberOptions annotation is mandatory for exactly one of the classes in the test project.
  * Only the first annotated class that is found will be used, others are ignored. If no class is
  * annotated, an exception is thrown.
- */
+*/
 @CucumberOptions(
         features = "features"
 )
-public class CucumberRunner extends MonitoringInstrumentation {
+public class CukeulatorAndroidJUnitRunner extends CucumberAndroidJUnitRunner {
 
-    private final CucumberInstrumentationCore instrumentationCore = new CucumberInstrumentationCore(this);
 
     @Override
     public void onCreate(final Bundle bundle) {
         bundle.putString("plugin", getPluginConfigurationString()); // we programmatically create the plugin configuration
         super.onCreate(bundle);
-        instrumentationCore.create(bundle);
-        start();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        waitForIdleSync();
-        instrumentationCore.start();
     }
 
     /**
@@ -44,10 +31,9 @@ public class CucumberRunner extends MonitoringInstrumentation {
      * @return the plugin string for the configuration, which contains XML, HTML and JSON paths
      */
     private String getPluginConfigurationString() {
-        final String cucumber = "cucumber";
-        final String separator = "--";
-        return
-                "junit:" + getAbsoluteFilesPath() + "/" + cucumber + ".xml" + separator +
+        String cucumber = "cucumber";
+        String separator = "--";
+        return "junit:" + getAbsoluteFilesPath() + "/" + cucumber + ".xml" + separator +
                         "html:" + getAbsoluteFilesPath() + "/" + cucumber + ".html" + separator +
                         "json:" + getAbsoluteFilesPath() + "/" + cucumber + ".json";
     }
@@ -63,5 +49,4 @@ public class CucumberRunner extends MonitoringInstrumentation {
         File directory = getTargetContext().getExternalFilesDir(null);
         return new File(directory,"reports").getAbsolutePath();
     }
-
 }

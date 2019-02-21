@@ -192,11 +192,10 @@ public final class CucumberExecutor {
             public Collection<? extends Backend> get() {
                 final Reflections reflections = new Reflections(classFinder);
                 final ObjectFactory delegateObjectFactory = ObjectFactoryLoader.loadObjectFactory(classFinder, Env.INSTANCE.get(ObjectFactory.class.getName()));
-                final AndroidObjectFactory objectFactory = new AndroidObjectFactory(delegateObjectFactory, instrumentation);
                 final TypeRegistryConfigurer typeRegistryConfigurer = reflections.instantiateExactlyOneSubclass(TypeRegistryConfigurer.class, MultiLoader.packageName(runtimeOptions.getGlue()), new Class[0], new Object[0], new DefaultTypeRegistryConfiguration());
                 final TypeRegistry typeRegistry = new TypeRegistry(typeRegistryConfigurer.locale());
                 typeRegistryConfigurer.configureTypeRegistry(typeRegistry);
-                return singletonList(new JavaBackend(objectFactory, classFinder, typeRegistry));
+                return singletonList(new JavaBackend(delegateObjectFactory, classFinder, typeRegistry));
             }
         };
 

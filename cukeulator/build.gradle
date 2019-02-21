@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId "cucumber.cukeulator"
         testApplicationId "cucumber.cukeulator.test"
-        testInstrumentationRunner "cucumber.api.android.CucumberAndroidJUnitRunner"
+        testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
     }
 
     packagingOptions {
@@ -66,14 +66,12 @@ dependencies {
     // automatically by Gradle, the flag always bypasses any caching of dependencies.
 
 
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
 
 //    testImplementation 'junit:junit:4.12'
 //    testImplementation 'org.mockito:mockito-core:2.10.0'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
 
     // Use the stable Cucumber version
     androidTestImplementation project(":cucumber-android")
