@@ -97,7 +97,8 @@ task runInstrumentationTests {
 
 spoon {
     debug = true
-    singleInstrumentationCall = false
+    //this is faster but can be set to false
+    singleInstrumentationCall = true
     grantAll = true
     shard = true
 }
