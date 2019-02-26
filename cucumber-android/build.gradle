@@ -13,6 +13,7 @@ configurations.all {
 
 dependencies {
     api "io.cucumber:cucumber-java:$cucumber_javaVersion"
+    api "io.cucumber:cucumber-junit:$cucumber_javaVersion"
     api 'junit:junit:4.12'
     api "androidx.test:runner:1.1.1"
     testImplementation "org.robolectric:robolectric:4.1"

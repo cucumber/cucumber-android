@@ -56,6 +56,7 @@ public class AndroidResourceLoaderTest {
     public void retrieves_resources_recursively_from_given_path() throws IOException {
 
         // given
+        final String path = "file:dir";
         final String dir = "dir";
         final String dirFile = "dir.feature";
         final String subDir = "subdir";
@@ -66,12 +67,12 @@ public class AndroidResourceLoaderTest {
         when(assetManager.list(dir + "/" + subDir)).thenReturn(new String[]{subDirFile});
 
         // when
-        final List<Resource> resources = Lists.newArrayList(androidResourceLoader.resources(URI.create("file:"+dir), suffix));
+        final List<Resource> resources = Lists.newArrayList(androidResourceLoader.resources(URI.create(path), suffix));
 
         // then
         assertThat(resources.size(), is(2));
-        assertThat(resources, hasItem(withPath(dir + "/" + dirFile)));
-        assertThat(resources, hasItem(withPath(dir + "/" + subDir + "/" + subDirFile)));
+        assertThat(resources, hasItem(withPath(path + "/" + dirFile)));
+        assertThat(resources, hasItem(withPath(path + "/" + subDir + "/" + subDirFile)));
     }
 
     @Test

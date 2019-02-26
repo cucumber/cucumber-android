@@ -92,7 +92,7 @@ public class CoverageDumper {
     }
 
     private void reportError(final Bundle results, final Exception e) {
-        Log.e(CucumberExecutor.TAG, LOG_ERROR_OUTPUT, e);
+        Log.e(CucumberJUnitRunner.TAG, LOG_ERROR_OUTPUT, e);
         appendNewLineToResultStream(results, RESULT_STREAM_ERROR_OUTPUT);
     }
 

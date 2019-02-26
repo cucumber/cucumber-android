@@ -14,6 +14,8 @@ android {
         applicationId "cucumber.cukeulator"
         testApplicationId "cucumber.cukeulator.test"
         testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
+        //uncomment this to clear app data before each test when running with orchestrator
+//        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     packagingOptions {
@@ -25,6 +27,8 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
         animationsDisabled true
+//        uncomment this to run tests with orchestrator
+//        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
 }
@@ -72,6 +76,7 @@ dependencies {
 //    testImplementation 'org.mockito:mockito-core:2.10.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestUtil 'androidx.test:orchestrator:1.1.1'
 
     // Use the stable Cucumber version
     androidTestImplementation project(":cucumber-android")
@@ -92,7 +97,7 @@ task runInstrumentationTests {
 
 spoon {
     debug = true
-    singleInstrumentationCall = true
+    singleInstrumentationCall = false
     grantAll = true
     shard = true
 }
