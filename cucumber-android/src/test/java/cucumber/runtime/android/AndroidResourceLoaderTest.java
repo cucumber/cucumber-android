@@ -80,17 +80,18 @@ public class AndroidResourceLoaderTest {
 
         // given
         final String dir = "dir";
+        String path = "file:" + dir;
         final String expected = "expected.feature";
         final String unexpected = "unexpected.thingy";
         final String suffix = "feature";
         when(assetManager.list(dir)).thenReturn(new String[]{expected, unexpected});
 
         // when
-        final List<Resource> resources = Lists.newArrayList(androidResourceLoader.resources(URI.create("file:"+dir), suffix));
+        final List<Resource> resources = Lists.newArrayList(androidResourceLoader.resources(URI.create(path), suffix));
 
         // then
         assertThat(resources.size(), is(1));
-        assertThat(resources, hasItem(withPath(dir + "/" + expected)));
+        assertThat(resources, hasItem(withPath(path + "/" + expected)));
     }
 
     private static Matcher<? super Resource> withPath(final String path) {
