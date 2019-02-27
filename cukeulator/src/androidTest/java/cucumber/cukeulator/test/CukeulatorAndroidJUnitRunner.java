@@ -7,10 +7,9 @@ import cucumber.api.android.CucumberAndroidJUnitRunner;
 import java.io.File;
 
 /**
- * Android JUnit compatible replacement for {@link cucumber.api.android.CucumberInstrumentation}.
  * The CucumberOptions annotation is mandatory for exactly one of the classes in the test project.
  * Only the first annotated class that is found will be used, others are ignored. If no class is
- * annotated, an exception is thrown.
+ * annotated, an exception is thrown. This annotation does not have to placed in runner class
 */
 @CucumberOptions(
         features = "features"

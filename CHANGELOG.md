@@ -1,4 +1,15 @@
-## 4.2.3-SNAPSHOT
+## 4.2.4-SNAPSHOT
+### Changed
+From PR [#14](https://github.com/cucumber/cucumber-android/pull/14) (Viacheslav Iankovyi, Łukasz Suski)
+  * set target sdk to `28`
+  * migrate to `androidx` and `AndroidJunitRunner`
+  * add support for Android Test Orchestrator and spoon sharding
+  * ensure uniqueness of `<feature name>#<scenario name>`
+    * each scenario outline example receives continues number starting from 1
+    * if duplicate feature name or scenario in single feature is detected then error is thrown 
+     
+### Fixed
+  * [#2](https://github.com/cucumber/cucumber-android/issues/2) - cucumber-android does not integrate very well with Android Orchestrator
 
 ## 4.2.2
 
