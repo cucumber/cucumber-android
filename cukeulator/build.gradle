@@ -13,7 +13,9 @@ android {
     defaultConfig {
         applicationId "cucumber.cukeulator"
         testApplicationId "cucumber.cukeulator.test"
-        testInstrumentationRunner "cucumber.cukeulator.test.CucumberRunner"
+        testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
+        //uncomment this to clear app data before each test when running with orchestrator
+//        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     packagingOptions {
@@ -25,6 +27,8 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
         animationsDisabled true
+//        uncomment this to run tests with orchestrator
+//        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
 }
@@ -66,14 +70,13 @@ dependencies {
     // automatically by Gradle, the flag always bypasses any caching of dependencies.
 
 
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
 
 //    testImplementation 'junit:junit:4.12'
 //    testImplementation 'org.mockito:mockito-core:2.10.0'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestUtil 'androidx.test:orchestrator:1.1.1'
 
     // Use the stable Cucumber version
     androidTestImplementation project(":cucumber-android")
@@ -94,8 +97,10 @@ task runInstrumentationTests {
 
 spoon {
     debug = true
+    //this is faster but can be set to false
     singleInstrumentationCall = true
     grantAll = true
+    shard = true
 }
 
 

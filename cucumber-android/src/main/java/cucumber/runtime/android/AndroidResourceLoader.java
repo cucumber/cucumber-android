@@ -57,9 +57,12 @@ final class AndroidResourceLoader implements ResourceLoader {
             return;
         }
 
-        for (final String name : assetManager.list(schemeSpecificPart)) {
-            String subPath = String.format(RESOURCE_PATH_FORMAT, schemeSpecificPart, name);
-            addResourceRecursive(resources, assetManager, URI.create(subPath), suffix);
+        String[] list = assetManager.list(schemeSpecificPart);
+        if (list != null) {
+            for (String name : list) {
+                String subPath = String.format(RESOURCE_PATH_FORMAT, path.toString(), name);
+                addResourceRecursive(resources, assetManager, URI.create(subPath), suffix);
+            }
         }
     }
 }
