@@ -1,4 +1,4 @@
-## 4.2.4-SNAPSHOT
+## 4.2.4
 ### Changed
 From PR [#14](https://github.com/cucumber/cucumber-android/pull/14) (Viacheslav Iankovyi, Łukasz Suski)
   * set target sdk to `28`
