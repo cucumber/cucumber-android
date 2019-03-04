@@ -7,6 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import cucumber.api.CucumberOptions;
 import cucumber.api.TypeRegistryConfigurer;
 import cucumber.api.android.CucumberAndroidJUnitRunner;
+import cucumber.api.event.TestRunFinished;
 import cucumber.api.event.TestRunStarted;
 import cucumber.api.java.ObjectFactory;
 import cucumber.runner.EventBus;
@@ -54,6 +55,7 @@ import org.junit.runner.manipulation.Filterable;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.Statement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,6 +84,8 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
      */
     private List<AndroidFeatureRunner> children = new ArrayList<>();
 
+    private EventBus bus;
+
     public CucumberJUnitRunner(@SuppressWarnings("unused") Class testClass) throws InitializationError {
         super(testClass);
         CucumberAndroidJUnitRunner instrumentationRunner = (CucumberAndroidJUnitRunner) InstrumentationRegistry
@@ -97,7 +101,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
 
         ResourceLoader resourceLoader = new AndroidResourceLoader(context);
 
-        EventBus bus = new TimeServiceEventBus(TimeService.SYSTEM);
+        bus = new TimeServiceEventBus(TimeService.SYSTEM);
         Plugins plugins = new Plugins(classLoader, new PluginFactory(), bus, runtimeOptions);
         Runner runner = new ThreadLocalRunnerSupplier(runtimeOptions, bus, createBackends(runtimeOptions, classFinder)).get();
         FeatureLoader featureLoader = new FeatureLoader(resourceLoader);
@@ -303,5 +307,17 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
             }
         };
 
+    }
+
+    @Override
+    protected Statement childrenInvoker(RunNotifier notifier) {
+        final Statement features = super.childrenInvoker(notifier);
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                features.evaluate();
+                bus.send(new TestRunFinished(bus.getTime()));
+            }
+        };
     }
 }
