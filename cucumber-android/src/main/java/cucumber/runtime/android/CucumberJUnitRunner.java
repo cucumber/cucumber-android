@@ -33,7 +33,6 @@ import cucumber.runtime.formatter.AndroidLogcatReporter;
 import cucumber.runtime.formatter.PluginFactory;
 import cucumber.runtime.formatter.Plugins;
 import cucumber.runtime.formatter.Stats;
-import cucumber.runtime.io.MultiLoader;
 import cucumber.runtime.io.ResourceLoader;
 import cucumber.runtime.java.JavaBackend;
 import cucumber.runtime.java.ObjectFactoryLoader;
@@ -49,6 +48,7 @@ import gherkin.ast.ScenarioDefinition;
 import gherkin.ast.ScenarioOutline;
 import gherkin.ast.TableRow;
 import gherkin.events.PickleEvent;
+import io.cucumber.core.model.GluePath;
 import io.cucumber.stepexpression.TypeRegistry;
 import org.junit.runner.Description;
 import org.junit.runner.manipulation.Filterable;
@@ -283,7 +283,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
     }
 
     private static RuntimeOptions createRuntimeOptions(Context context, ClassFinder classFinder) {
-        for (final Class<?> clazz : classFinder.getDescendants(Object.class, context.getPackageName())) {
+        for (final Class<?> clazz : classFinder.getDescendants(Object.class, GluePath.parse(context.getPackageName()))) {
             if (clazz.isAnnotationPresent(CucumberOptions.class)) {
                 Log.d(TAG, "Found CucumberOptions in class " + clazz.getName());
                 final RuntimeOptionsFactory factory = new RuntimeOptionsFactory(clazz);
@@ -300,7 +300,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
             public Collection<? extends Backend> get() {
                 final Reflections reflections = new Reflections(classFinder);
                 final ObjectFactory delegateObjectFactory = ObjectFactoryLoader.loadObjectFactory(classFinder, Env.INSTANCE.get(ObjectFactory.class.getName()));
-                final TypeRegistryConfigurer typeRegistryConfigurer = reflections.instantiateExactlyOneSubclass(TypeRegistryConfigurer.class, MultiLoader.packageName(runtimeOptions.getGlue()), new Class[0], new Object[0], new DefaultTypeRegistryConfiguration());
+                final TypeRegistryConfigurer typeRegistryConfigurer = reflections.instantiateExactlyOneSubclass(TypeRegistryConfigurer.class, runtimeOptions.getGlue(), new Class[0], new Object[0], new DefaultTypeRegistryConfiguration());
                 final TypeRegistry typeRegistry = new TypeRegistry(typeRegistryConfigurer.locale());
                 typeRegistryConfigurer.configureTypeRegistry(typeRegistry);
                 return singletonList(new JavaBackend(delegateObjectFactory, classFinder, typeRegistry));

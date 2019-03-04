@@ -3,13 +3,17 @@ package cucumber.runtime.android;
 import cucumber.runtime.ClassFinder;
 import cucumber.runtime.CucumberException;
 import dalvik.system.DexFile;
+
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * Android specific implementation of {@link cucumber.runtime.ClassFinder} which loads classes contained in the provided {@link dalvik.system.DexFile}.
+ * Android specific implementation of {@link ClassFinder} which loads classes contained in the provided {@link DexFile}.
  */
 final class DexClassFinder implements ClassFinder {
 
@@ -34,7 +38,7 @@ final class DexClassFinder implements ClassFinder {
     private static final String FILE_NAME_SEPARATOR = ".";
 
     /**
-     * The class loader to actually load the classes specified by the {@link dalvik.system.DexFile}.
+     * The class loader to actually load the classes specified by the {@link DexFile}.
      */
     private static final ClassLoader CLASS_LOADER = DexClassFinder.class.getClassLoader();
 
@@ -42,32 +46,32 @@ final class DexClassFinder implements ClassFinder {
      * The "symbol" representing the default package.
      */
     private static final String DEFAULT_PACKAGE = "";
-
+    private static final Pattern PATH_SEPARATOR_PATTERN = Pattern.compile("/", Pattern.LITERAL);
     /**
-     * The {@link dalvik.system.DexFile} to load classes from
+     * The {@link DexFile} to load classes from
      */
     private final DexFile dexFile;
 
     /**
      * Creates a new instance for the given parameter.
      *
-     * @param dexFile the {@link dalvik.system.DexFile} to load classes from
+     * @param dexFile the {@link DexFile} to load classes from
      */
     DexClassFinder(final DexFile dexFile) {
         this.dexFile = dexFile;
     }
 
     @Override
-    public <T> Collection<Class<? extends T>> getDescendants(final Class<T> parentType, final String packageName) {
+    public <T> Collection<Class<? extends T>> getDescendants(final Class<T> parentType, final URI packageName) {
         final List<Class<? extends T>> result = new ArrayList<Class<? extends T>>();
-
+        String packageNameString = PATH_SEPARATOR_PATTERN.matcher(packageName.getSchemeSpecificPart()).replaceAll(Matcher.quoteReplacement("."));
         final Enumeration<String> entries = dexFile.entries();
         while (entries.hasMoreElements()) {
             final String className = entries.nextElement();
-            if (isInPackage(className, packageName) && !isGenerated(className)) {
+            if (isInPackage(className, packageNameString) && !isGenerated(className)) {
                 try {
                     final Class<? extends T> clazz = loadClass(className);
-                    if (clazz != null && !parentType.equals(clazz) && parentType.isAssignableFrom(clazz)) {
+                    if (!parentType.equals(clazz) && parentType.isAssignableFrom(clazz)) {
                         result.add(clazz.asSubclass(parentType));
                     }
                 } catch (ClassNotFoundException e) {

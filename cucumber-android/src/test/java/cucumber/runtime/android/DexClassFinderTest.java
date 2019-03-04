@@ -7,6 +7,7 @@ import cucumber.runtime.android.stub.wanted.Manifest;
 import cucumber.runtime.android.stub.wanted.R;
 import cucumber.runtime.android.stub.wanted.SomeClass;
 import dalvik.system.DexFile;
+import io.cucumber.core.model.GluePath;
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Before;
@@ -42,10 +43,15 @@ public class DexClassFinderTest {
         setDexFileEntries(SomeClass.class, SomeUnwantedClass.class);
 
         // when
-        final Collection<Class<?>> descendants = dexClassFinder.getDescendants(Object.class, SomeClass.class.getPackage().getName());
+        final Collection<Class<?>> descendants = getDescendants(Object.class, SomeClass.class.getPackage());
 
         // then
         assertThat(descendants, containsOnly(SomeClass.class));
+    }
+
+    private <T> Collection<Class<? extends T>> getDescendants(Class<T> parentType, Package javaPackage)
+    {
+        return dexClassFinder.getDescendants(parentType, GluePath.parse(javaPackage.getName()));
     }
 
     @Test
@@ -55,7 +61,7 @@ public class DexClassFinderTest {
         setDexFileEntries(SomeClass.class, Manifest.class);
 
         // when
-        final Collection<Class<?>> descendants = dexClassFinder.getDescendants(Object.class, SomeClass.class.getPackage().getName());
+        final Collection<Class<?>> descendants = getDescendants(Object.class, SomeClass.class.getPackage());
 
         // then
         assertThat(descendants, containsOnly(SomeClass.class));
@@ -68,7 +74,7 @@ public class DexClassFinderTest {
         setDexFileEntries(SomeClass.class, R.class);
 
         // when
-        final Collection<Class<?>> descendants = dexClassFinder.getDescendants(Object.class, SomeClass.class.getPackage().getName());
+        final Collection<Class<?>> descendants = getDescendants(Object.class, SomeClass.class.getPackage());
 
         // then
         assertThat(descendants, containsOnly(SomeClass.class));
@@ -81,7 +87,7 @@ public class DexClassFinderTest {
         setDexFileEntries(SomeClass.class, R.SomeInnerClass.class);
 
         // when
-        final Collection<Class<?>> descendants = dexClassFinder.getDescendants(Object.class, SomeClass.class.getPackage().getName());
+        final Collection<Class<?>> descendants = getDescendants(Object.class, SomeClass.class.getPackage());
 
         // then
         assertThat(descendants, containsOnly(SomeClass.class));
@@ -96,7 +102,7 @@ public class DexClassFinderTest {
         // when
         final Class parentType = Number.class;
         @SuppressWarnings("unchecked")
-        final Collection<Class<?>> descendants = dexClassFinder.getDescendants(parentType, Object.class.getPackage().getName());
+        final Collection<Class<?>> descendants = getDescendants(parentType, Object.class.getPackage());
 
         // then
         assertThat(descendants, containsOnly(Integer.class));
@@ -111,7 +117,7 @@ public class DexClassFinderTest {
         // when
         final Class parentType = Number.class;
         @SuppressWarnings("unchecked")
-        final Collection<Class<?>> descendants = dexClassFinder.getDescendants(parentType, Object.class.getPackage().getName());
+        final Collection<Class<?>> descendants = getDescendants(parentType, Object.class.getPackage());
 
         // then
         assertThat(descendants, containsOnly(Integer.class));
