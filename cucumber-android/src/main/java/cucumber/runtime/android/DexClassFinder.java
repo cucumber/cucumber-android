@@ -3,6 +3,7 @@ package cucumber.runtime.android;
 import cucumber.runtime.ClassFinder;
 import cucumber.runtime.CucumberException;
 import dalvik.system.DexFile;
+import io.cucumber.core.model.Classpath;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ final class DexClassFinder implements ClassFinder {
     @Override
     public <T> Collection<Class<? extends T>> getDescendants(final Class<T> parentType, final URI packageName) {
         final List<Class<? extends T>> result = new ArrayList<Class<? extends T>>();
-        String packageNameString = PATH_SEPARATOR_PATTERN.matcher(packageName.getSchemeSpecificPart()).replaceAll(Matcher.quoteReplacement("."));
+        String packageNameString = PATH_SEPARATOR_PATTERN.matcher(Classpath.resourceName(packageName)).replaceAll(Matcher.quoteReplacement("."));
         final Enumeration<String> entries = dexFile.entries();
         while (entries.hasMoreElements()) {
             final String className = entries.nextElement();
