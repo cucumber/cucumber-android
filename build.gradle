@@ -7,7 +7,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.5.0"
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.20.0"
         classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.2.0"
