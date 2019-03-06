@@ -1,3 +1,8 @@
+## 4.2.5
+### Fixed
+
+* [#17](https://github.com/cucumber/cucumber-android/pull/17) - reports & rerun require TestRunFinishedEvent to be posted (kaskasi)
+
 ## 4.2.4
 ### Changed
 From PR [#14](https://github.com/cucumber/cucumber-android/pull/14) (Viacheslav Iankovyi, Łukasz Suski)

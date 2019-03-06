@@ -46,7 +46,7 @@ allprojects {
             url releaseRepository
         }
     }
-    version = "4.2.5-SNAPSHOT"
+    version = "4.2.5"
     ext.cucumber_javaVersion = version
     group = 'io.cucumber'
 }
