@@ -1,3 +1,6 @@
+## 4.3.0
+* upgrade `cucumber-core` to `4.3.0`
+
 ## 4.2.5
 ### Fixed
 
