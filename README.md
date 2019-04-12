@@ -2,7 +2,14 @@
 
 # Cucumber-Android
 
-This project implements Android support for Cucumber-JVM. It allows running cucumber tests with Android Test Orchestrator and using sharding
+This project implements Android support for Cucumber-JVM. It allows
+running cucumber tests with Android Test Orchestrator and using
+sharding. 
+
+NOTE: Although minSdkVersion for 'cucumber-android' is 14 it requires
+Java 7 language features and minimum Android API level 19. This is done
+purposely to allow using cucumber in apps with lower minSdk (to avoid
+compile errors) but tests should be run on devices with API >= 19
 
 ## Developers
 
