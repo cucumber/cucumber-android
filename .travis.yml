@@ -16,7 +16,7 @@ cache:
 before_install:
 - yes | sdkmanager tools
 - yes | sdkmanager "platform-tools"
-- yes | sdkmanager "emulator" –channel=4
+- yes | sdkmanager "emulator" -–channel=4
 - yes | sdkmanager "build-tools;28.0.3"
 - yes | sdkmanager "system-images;android-21;default;armeabi-v7a"
 - echo no | avdmanager create avd --force -n test -k "system-images;android-21;default;armeabi-v7a"
