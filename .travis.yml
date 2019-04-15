@@ -4,7 +4,7 @@ sudo: false
 android:
   components:
   - build-tools-28.0.3
-  - android-24
+  - android-21
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -18,8 +18,8 @@ before_install:
 - yes | sdkmanager "platform-tools"
 - echo y | sdkmanager --channel=4 "emulator"
 - yes | sdkmanager "build-tools;28.0.3"
-- yes | sdkmanager "system-images;android-24;default;armeabi-v7a"
-- echo no | avdmanager create avd --force -n test -k "system-images;android-24;default;armeabi-v7a"
+- yes | sdkmanager "system-images;android-21;default;armeabi-v7a"
+- echo no | avdmanager create avd --force -n test -k "system-images;android-21;default;armeabi-v7a"
   -c 200M
 - "$ANDROID_HOME/emulator/emulator -avd test -skin 1920x1080 -no-audio -no-window
   -no-boot-anim &"
