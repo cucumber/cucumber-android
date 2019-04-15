@@ -21,9 +21,8 @@ before_install:
 - yes | sdkmanager "build-tools;28.0.3"
 - yes | sdkmanager "system-images;android-$API;default;$ABI"
 - echo no | avdmanager create avd --force -n test -k "system-images;android-$API;default;$ABI"
-  -c 200M
-- "$ANDROID_HOME/emulator/emulator -avd test -skin 1920x1080 -no-audio -no-window
-  -no-boot-anim &"
+  -c 100M
+- emulator -avd test -skin 1920x1080 -no-audio -no-window -no-accel -no-snapshot -no-boot-anim -qemu -m 2048 &
 - continuous-deployment/setup-environment.sh
 install:
 - "./gradlew clean test"
