@@ -36,7 +36,6 @@ Travis will now deploy everything.
 Finally update the version in `build.gradle` to the next snapshot version.
 
 
-
 # Manual deployment #
 
 It is preferable to use the automated deployment process over the manual process.
@@ -71,5 +70,6 @@ signing.secretKeyRingFile=/home/cukebot/.gnupg/secring.gpg
 # Deploy the release #
 
 ```
-mvn release:perform -Psign-source-javadoc -DskipTests=true
+API=21 ABI=x86_64 "./gradlew publishToNexus closeAndReleaseRepositoryIfRelease --stacktrace --debug --info"
 ```
+
