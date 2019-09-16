@@ -33,4 +33,7 @@ before_script:
 - adb shell settings put secure long_press_timeout 1500
 script:
 - "./gradlew runInstrumentationTests"
-
+env:
+  global:
+    - ABI=x86_64
+    - API=21

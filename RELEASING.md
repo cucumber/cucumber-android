@@ -45,23 +45,25 @@ The deployment process of `cucumber-android` is based on
 This process is nearly identical for both snapshot deployments and releases. Whether a snapshot 
 deployment or release is executed is determined by the version number.
 
-To make a release you must have the `devs@cucumber.io` GPG private key imported in gpg2.
+To make a release you must have the `cukebot@cucumber.io` GPG private key imported in gpg2.
 
 ```
 gpg --import devs-cucumber.io.key
 ```
 
-Additionally upload privileges to the Sonatype repositories are required. See the 
-[OSSRH Guide](http://central.sonatype.org/pages/ossrh-guide.html) for instructions. Then an 
-administrator will have to grant you access to the cucumber repository.
+Additionally upload privileges to the Sonatype repositories are required
+or you can use cukebot credentials. See the
+[OSSRH Guide](http://central.sonatype.org/pages/ossrh-guide.html) for
+instructions. Then an administrator will have to grant you access to the
+cucumber repository.
 
-Finally both your OSSRH credentials and private key must be setup in your `~/.graldle/gradle.properties` - 
-for example:
+Finally both your OSSRH credentials and private key must be setup in
+your `~/.gradle/gradle.properties` - for example:
 
 ```
 ossrhUsername=sonatype-user-name
 ossrhPassword=sonatype-password
-signing.keyId=123456AB # dev@cucumber.io id
+signing.keyId=123456AB # cukebot@cucumber.io id
 signing.password=*****
 signing.secretKeyRingFile=/home/cukebot/.gnupg/secring.gpg
 ```
@@ -70,6 +72,6 @@ signing.secretKeyRingFile=/home/cukebot/.gnupg/secring.gpg
 # Deploy the release #
 
 ```
-API=21 ABI=x86_64 "./gradlew publishToNexus closeAndReleaseRepositoryIfRelease --stacktrace --debug --info"
+"./gradlew clean build publishToNexus closeAndReleaseRepositoryIfRelease --stacktrace"
 ```
 
