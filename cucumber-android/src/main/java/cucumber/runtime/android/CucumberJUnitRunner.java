@@ -3,7 +3,22 @@ package cucumber.runtime.android;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+
 import androidx.test.platform.app.InstrumentationRegistry;
+
+import org.junit.runner.Description;
+import org.junit.runner.manipulation.Filterable;
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.ParentRunner;
+import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.Statement;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
 import cucumber.api.CucumberOptions;
 import cucumber.api.TypeRegistryConfigurer;
 import cucumber.api.android.CucumberAndroidJUnitRunner;
@@ -50,20 +65,7 @@ import gherkin.ast.TableRow;
 import gherkin.events.PickleEvent;
 import io.cucumber.core.model.GluePath;
 import io.cucumber.stepexpression.TypeRegistry;
-import org.junit.runner.Description;
-import org.junit.runner.manipulation.Filterable;
-import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.ParentRunner;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.Statement;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> implements Filterable {
@@ -132,8 +134,9 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         List<CucumberFeature> features = featureSupplier.get();
         Collection<String> featuresNames = new HashSet<>(features.size());
         StringBuilder duplicateScenariosNameMessage = new StringBuilder();
-        bus.send(new TestRunStarted(bus.getTime()));
+        bus.send(new TestRunStarted(bus.getTime(),bus.getTimeMillis()));
 
+        JUnitOptions junitOptions = new JUnitOptions(runtimeOptions.isStrict(), runtimeOptions.getJunitOptions());
         for (CucumberFeature feature : features) {
             feature.sendTestSourceRead(bus);
             String featureName = feature.getName();
@@ -155,14 +158,14 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
 
                     if (requestedScenarioName != null) {
                         if (requestedScenarioName.equals(currentScenarioName)) {
-                            AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, new JUnitOptions(false, emptyList()), feature, currentScenarioName);
+                            AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, junitOptions, feature, currentScenarioName);
                             pickleRunners.add(pickleRunner);
                             children.add(new AndroidFeatureRunner(feature, pickleRunners));
                             throwErrorIfDuplicateScenarios(duplicateScenariosNameMessage);
                             return;
                         }
                     } else {
-                        AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, new JUnitOptions(false, emptyList()), feature, currentScenarioName);
+                        AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, junitOptions, feature, currentScenarioName);
                         pickleRunners.add(pickleRunner);
                     }
                 }
@@ -316,7 +319,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
             @Override
             public void evaluate() throws Throwable {
                 features.evaluate();
-                bus.send(new TestRunFinished(bus.getTime()));
+                bus.send(new TestRunFinished(bus.getTime(), bus.getTimeMillis()));
             }
         };
     }
