@@ -1,3 +1,7 @@
+## 4.3.1
+* upgrade `cucumber-core` to `4.3.1`
+* properly create `JUnitOptions` to respect strict setting
+
 ## 4.3.0
 * upgrade `cucumber-core` to `4.3.0`
 
