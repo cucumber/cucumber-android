@@ -38,7 +38,7 @@ final class AndroidResourceLoader implements ResourceLoader {
 
     @Override
     public Iterable<Resource> resources(final URI path, final String suffix) {
-        if (path.getScheme().equals("file") && path.getRawSchemeSpecificPart().startsWith("//")) {
+        if (path.getScheme().equals("file") && path.getRawSchemeSpecificPart().startsWith("/")) {
             MultiLoader multiLoader;
             multiLoader = new MultiLoader(Thread.currentThread().getContextClassLoader());
 
