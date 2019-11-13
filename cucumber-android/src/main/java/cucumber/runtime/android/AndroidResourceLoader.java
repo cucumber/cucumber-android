@@ -28,20 +28,33 @@ final class AndroidResourceLoader implements ResourceLoader {
     private final Context context;
 
     /**
+     * The {@link MultiLoader} to get the resources from.
+     */
+    private final MultiLoader multiLoader;
+
+    /**
      * Creates a new instance for the given parameter.
      *
      * @param context the {@link Context} to get resources from
      */
     AndroidResourceLoader(final Context context) {
+        this(context, new MultiLoader(context.getClassLoader()));
+    }
+
+    /**
+     * Creates a new instance for the given parameter.
+     *
+     * @param context the {@link Context} to get resources from
+     * @param multiLoader the {@link Context} to get resources from
+     */
+    AndroidResourceLoader(final Context context, final MultiLoader multiLoader) {
         this.context = context;
+        this.multiLoader = multiLoader;
     }
 
     @Override
     public Iterable<Resource> resources(final URI path, final String suffix) {
         if (path.getScheme().equals("file") && path.getRawSchemeSpecificPart().startsWith("/")) {
-            MultiLoader multiLoader;
-            multiLoader = new MultiLoader(Thread.currentThread().getContextClassLoader());
-
             return multiLoader.resources(path, suffix);
         }
 
