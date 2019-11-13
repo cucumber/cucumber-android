@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import cucumber.runtime.CucumberException;
 import cucumber.runtime.io.Resource;
 import cucumber.runtime.io.ResourceLoader;
+import cucumber.runtime.io.MultiLoader;
 
 import java.io.IOException;
 import java.net.URI;
@@ -37,6 +38,13 @@ final class AndroidResourceLoader implements ResourceLoader {
 
     @Override
     public Iterable<Resource> resources(final URI path, final String suffix) {
+        if (path.getScheme().equals("file") && path.getRawSchemeSpecificPart().startsWith("//")) {
+            MultiLoader multiLoader;
+            multiLoader = new MultiLoader(Thread.currentThread().getContextClassLoader());
+
+            return multiLoader.resources(path, suffix);
+        }
+
         try {
             final List<Resource> resources = new ArrayList<>();
             final AssetManager assetManager = context.getAssets();
