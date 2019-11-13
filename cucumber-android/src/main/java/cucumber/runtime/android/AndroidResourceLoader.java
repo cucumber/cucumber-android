@@ -3,6 +3,7 @@ package cucumber.runtime.android;
 import android.content.Context;
 import android.content.res.AssetManager;
 import cucumber.runtime.CucumberException;
+import cucumber.runtime.io.MultiLoader;
 import cucumber.runtime.io.Resource;
 import cucumber.runtime.io.ResourceLoader;
 
@@ -37,6 +38,13 @@ final class AndroidResourceLoader implements ResourceLoader {
 
     @Override
     public Iterable<Resource> resources(final URI path, final String suffix) {
+        if (!path.getScheme().equals("android.resource")) {
+            MultiLoader multiLoader;
+            multiLoader = new MultiLoader(Thread.currentThread().getContextClassLoader());
+
+            return multiLoader.resources(path, suffix);
+        }
+
         try {
             final List<Resource> resources = new ArrayList<>();
             final AssetManager assetManager = context.getAssets();

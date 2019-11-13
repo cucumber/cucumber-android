@@ -41,7 +41,7 @@ public class AndroidResourceLoaderTest {
     public void retrieves_resource_by_given_path_and_suffix() {
 
         // given
-        final URI path = URI.create("file:some/path/some.feature");
+        final URI path = URI.create("android.resource:some/path/some.feature");
         final String suffix = "feature";
 
         // when
@@ -56,7 +56,7 @@ public class AndroidResourceLoaderTest {
     public void retrieves_resources_recursively_from_given_path() throws IOException {
 
         // given
-        final String path = "file:dir";
+        final String path = "android.resource:dir";
         final String dir = "dir";
         final String dirFile = "dir.feature";
         final String subDir = "subdir";
@@ -80,7 +80,7 @@ public class AndroidResourceLoaderTest {
 
         // given
         final String dir = "dir";
-        String path = "file:" + dir;
+        String path = "android.resource:" + dir;
         final String expected = "expected.feature";
         final String unexpected = "unexpected.thingy";
         final String suffix = "feature";
