@@ -14,7 +14,7 @@ configurations.all {
 dependencies {
     api "io.cucumber:cucumber-java:$cucumber_javaVersion"
     api "io.cucumber:cucumber-junit:$cucumber_javaVersion"
-    api 'junit:junit:4.12'
+    api 'junit:junit:4.13'
     api "androidx.test:runner:1.2.0"
     testImplementation "org.robolectric:robolectric:4.3"
     testImplementation "org.powermock:powermock-api-mockito2:2.0.0"

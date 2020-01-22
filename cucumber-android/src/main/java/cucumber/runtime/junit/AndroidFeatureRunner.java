@@ -14,8 +14,8 @@ public class AndroidFeatureRunner extends ParentRunner<AndroidPickleRunner> {
 	private final List<AndroidPickleRunner> children;
 	private final CucumberFeature cucumberFeature;
 
-	public AndroidFeatureRunner(CucumberFeature cucumberFeature, List<AndroidPickleRunner> children) throws InitializationError	{
-		super(null);
+	public AndroidFeatureRunner(Class<?> testClass, CucumberFeature cucumberFeature, List<AndroidPickleRunner> children) throws InitializationError	{
+		super(testClass);
 		this.cucumberFeature = cucumberFeature;
 		this.children = children;
 	}

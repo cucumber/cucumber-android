@@ -88,7 +88,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
 
     private EventBus bus;
 
-    public CucumberJUnitRunner(@SuppressWarnings("unused") Class testClass) throws InitializationError {
+    public CucumberJUnitRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
         CucumberAndroidJUnitRunner instrumentationRunner = (CucumberAndroidJUnitRunner) InstrumentationRegistry
                 .getInstrumentation();
@@ -104,7 +104,9 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         ResourceLoader resourceLoader = new AndroidResourceLoader(context);
 
         bus = new TimeServiceEventBus(TimeService.SYSTEM);
-        Plugins plugins = new Plugins(classLoader, new PluginFactory(), bus, runtimeOptions);
+        Plugins plugins = new Plugins(classLoader, new PluginFactory(), runtimeOptions);
+        plugins.setSerialEventBusOnEventListenerPlugins(bus);
+        plugins.setEventBusOnEventListenerPlugins(bus);
         Runner runner = new ThreadLocalRunnerSupplier(runtimeOptions, bus, createBackends(runtimeOptions, classFinder)).get();
         FeatureLoader featureLoader = new FeatureLoader(resourceLoader);
         FeatureSupplier featureSupplier = new FeaturePathFeatureSupplier(featureLoader, runtimeOptions);
@@ -160,7 +162,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
                         if (requestedScenarioName.equals(currentScenarioName)) {
                             AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, junitOptions, feature, currentScenarioName);
                             pickleRunners.add(pickleRunner);
-                            children.add(new AndroidFeatureRunner(feature, pickleRunners));
+                            children.add(new AndroidFeatureRunner(testClass, feature, pickleRunners));
                             throwErrorIfDuplicateScenarios(duplicateScenariosNameMessage);
                             return;
                         }
@@ -170,19 +172,20 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
                     }
                 }
             }
-            addFeatureIfHasChildren(featuresNames, duplicateScenariosNameMessage, feature, featureName, pickleRunners);
+            addFeatureIfHasChildren(testClass, featuresNames, duplicateScenariosNameMessage, feature, featureName, pickleRunners);
         }
         throwErrorIfDuplicateScenarios(duplicateScenariosNameMessage);
     }
 
-    private void addFeatureIfHasChildren(Collection<String> featuresNames, StringBuilder duplicateScenariosNameMessage, CucumberFeature feature, String featureName, List<AndroidPickleRunner> pickleRunners) throws InitializationError {
+    private void addFeatureIfHasChildren(Class<?> testClass, Collection<String> featuresNames, StringBuilder duplicateScenariosNameMessage,
+                                          CucumberFeature feature, String featureName, List<AndroidPickleRunner> pickleRunners) throws InitializationError {
         if (!pickleRunners.isEmpty()) {
             if (featuresNames.contains(featureName)) {
                 // in case of feature name duplication:
                 addDuplicateFeatureMessage(duplicateScenariosNameMessage, featureName);
             }
             featuresNames.add(featureName);
-            children.add(new AndroidFeatureRunner(feature, pickleRunners));
+            children.add(new AndroidFeatureRunner(testClass, feature, pickleRunners));
         }
     }
 
