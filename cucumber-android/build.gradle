@@ -1,3 +1,5 @@
+import java.time.Duration
+
 apply plugin: 'com.android.library'
 apply plugin: 'de.marcphilipp.nexus-publish'
 apply plugin: 'signing'
@@ -42,9 +44,14 @@ archivesBaseName = "cucumber-android"
 
 nexusPublishing {
     packageGroup = project.group
-    snapshotRepositoryUrl = uri(snapshotRepository)
-    username = ossrhUsername
-    password = ossrhPassword
+    repositories {
+        sonatype {
+            username = ossrhUsername
+            password = ossrhPassword
+        }
+    }
+    connectTimeout = Duration.ofMinutes(5)
+    clientTimeout = Duration.ofMinutes(5)
 }
 
 publishing {

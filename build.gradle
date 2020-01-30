@@ -9,8 +9,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.5.0"
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
-        classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.2.0"
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.2"
+        classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.4.0"
         classpath 'digital.wup:android-maven-publish:3.6.2'
     }
 }
@@ -30,7 +30,7 @@ ext {
 
 nexusStaging {
     username = ossrhUsername 
-    password = ossrhPassword 
+    password = ossrhPassword
 }
 
 
