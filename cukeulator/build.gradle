@@ -211,5 +211,5 @@ def getCucumberDevicePath() {
  * @return the known Cucumber report files/directories
  */
 static def getCucumberReportFileNames() {
-    return ['cucumber.json', 'cucumber.xml', 'cucumber.html']
+    return ['cucumber.xml', 'cucumber.html']
 }

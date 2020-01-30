@@ -1,10 +1,11 @@
 package cucumber.cukeulator.test;
 
 import android.os.Bundle;
-import cucumber.api.CucumberOptions;
-import cucumber.api.android.CucumberAndroidJUnitRunner;
 
 import java.io.File;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.android.CucumberAndroidJUnitRunner;
 
 /**
  * The CucumberOptions annotation is mandatory for exactly one of the classes in the test project.
@@ -33,8 +34,7 @@ public class CukeulatorAndroidJUnitRunner extends CucumberAndroidJUnitRunner {
         String cucumber = "cucumber";
         String separator = "--";
         return "junit:" + getAbsoluteFilesPath() + "/" + cucumber + ".xml" + separator +
-                        "html:" + getAbsoluteFilesPath() + "/" + cucumber + ".html" + separator +
-                        "json:" + getAbsoluteFilesPath() + "/" + cucumber + ".json";
+                        "html:" + getAbsoluteFilesPath() + "/" + cucumber + ".html";
     }
 
     /**
