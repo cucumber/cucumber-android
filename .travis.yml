@@ -41,4 +41,5 @@ before_script:
 - adb shell settings put secure long_press_timeout 1500
 script:
 - "./gradlew runInstrumentationTests"
+- "./gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.cucumberUseAndroidJUnitRunner=true"
 
