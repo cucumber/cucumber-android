@@ -46,8 +46,10 @@ nexusPublishing {
     packageGroup = project.group
     repositories {
         sonatype {
-            username = ossrhUsername
-            password = ossrhPassword
+            if (hasProperty('ossrhUsername')) {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
         }
     }
     connectTimeout = Duration.ofMinutes(5)
@@ -95,16 +97,6 @@ publishing {
                         }
                     }
                 }
-            }
-        }
-    }
-    
-    repositories {
-        maven {
-            url isSnapshot() ?  snapshotRepository : releaseRepository
-            credentials {
-                username = ossrhUsername
-                password = ossrhPassword
             }
         }
     }

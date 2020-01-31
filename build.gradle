@@ -29,8 +29,10 @@ ext {
 }
 
 nexusStaging {
-    username = ossrhUsername 
-    password = ossrhPassword
+    if (hasProperty('ossrhUsername')){
+        username = ossrhUsername
+        password = ossrhPassword
+    }
 }
 
 
