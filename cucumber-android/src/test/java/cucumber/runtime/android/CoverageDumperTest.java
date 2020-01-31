@@ -4,7 +4,6 @@ import android.app.Instrumentation;
 import android.os.Bundle;
 import com.vladium.emma.rt.RT;
 import java.io.File;
-import java.io.IOException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,8 +11,9 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.eq;
@@ -52,7 +52,7 @@ public class CoverageDumperTest {
     }
 
     @Test
-    public void dumps_file_when_flag_is_enabled() throws IOException {
+    public void dumps_file_when_flag_is_enabled() {
 
         // given
         final String fileName = temporaryFolder.getRoot().getAbsolutePath() + File.separator + "foo.bar";
@@ -67,7 +67,7 @@ public class CoverageDumperTest {
     }
 
     @Test
-    public void puts_path_to_coverage_file_into_bundle() throws IOException {
+    public void puts_path_to_coverage_file_into_bundle() {
 
         // given
         final String fileName = temporaryFolder.getRoot().getAbsolutePath() + File.separator + "foo.bar";

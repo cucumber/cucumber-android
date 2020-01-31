@@ -1,11 +1,13 @@
 package cucumber.runtime.android;
 
 import io.cucumber.cucumberexpressions.PatternCompiler;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ServiceLoader;
 import java.util.regex.Pattern;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AndroidPatternCompilerTest {
 
@@ -16,11 +18,11 @@ public class AndroidPatternCompilerTest {
 
 		Pattern pattern = compiler.compile("HELLO", Pattern.UNICODE_CHARACTER_CLASS);
 
-		Assert.assertFalse(pattern.matcher("hello").find());
+		assertFalse(pattern.matcher("hello").find());
 
 
 		pattern = compiler.compile("HELLO", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
 
-		Assert.assertTrue(pattern.matcher("hello").find());
+		assertTrue(pattern.matcher("hello").find());
 	}
 }
