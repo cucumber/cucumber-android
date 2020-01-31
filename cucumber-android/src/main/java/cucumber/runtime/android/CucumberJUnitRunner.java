@@ -1,5 +1,6 @@
 package cucumber.runtime.android;
 
+import android.app.Instrumentation;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.TypeRegistryConfigurer;
-import cucumber.api.android.CucumberAndroidJUnitRunner;
+import cucumber.api.android.CucumberArgumentsProvider;
 import cucumber.api.event.TestRunFinished;
 import cucumber.api.event.TestRunStarted;
 import cucumber.api.java.ObjectFactory;
@@ -90,13 +91,13 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
 
     public CucumberJUnitRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
-        CucumberAndroidJUnitRunner instrumentationRunner = (CucumberAndroidJUnitRunner) InstrumentationRegistry
-                .getInstrumentation();
-        Bundle runnerArguments = instrumentationRunner.getArguments();
+        Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+
+        Bundle runnerArguments = getRunnerBundle(instrumentation);
         Arguments arguments = new Arguments(runnerArguments);
 
         trySetCucumberOptionsToSystemProperties(arguments);
-        Context context = instrumentationRunner.getContext();
+        Context context = instrumentation.getContext();
         ClassLoader classLoader = context.getClassLoader();
         ClassFinder classFinder = createDexClassFinder(context);
         RuntimeOptions runtimeOptions = createRuntimeOptions(context, classFinder).noSummaryPrinter();
@@ -119,7 +120,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         plugins.addPlugin(new AndroidLogcatReporter(stats, undefinedStepsTracker, TAG));
 
         //check if this is for single scenario
-        String testClassNameFromRunner = runnerArguments.getString(CucumberAndroidJUnitRunner.CUCUMBER_ANDROID_TEST_CLASS);
+        String testClassNameFromRunner = runnerArguments.getString(CucumberAndroidJUnitArguments.InternalCucumberAndroidArgs.CUCUMBER_ANDROID_TEST_CLASS);
         String requestedFeatureName = null;
         String requestedScenarioName = null;
         if (testClassNameFromRunner != null) {
@@ -128,7 +129,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
                 requestedFeatureName = split[0];
                 requestedScenarioName = split[1];
             } else {
-                Log.e(TAG, "CucumberJUnitRunner: invalid argument '" + CucumberAndroidJUnitRunner.CUCUMBER_ANDROID_TEST_CLASS + "' = '" + testClassNameFromRunner + "'");
+                Log.e(TAG, "CucumberJUnitRunner: invalid argument '" + CucumberAndroidJUnitArguments.InternalCucumberAndroidArgs.CUCUMBER_ANDROID_TEST_CLASS + "' = '" + testClassNameFromRunner + "'");
             }
         }
         // Start the run before reading the features.
@@ -136,7 +137,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         List<CucumberFeature> features = featureSupplier.get();
         Collection<String> featuresNames = new HashSet<>(features.size());
         StringBuilder duplicateScenariosNameMessage = new StringBuilder();
-        bus.send(new TestRunStarted(bus.getTime(),bus.getTimeMillis()));
+        bus.send(new TestRunStarted(bus.getTime(), bus.getTimeMillis()));
 
         JUnitOptions junitOptions = new JUnitOptions(runtimeOptions.isStrict(), runtimeOptions.getJunitOptions());
         for (CucumberFeature feature : features) {
@@ -177,8 +178,17 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         throwErrorIfDuplicateScenarios(duplicateScenariosNameMessage);
     }
 
+    private Bundle getRunnerBundle(Instrumentation instrumentation) throws InitializationError {
+        if (!(instrumentation instanceof CucumberArgumentsProvider)) {
+            Log.e(TAG, "Runner must implement CucumberArgumentsProvider");
+            throw new InitializationError("Use runner that implements CucumberArgumentsProvider class.");
+        }
+
+        return ((CucumberArgumentsProvider) instrumentation).getArguments().getRunnerArgs();
+    }
+
     private void addFeatureIfHasChildren(Class<?> testClass, Collection<String> featuresNames, StringBuilder duplicateScenariosNameMessage,
-                                          CucumberFeature feature, String featureName, List<AndroidPickleRunner> pickleRunners) throws InitializationError {
+                                         CucumberFeature feature, String featureName, List<AndroidPickleRunner> pickleRunners) throws InitializationError {
         if (!pickleRunners.isEmpty()) {
             if (featuresNames.contains(featureName)) {
                 // in case of feature name duplication:
@@ -214,7 +224,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
                 .append("'");
     }
 
-    private static String getScenarioName(PickleEvent pickleEvent, Feature feature){
+    private static String getScenarioName(PickleEvent pickleEvent, Feature feature) {
         int exampleNumber = findExampleNumber(pickleEvent, feature);
         String pickleName = pickleEvent.pickle.getName();
         if (exampleNumber > 0) {
@@ -225,7 +235,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
     }
 
 
-    private static int findExampleNumber(PickleEvent pickleEvent, Feature feature)   {
+    private static int findExampleNumber(PickleEvent pickleEvent, Feature feature) {
         int pickleLine = getLine(pickleEvent);
         for (ScenarioDefinition definition : feature.getChildren()) {
             if (definition instanceof ScenarioOutline) {
@@ -263,7 +273,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
 
     @Override
     protected void runChild(AndroidFeatureRunner child, RunNotifier notifier) {
-          child.run(notifier);
+        child.run(notifier);
     }
 
 
