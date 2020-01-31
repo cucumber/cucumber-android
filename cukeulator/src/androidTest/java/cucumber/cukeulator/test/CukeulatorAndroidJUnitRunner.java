@@ -21,6 +21,11 @@ public class CukeulatorAndroidJUnitRunner extends CucumberAndroidJUnitRunner {
     @Override
     public void onCreate(final Bundle bundle) {
         bundle.putString("plugin", getPluginConfigurationString()); // we programmatically create the plugin configuration
+
+        if(bundle.containsKey("class")){
+            bundle.putBoolean(CUCUMBER_ANDROID_USE_ANDROID_RUNNER, true);
+        }
+
         super.onCreate(bundle);
     }
 
