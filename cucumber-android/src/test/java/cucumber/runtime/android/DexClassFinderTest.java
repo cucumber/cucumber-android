@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = {ShadowDexFile.class}, manifest = Config.NONE)

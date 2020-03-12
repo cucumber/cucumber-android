@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
