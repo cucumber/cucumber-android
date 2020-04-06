@@ -46,7 +46,7 @@ nexusPublishing {
     packageGroup = project.group
     repositories {
         sonatype {
-            if (hasProperty('ossrhUsername')) {
+            if (project.hasProperty('ossrhUsername')) {
                 username = ossrhUsername
                 password = ossrhPassword
             }
