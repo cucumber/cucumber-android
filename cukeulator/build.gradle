@@ -14,8 +14,11 @@ android {
         applicationId "cucumber.cukeulator"
         testApplicationId "cucumber.cukeulator.test"
         testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
-        //uncomment this to clear app data before each test when running with orchestrator
-//        testInstrumentationRunnerArguments clearPackageData: 'true'
+       //testInstrumentationRunnerArguments = [
+            // cucumberUseAndroidJUnitRunner: getProperty("cucumberUseAndroidJUnitRunner"),
+            // uncomment this to clear app data before each test when running with orchestrator
+            // clearPackageData: 'true'
+        //]
     }
 
     packagingOptions {
