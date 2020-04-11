@@ -55,6 +55,11 @@ You can also use command line to provide these options to cucumber-android. Here
 android.defaultConfig.testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
 ```
 
+### File-based tests
+
+If, for some reason, you need to load features from the filesystem, use an absolute path when specifying the features options to @CucumberOptions (e.g. `features = "/data/local/tmp"`).
+
+It is up to you to ensure your instrumentation has permission to read from the filesystem. You may need to add something like `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />` to your AndroidManifest.xml.
 
 ### Debugging
 Please read [the Android documentation on debugging](https://developer.android.com/tools/debugging/index.html).
