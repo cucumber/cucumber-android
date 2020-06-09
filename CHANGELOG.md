@@ -1,3 +1,6 @@
+## 4.6.0
+* upgrade `cucumber-core` to `4.6.0`
+
 ## 4.5.4
 * upgrade `cucumber-core` to `4.5.4`
 * upgrade package names to match JVM project package names.
