@@ -9,6 +9,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.cukeulator.CalculatorActivity;
 import cucumber.cukeulator.R;
+import io.cucumber.junit.CucumberJUnitRunner;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -31,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 public class CalculatorActivitySteps {
 
     /**
-     * Since {@link cucumber.runtime.android.CucumberJUnitRunner} and {@link cucumber.api.android.CucumberInstrumentationCore} have the control over the
+     * Since {@link CucumberJUnitRunner} and {@link cucumber.api.android.CucumberInstrumentationCore} have the control over the
      * test lifecycle, activity test rules must not be launched automatically. Automatic launching of test rules is only
      * feasible for JUnit tests. Fortunately, we are able to launch the activity in Cucumber's {@link Before} method.
      */

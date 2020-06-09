@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import java.io.File;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.android.CucumberAndroidJUnitRunner;
+import io.cucumber.android.runner.CucumberAndroidJUnitRunner;
+import io.cucumber.junit.CucumberOptions;
 
 /**
  * The CucumberOptions annotation is mandatory for exactly one of the classes in the test project.

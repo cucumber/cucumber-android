@@ -50,7 +50,7 @@ You can also use command line to provide these options to cucumber-android. Here
 
 3. Write your step definitions under the package name specified in glue. For example, if you specified glue = "com.mytest.steps", then create a new package under your src folder named "com.mytest.steps" and put your step definitions under it. Note that all subpackages will also be included, so you can also put in "com.mytest.steps.mycomponent".
 
-4. Set instrumentation runner to `cucumber.api.android.CucumberAndroidJUnitRunner` or class that extends it
+4. Set instrumentation runner to `io.cucumber.android.runner.CucumberAndroidJUnitRunner` or class that extends it
 ```groovy
 android.defaultConfig.testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
 ```
