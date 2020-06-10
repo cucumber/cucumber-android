@@ -1,3 +1,7 @@
+## 4.5.4
+* upgrade `cucumber-core` to `4.5.4`
+* upgrade package names to match JVM project package names.
+
 ## 4.4.1
 * [#43](https://github.com/cucumber/cucumber-android/issues/43) resolved by PR [#39](https://github.com/cucumber/cucumber-android/pull/39) - (Roman Havran)
  - option to run regular android junit tests with `CucumberAndroidJUnitRunner`
