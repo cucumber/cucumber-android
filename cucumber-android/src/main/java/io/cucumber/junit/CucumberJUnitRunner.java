@@ -20,32 +20,24 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import cucumber.api.TypeRegistryConfigurer;
 import cucumber.api.event.TestRunFinished;
 import cucumber.api.event.TestRunStarted;
-import cucumber.api.java.ObjectFactory;
 import cucumber.runner.EventBus;
 import cucumber.runner.Runner;
 import cucumber.runner.ThreadLocalRunnerSupplier;
 import cucumber.runner.TimeService;
 import cucumber.runner.TimeServiceEventBus;
-import cucumber.runtime.Backend;
-import cucumber.runtime.BackendSupplier;
 import cucumber.runtime.ClassFinder;
 import cucumber.runtime.CucumberException;
-import cucumber.runtime.DefaultTypeRegistryConfiguration;
-import cucumber.runtime.Env;
 import cucumber.runtime.FeaturePathFeatureSupplier;
 import cucumber.runtime.FeatureSupplier;
-import cucumber.runtime.Reflections;
 import cucumber.runtime.UndefinedStepsTracker;
 import cucumber.runtime.Utils;
 import cucumber.runtime.filter.Filters;
 import cucumber.runtime.formatter.PluginFactory;
 import cucumber.runtime.formatter.Plugins;
 import cucumber.runtime.formatter.Stats;
-import cucumber.runtime.java.JavaBackend;
-import cucumber.runtime.java.ObjectFactoryLoader;
+import cucumber.runtime.java.AndroidJavaBackendFactory;
 import cucumber.runtime.model.CucumberFeature;
 import cucumber.runtime.model.FeatureLoader;
 import dalvik.system.DexFile;
@@ -56,9 +48,6 @@ import gherkin.ast.ScenarioOutline;
 import gherkin.ast.TableRow;
 import gherkin.events.PickleEvent;
 import io.cucumber.core.options.RuntimeOptions;
-import io.cucumber.stepexpression.TypeRegistry;
-
-import static java.util.Collections.singletonList;
 
 public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> implements Filterable {
 
@@ -98,7 +87,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         plugins.setSerialEventBusOnEventListenerPlugins(bus);
         plugins.setEventBusOnEventListenerPlugins(bus);
 
-        Runner runner = new ThreadLocalRunnerSupplier(options.runtimeOptions, bus, createBackends(options.runtimeOptions, classFinder)).get();
+        Runner runner = new ThreadLocalRunnerSupplier(options.runtimeOptions, bus, AndroidJavaBackendFactory.createBackend(options.runtimeOptions, classFinder)).get();
         FeatureLoader featureLoader = new FeatureLoader(new AndroidResourceLoader(context));
         FeatureSupplier featureSupplier = new FeaturePathFeatureSupplier(featureLoader, options.runtimeOptions);
         Filters filters = new Filters(options.runtimeOptions);
@@ -286,22 +275,6 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         } catch (final IOException e) {
             throw new CucumberException("Failed to open " + apkPath);
         }
-    }
-
-
-    private static BackendSupplier createBackends(RuntimeOptions runtimeOptions, ClassFinder classFinder) {
-        return new BackendSupplier() {
-            @Override
-            public Collection<? extends Backend> get() {
-                final Reflections reflections = new Reflections(classFinder);
-                final ObjectFactory delegateObjectFactory = ObjectFactoryLoader.loadObjectFactory(classFinder, Env.INSTANCE.get(ObjectFactory.class.getName()));
-                final TypeRegistryConfigurer typeRegistryConfigurer = reflections.instantiateExactlyOneSubclass(TypeRegistryConfigurer.class, runtimeOptions.getGlue(), new Class[0], new Object[0], new DefaultTypeRegistryConfiguration());
-                final TypeRegistry typeRegistry = new TypeRegistry(typeRegistryConfigurer.locale());
-                typeRegistryConfigurer.configureTypeRegistry(typeRegistry);
-                return singletonList(new JavaBackend(delegateObjectFactory, classFinder, typeRegistry));
-            }
-        };
-
     }
 
     @Override

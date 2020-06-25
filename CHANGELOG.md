@@ -1,3 +1,13 @@
+## 4.8.1
+* upgrade `cucumber-core` to `4.8.1`
+
+## 4.7.4
+* upgrade `cucumber-core` to `4.7.4`
+* extract the 'create backend supplier' method into the factory.
+
+## 4.6.0
+* upgrade `cucumber-core` to `4.6.0`
+
 ## 4.5.4
 * upgrade `cucumber-core` to `4.5.4`
 * upgrade package names to match JVM project package names.
