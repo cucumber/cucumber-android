@@ -2,13 +2,13 @@ package cucumber.cukeulator.test;
 
 import android.app.Activity;
 import androidx.test.rule.ActivityTestRule;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import cucumber.cukeulator.CalculatorActivity;
 import cucumber.cukeulator.R;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.cucumber.junit.CucumberJUnitRunner;
 
 import static androidx.test.espresso.Espresso.onView;

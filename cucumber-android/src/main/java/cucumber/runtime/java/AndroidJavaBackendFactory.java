@@ -1,12 +1,12 @@
 package cucumber.runtime.java;
 
-import cucumber.api.TypeRegistryConfigurer;
 import cucumber.api.java.ObjectFactory;
 import cucumber.runtime.BackendSupplier;
 import cucumber.runtime.ClassFinder;
 import cucumber.runtime.DefaultTypeRegistryConfiguration;
 import cucumber.runtime.Env;
 import cucumber.runtime.Reflections;
+import io.cucumber.core.api.TypeRegistryConfigurer;
 import io.cucumber.core.options.RuntimeOptions;
 import io.cucumber.stepexpression.TypeRegistry;
 
