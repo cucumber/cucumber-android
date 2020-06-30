@@ -1,13 +1,6 @@
 package io.cucumber.junit;
 
 import com.google.common.collect.Lists;
-import io.cucumber.junit.shadow.ShadowDexFile;
-import io.cucumber.junit.stub.unwanted.SomeUnwantedClass;
-import io.cucumber.junit.stub.wanted.Manifest;
-import io.cucumber.junit.stub.wanted.R;
-import io.cucumber.junit.stub.wanted.SomeClass;
-import dalvik.system.DexFile;
-import io.cucumber.core.model.GluePath;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.IsIterableContainingInOrder;
@@ -19,8 +12,18 @@ import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import dalvik.system.DexFile;
+import io.cucumber.core.model.GluePath;
+import io.cucumber.junit.shadow.ShadowDexFile;
+import io.cucumber.junit.stub.unwanted.SomeUnwantedClass;
+import io.cucumber.junit.stub.wanted.Manifest;
+import io.cucumber.junit.stub.wanted.R;
+import io.cucumber.junit.stub.wanted.SomeClass;
+import io.cucumber.junit.stub.wanted.SomeKotlinClass;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -41,13 +44,13 @@ public class DexClassFinderTest {
     public void only_loads_classes_from_specified_package() throws Exception {
 
         // given
-        setDexFileEntries(SomeClass.class, SomeUnwantedClass.class);
+        setDexFileEntries(SomeClass.class, SomeKotlinClass.class, SomeUnwantedClass.class);
 
         // when
         final Collection<Class<?>> descendants = getDescendants(Object.class, SomeClass.class.getPackage());
 
         // then
-        assertThat(descendants, containsOnly(SomeClass.class));
+        assertThat(descendants, IsIterableContainingInOrder.<Class<?>>contains(SomeClass.class, SomeKotlinClass.class));
     }
 
     private <T> Collection<Class<? extends T>> getDescendants(Class<T> parentType, Package javaPackage)
@@ -124,14 +127,44 @@ public class DexClassFinderTest {
         assertThat(descendants, containsOnly(Integer.class));
     }
 
+    @Test
+    public void does_not_load_kotlin_inlined_classes() throws Exception {
+        // given
+        Class<?> kotlinInlinedFunClass = Class.forName("io.cucumber.junit.stub.wanted.SomeKotlinClass$someFun$$inlined$sortedBy$1");
+        setDexFileEntries(SomeClass.class, kotlinInlinedFunClass);
+
+        // when
+        final Collection<Class<?>> descendants = getDescendants(Object.class, SomeClass.class.getPackage());
+
+        // then
+        assertThat(descendants, containsOnly(SomeClass.class));
+    }
+
+    @Test
+    public void does_not_throw_exception_if_class_not_found() throws Exception {
+        // given
+        setDexFileEntries(Arrays.asList(SomeClass.class.getName(),"SomeNotExistentClass"));
+
+        // when
+        final Collection<Class<?>> descendants = getDescendants(Object.class, SomeClass.class.getPackage());
+
+        // then
+        assertThat(descendants, containsOnly(SomeClass.class));
+    }
+
     private Matcher<Iterable<? extends Class<?>>> containsOnly(final Class<?> type) {
         return IsIterableContainingInOrder.<Class<?>>contains(type);
     }
 
     private void setDexFileEntries(final Class... entryClasses) throws NoSuchFieldException, IllegalAccessException {
+        Collection<String> entries = classToName(entryClasses);
+        setDexFileEntries(entries);
+    }
+
+    private void setDexFileEntries(Collection<String> entries) throws NoSuchFieldException, IllegalAccessException {
         final Field roboData = DexFile.class.getDeclaredField("__robo_data__");
         final ShadowDexFile shadowDexFile = (ShadowDexFile) roboData.get(dexFile);
-        shadowDexFile.setEntries(classToName(entryClasses));
+        shadowDexFile.setEntries(entries);
     }
 
     private Collection<String> classToName(final Class... entryClasses) {

@@ -4,6 +4,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'de.marcphilipp.nexus-publish'
 apply plugin: 'signing'
 apply plugin: 'digital.wup.android-maven-publish'
+apply plugin: 'kotlin-android'
 
 addAndroidConfig()
 
@@ -18,9 +19,10 @@ dependencies {
     api "io.cucumber:cucumber-junit:$cucumber_javaVersion"
     api 'junit:junit:4.13'
     api "androidx.test:runner:1.2.0"
-    testImplementation "org.robolectric:robolectric:4.3"
-    testImplementation "org.powermock:powermock-api-mockito2:2.0.0"
-    testImplementation "org.powermock:powermock-module-junit4:2.0.0"
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    testImplementation "org.powermock:powermock-api-mockito2:2.0.2"
+    testImplementation "org.powermock:powermock-module-junit4:2.0.2"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 task("generateJavadoc", type: Javadoc, group: 'documentation') {
@@ -102,7 +104,7 @@ publishing {
     }
 }
 
-signing {
-    sign publishing.publications.maven
-}
+//signing {
+//    sign publishing.publications.maven
+//}
 
