@@ -1,3 +1,7 @@
+## 4.8.2
+* exclude kotlin generated classes for inlined functions from glue scanning
+* does not fail if `Class.getMethods()` throws `NoClassDefFoundError`
+
 ## 4.8.1
 * upgrade `cucumber-core` to `4.8.1`
 

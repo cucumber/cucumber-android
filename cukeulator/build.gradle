@@ -9,8 +9,9 @@ apply plugin: "com.jaredsburrows.spoon"
 addAndroidConfig()
 
 android {
-   
+
     defaultConfig {
+        multiDexEnabled true
         applicationId "cucumber.cukeulator"
         testApplicationId "cucumber.cukeulator.test"
         testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
@@ -73,17 +74,18 @@ dependencies {
     // automatically by Gradle, the flag always bypasses any caching of dependencies.
 
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
 //    testImplementation 'junit:junit:4.12'
 //    testImplementation 'org.mockito:mockito-core:2.10.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestUtil 'androidx.test:orchestrator:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestUtil 'androidx.test:orchestrator:1.2.0'
 
     // Use the stable Cucumber version
     androidTestImplementation project(":cucumber-android")
     androidTestImplementation "io.cucumber:cucumber-picocontainer:$cucumber_javaVersion"
+
 }
 
 // ==================================================================

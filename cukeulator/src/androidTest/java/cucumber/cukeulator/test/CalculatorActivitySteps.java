@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 public class CalculatorActivitySteps {
 
     /**
-     * Since {@link CucumberJUnitRunner} and {@link cucumber.api.android.CucumberInstrumentationCore} have the control over the
+     * Since {@link CucumberJUnitRunner} has the control over the
      * test lifecycle, activity test rules must not be launched automatically. Automatic launching of test rules is only
      * feasible for JUnit tests. Fortunately, we are able to launch the activity in Cucumber's {@link Before} method.
      */

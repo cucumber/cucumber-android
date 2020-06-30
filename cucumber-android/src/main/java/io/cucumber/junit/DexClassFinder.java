@@ -1,10 +1,5 @@
 package io.cucumber.junit;
 
-import cucumber.runtime.ClassFinder;
-import cucumber.runtime.CucumberException;
-import dalvik.system.DexFile;
-import io.cucumber.core.model.Classpath;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +7,10 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import cucumber.runtime.ClassFinder;
+import dalvik.system.DexFile;
+import io.cucumber.core.model.Classpath;
 
 /**
  * Android specific implementation of {@link ClassFinder} which loads classes contained in the provided {@link DexFile}.
@@ -72,11 +71,13 @@ final class DexClassFinder implements ClassFinder {
             if (isInPackage(className, packageNameString) && !isGenerated(className)) {
                 try {
                     final Class<? extends T> clazz = loadClass(className);
-                    if (!parentType.equals(clazz) && parentType.isAssignableFrom(clazz)) {
+                    if (!parentType.equals(clazz) && parentType.isAssignableFrom(clazz) && canGetMethods(clazz)) {
                         result.add(clazz.asSubclass(parentType));
                     }
-                } catch (ClassNotFoundException e) {
-                    throw new CucumberException(e);
+                } catch (ClassNotFoundException ignored) {
+                    //ignore, class cannot be loaded - same as in ResourceLoaderClassFinder
+                } catch (NoClassDefFoundError ignored){
+                    //ignore, class cannot be loaded - same as in ResourceLoaderClassFinder
                 }
             }
         }
@@ -94,9 +95,29 @@ final class DexClassFinder implements ClassFinder {
         return classPackage.startsWith(packageName);
     }
 
-    private boolean isGenerated(final String className) {
+    private static boolean isGenerated(final String className) {
+        return isAndroidGenerated(className) || isKotlinGenerated(className);
+    }
+
+    private static boolean isAndroidGenerated(final String className) {
         final int lastDotIndex = className.lastIndexOf(FILE_NAME_SEPARATOR);
         final String shortName = lastDotIndex == -1 ? className : className.substring(lastDotIndex + 1);
         return shortName.equals(MANIFEST_CLASS_NAME) || shortName.equals(RESOURCE_CLASS_NAME) || shortName.startsWith(RESOURCE_INNER_CLASS_NAME_PREFIX);
+    }
+
+    private static boolean isKotlinGenerated(String className) {
+        return className.contains("$$inlined$");
+    }
+
+    /**
+     * On older apis obtaining all methods via {@link Class#getMethods()} can lead to NoClassDefFoundError if such methods has parameters with unavailable on this api classes such as {@link java.util.function.Function}
+     */
+    private static boolean canGetMethods(Class<?> clazz) {
+        try {
+            clazz.getMethods();
+        } catch (NoClassDefFoundError ignored){
+            return false;
+        }
+        return true;
     }
 }
