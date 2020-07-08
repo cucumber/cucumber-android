@@ -83,9 +83,6 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         AndroidJunitRuntimeOptionsFactory.Options options = AndroidJunitRuntimeOptionsFactory.createRuntimeOptions(context, classFinder, classLoader);
 
         bus = new TimeServiceEventBus(TimeService.SYSTEM);
-        Plugins plugins = new Plugins(classLoader, new PluginFactory(), options.runtimeOptions);
-        plugins.setSerialEventBusOnEventListenerPlugins(bus);
-        plugins.setEventBusOnEventListenerPlugins(bus);
 
         Runner runner = new ThreadLocalRunnerSupplier(options.runtimeOptions, bus, AndroidJavaBackendFactory.createBackend(options.runtimeOptions, classFinder)).get();
         FeatureLoader featureLoader = new FeatureLoader(new AndroidResourceLoader(context));
@@ -96,7 +93,11 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         Stats stats = new Stats();
         stats.setEventPublisher(bus);
 
+        Plugins plugins = new Plugins(classLoader, new PluginFactory(), options.runtimeOptions);
         plugins.addPlugin(new AndroidLogcatReporter(stats, undefinedStepsTracker, TAG));
+        //must be after registering plugins
+        plugins.setSerialEventBusOnEventListenerPlugins(bus);
+        plugins.setEventBusOnEventListenerPlugins(bus);
 
         //check if this is for single scenario
         String testClassNameFromRunner = runnerArguments.getString(CucumberAndroidJUnitArguments.InternalCucumberAndroidArgs.CUCUMBER_ANDROID_TEST_CLASS);
