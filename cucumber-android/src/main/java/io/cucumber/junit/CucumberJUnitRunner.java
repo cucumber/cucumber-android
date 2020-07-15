@@ -96,8 +96,11 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         Plugins plugins = new Plugins(classLoader, new PluginFactory(), options.runtimeOptions);
         plugins.addPlugin(new AndroidLogcatReporter(stats, undefinedStepsTracker, TAG));
         //must be after registering plugins
-        plugins.setSerialEventBusOnEventListenerPlugins(bus);
-        plugins.setEventBusOnEventListenerPlugins(bus);
+        if (options.runtimeOptions.isMultiThreaded()) {
+            plugins.setSerialEventBusOnEventListenerPlugins(bus);
+        } else {
+            plugins.setEventBusOnEventListenerPlugins(bus);
+        }
 
         //check if this is for single scenario
         String testClassNameFromRunner = runnerArguments.getString(CucumberAndroidJUnitArguments.InternalCucumberAndroidArgs.CUCUMBER_ANDROID_TEST_CLASS);

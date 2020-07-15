@@ -50,7 +50,7 @@ allprojects {
             url releaseRepository
         }
     }
-    version = "4.8.3"
+    version = "4.8.4"
     ext.cucumber_javaVersion = '4.8.1'
     group = 'io.cucumber'
 }
