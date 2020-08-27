@@ -13,13 +13,16 @@ import io.cucumber.junit.CucumberOptions;
  * annotated, an exception is thrown. This annotation does not have to placed in runner class
  */
 @CucumberOptions(
-        features = "features"
+        features = "features",
+        strict = true
 )
 public class CukeulatorAndroidJUnitRunner extends CucumberAndroidJUnitRunner {
 
     @Override
     public void onCreate(final Bundle bundle) {
         bundle.putString("plugin", getPluginConfigurationString()); // we programmatically create the plugin configuration
+        //it crashes on Android R without it
+        new File(getAbsoluteFilesPath()).mkdirs();
         super.onCreate(bundle);
     }
 
@@ -32,8 +35,16 @@ public class CukeulatorAndroidJUnitRunner extends CucumberAndroidJUnitRunner {
     private String getPluginConfigurationString() {
         String cucumber = "cucumber";
         String separator = "--";
-        return "junit:" + getAbsoluteFilesPath() + "/" + cucumber + ".xml" + separator +
-                "html:" + getAbsoluteFilesPath() + "/" + cucumber + ".html";
+        return "junit:" + getCucumberXml(cucumber) + separator +
+                "html:" + getCucumberHtml(cucumber);
+    }
+
+    private String getCucumberHtml(String cucumber) {
+        return getAbsoluteFilesPath() + "/" + cucumber + ".html";
+    }
+
+    private String getCucumberXml(String cucumber) {
+        return getAbsoluteFilesPath() + "/" + cucumber + ".xml";
     }
 
     /**

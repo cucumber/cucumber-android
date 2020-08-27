@@ -1,21 +1,20 @@
 package cucumber.cukeulator.test;
 
 import android.app.Activity;
+
 import androidx.test.rule.ActivityTestRule;
+
 import cucumber.cukeulator.CalculatorActivity;
 import cucumber.cukeulator.R;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.junit.CucumberJUnitRunner;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -132,8 +131,4 @@ public class CalculatorActivitySteps {
         }
     }
 
-    @Then("I should see {string} on the display")
-    public void I_should_see_s_on_the_display(final String s) {
-        onView(withId(R.id.txt_calc_display)).check(matches(withText(s)));
-    }
 }
