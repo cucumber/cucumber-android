@@ -16,11 +16,11 @@ android {
         applicationId "cucumber.cukeulator"
         testApplicationId "cucumber.cukeulator.test"
         testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
-       //testInstrumentationRunnerArguments = [
-            // cucumberUseAndroidJUnitRunner: getProperty("cucumberUseAndroidJUnitRunner"),
+       testInstrumentationRunnerArguments = [
+             cucumberUseAndroidJUnitRunner: getProperty("cucumberUseAndroidJUnitRunner"),
             // uncomment this to clear app data before each test when running with orchestrator
-            // clearPackageData: 'true'
-        //]
+             clearPackageData: 'true'
+        ]
     }
 
     packagingOptions {
@@ -33,7 +33,7 @@ android {
         unitTests.returnDefaultValues = true
         animationsDisabled true
 //        uncomment this to run tests with orchestrator
-//        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
 }
@@ -41,7 +41,6 @@ android {
 // ==================================================================
 // Project dependencies
 // ==================================================================
-
 dependencies {
     //
     // The following dependency works, if you build Cucumber-JVM on your local machine:

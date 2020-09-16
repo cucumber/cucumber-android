@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class CalculatorActivity extends Activity {
+    public static boolean isFirstLaunch = true;
+
     private static enum Operation {ADD, SUB, MULT, DIV, NONE}
 
     private TextView txtCalcDisplay;
@@ -24,6 +26,10 @@ public class CalculatorActivity extends Activity {
         txtCalcDisplay = (TextView) findViewById(R.id.txt_calc_display);
         txtCalcOperator = (TextView) findViewById(R.id.txt_calc_operator);
         operation = Operation.NONE;
+        if (!isFirstLaunch) {
+            finish();
+        }
+        isFirstLaunch = false;
     }
 
     public void onDigitPressed(View v) {
