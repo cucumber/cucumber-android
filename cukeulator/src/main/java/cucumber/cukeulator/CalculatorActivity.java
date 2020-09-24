@@ -1,12 +1,16 @@
 package cucumber.cukeulator;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class CalculatorActivity extends Activity {
+    public static final String KEY = "Key";
+    public static final String FAILURE_FLAG = "FailureFlag";
     public static boolean isFirstLaunch = true;
 
     private static enum Operation {ADD, SUB, MULT, DIV, NONE}
@@ -30,6 +34,15 @@ public class CalculatorActivity extends Activity {
             finish();
         }
         isFirstLaunch = false;
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
+        String res = sharedPreferences.getString(KEY, "");
+        if (FAILURE_FLAG.equals(res)) {
+            throw new IllegalStateException("Failure flag is raised");
+        }
+        sharedPreferences.edit()
+                .putString(KEY, FAILURE_FLAG)
+                .commit();
     }
 
     public void onDigitPressed(View v) {
