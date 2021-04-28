@@ -26,8 +26,9 @@ class AndroidJunitRuntimeOptionsFactory {
         }
     }
 
-    static Options createRuntimeOptions(Context context, ClassFinder classFinder, ClassLoader classLoader) {
-        for (final Class<?> clazz : classFinder.getDescendants(Object.class, GluePath.parse(context.getPackageName()))) {
+    static Options createRuntimeOptions(Arguments arguments, Context context, ClassFinder classFinder, ClassLoader classLoader) {
+        String packageName = arguments.hasOptionsAnnotationPackageLocation() ? arguments.getOptionsAnnotationPackageLocation() : context.getPackageName();
+        for (final Class<?> clazz : classFinder.getDescendants(Object.class, GluePath.parse(packageName))) {
             if (clazz.isAnnotationPresent(CucumberOptions.class)) {
                 Log.d(TAG, "Found CucumberOptions in class " + clazz.getName());
                 ResourceLoader resourceLoader = new MultiLoader(classLoader);

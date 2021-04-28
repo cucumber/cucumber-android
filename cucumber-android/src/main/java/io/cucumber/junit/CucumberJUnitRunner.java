@@ -80,7 +80,7 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
         Context context = instrumentation.getContext();
         ClassLoader classLoader = context.getClassLoader();
         ClassFinder classFinder = createDexClassFinder(context);
-        AndroidJunitRuntimeOptionsFactory.Options options = AndroidJunitRuntimeOptionsFactory.createRuntimeOptions(context, classFinder, classLoader);
+        AndroidJunitRuntimeOptionsFactory.Options options = AndroidJunitRuntimeOptionsFactory.createRuntimeOptions(arguments, context, classFinder, classLoader);
 
         bus = new TimeServiceEventBus(TimeService.SYSTEM);
 
