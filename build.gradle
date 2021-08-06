@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.4.0'
+    ext.kotlin_version = '1.5.20'
     repositories {
         google()
         jcenter()
@@ -8,7 +8,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:4.2.2'
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.5.0"
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.2"
         classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.4.0"
@@ -21,7 +21,7 @@ apply plugin: 'io.codearte.nexus-staging'
 
 ext {
     targetSdkVersion = 29
-    buildToolsVersion = '29.0.3'
+    buildToolsVersion = '30.0.2'
     minSdkVersion = '14'
 
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
@@ -42,7 +42,7 @@ allprojects {
     repositories {
         mavenLocal()
         google()
-        jcenter()
+        mavenCentral()
         maven {
             url snapshotRepository
         }
