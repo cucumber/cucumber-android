@@ -10,61 +10,68 @@ The rest of the dependencies are added automatically in `cukeulator/build.gradle
 
 The cucumber-android dependency is added as (see `cukeulator/build.gradle`):
 
-```
-androidTestImplementation 'io.cucumber:cucumber-android:<version>'
-```
+    androidTestImplementation 'io.cucumber:cucumber-android:<version>'
 
-### Using gradle
+
+### Building the APK files using gradle
 
 To build the cukeulator apk:
 
-```
-./gradlew --parallel :cukeulator:assembleDebug
-```
+    ./gradlew --parallel :cukeulator:assembleDebug
+
 
 The build generates an apk in cukeulator/build/outputs/apk/debug/cukeulator-debug.apk.
 
 To build the instrumentation test apk:
 
-```
-./gradlew --parallel :cukeulator:assembleDebugAndroidTest
-```
 
-To install the apk on a device:
+    ./gradlew --parallel :cukeulator:assembleDebugAndroidTest
 
-```
-adb install -r cukeulator/build/outputs/apk/debug/cukeulator-debug.apk
-```
+### Installing the app and test on the Android device 
+
+To install the application apk on a device:
+
+    adb install -r cukeulator/build/outputs/apk/debug/cukeulator-debug.apk
 
 To install the test apk on a device:
 
-```
-adb install -r cukeulator/build/outputs/apk/androidTest/debug/cukeulator-debug-androidTest.apk
-```
+    adb install -r cukeulator/build/outputs/apk/androidTest/debug/cukeulator-debug-androidTest.apk
+
 
 To verify that the test is installed, run:
 
-```
-adb shell pm list instrumentation
-```
+    adb shell pm list instrumentation
+
 
 The command output should display;
 
-```
-instrumentation:cucumber.cukeulator.test/.CukeulatorAndroidJUnitRunner (target=cucumber.cukeulator)
-```
+    instrumentation:cucumber.cukeulator.test/.CukeulatorAndroidJUnitRunner (target=cucumber.cukeulator)
 
-To run the test:
+### Running the tests 
+There are two ways to run the test, either with Gradle or directly with adb. 
+ * `gradlew`- is simpler, and more fail safe - but 10% slower. Note. Gradle deletes the APK files after use. 
+ * `adb` - is more advanced, gives better output, and faster
+ 
 
-```
-./gradlew :cukeulator:connectedCheck
-```
+To run the test using `gradlew`:
 
-As an alternative option, the test can be run with adb:
+    ./gradlew :cukeulator:connectedCheck
 
-```
-adb shell am instrument -w cucumber.cukeulator.test/cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner
-```
+
+To run the test using `adb`:
+
+    // Requires that the apk files are already on the device - and not deleted by gradlew
+    adb shell am instrument -w cucumber.cukeulator.test/cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner
+
+To find the output Cucumber report files, use this adb command:
+
+    adb shell find /sdcard/ -name *cucumber*
+
+To extract the Cucumber Report files, using `adb` into a folder called cucumber-device-reports. Remember to create this first. 
+
+    adb pull -a /sdcard/Android/data/cucumber.cukeulator/files/reports cucumber-device-reports
+
+
 
 ### Using an Android Studio IDE
 
