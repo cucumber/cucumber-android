@@ -18,7 +18,7 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
       - name: Build the app
-        run: ./gradlew build --stacktrace
+        run: ./gradlew build --stacktrace -x lint
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
