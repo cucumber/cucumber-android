@@ -22,6 +22,7 @@ import java.util.List;
 
 import cucumber.api.event.TestRunFinished;
 import cucumber.api.event.TestRunStarted;
+import cucumber.api.java.ObjectFactory;
 import cucumber.runner.EventBus;
 import cucumber.runner.Runner;
 import cucumber.runner.ThreadLocalRunnerSupplier;
@@ -84,7 +85,9 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
 
         bus = new TimeServiceEventBus(TimeService.SYSTEM);
 
-        Runner runner = new ThreadLocalRunnerSupplier(options.runtimeOptions, bus, AndroidJavaBackendFactory.createBackend(options.runtimeOptions, classFinder)).get();
+        ObjectFactory objectFactory = AndroidJavaBackendFactory.getDelegateObjectFactory(classFinder);
+        RulesBackend rulesBackend = new RulesBackend(classFinder, objectFactory);
+        Runner runner = new ThreadLocalRunnerSupplier(options.runtimeOptions, bus, AndroidJavaBackendFactory.createBackend(options.runtimeOptions, classFinder, objectFactory,rulesBackend)).get();
         FeatureLoader featureLoader = new FeatureLoader(new AndroidResourceLoader(context));
         FeatureSupplier featureSupplier = new FeaturePathFeatureSupplier(featureLoader, options.runtimeOptions);
         Filters filters = new Filters(options.runtimeOptions);
@@ -144,14 +147,14 @@ public class CucumberJUnitRunner extends ParentRunner<AndroidFeatureRunner> impl
 
                     if (requestedScenarioName != null) {
                         if (requestedScenarioName.equals(currentScenarioName)) {
-                            AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, options.jUnitOptions, feature, currentScenarioName);
+                            AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, options.jUnitOptions, feature, currentScenarioName,rulesBackend);
                             pickleRunners.add(pickleRunner);
                             children.add(new AndroidFeatureRunner(testClass, feature, pickleRunners));
                             throwErrorIfDuplicateScenarios(duplicateScenariosNameMessage);
                             return;
                         }
                     } else {
-                        AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, options.jUnitOptions, feature, currentScenarioName);
+                        AndroidPickleRunner pickleRunner = new AndroidPickleRunner(runner, pickleEvent, options.jUnitOptions, feature, currentScenarioName,rulesBackend);
                         pickleRunners.add(pickleRunner);
                     }
                 }

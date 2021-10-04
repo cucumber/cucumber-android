@@ -14,7 +14,7 @@ describes how this works.
 Is the build passing?
 
 ```
-git checkout master
+git checkout main
 ```
 
 ## Prepare for release ##

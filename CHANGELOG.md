@@ -1,3 +1,8 @@
+## 4.9.0
+* add support for Junit rules, fixes:
+  * [#87](https://github.com/cucumber/cucumber-android/issues/87)
+  * [#81](https://github.com/cucumber/cucumber-android/issues/81)
+
 ## 4.8.2
 * exclude kotlin generated classes for inlined functions from glue scanning
 * does not fail if `Class.getMethods()` throws `NoClassDefFoundError`

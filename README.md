@@ -68,3 +68,77 @@ To create a virtual device and start an [Android emulator](https://developer.and
 ```
 $ANDROID_HOME/tools/android avd
 ```
+
+## Junit rules support
+
+Experimental support for Junit rules was added in version `4.9.0`.
+Cucumber works differently than junit - you cannot just add rule to some steps class
+because during scenario execution many such steps classes can be instantiated.
+Cucumber has its own Before/After mechanism. If you have just 1 steps class then this could work
+If you have many steps classes then it is better to separate rule and `@Before/@After` hooks  
+ from steps classes
+
+To let Cucumber discover that particular class has rules add
+```
+@WithJunitRule
+class ClassWithRules {
+    ...
+}
+```
+
+
+### Jetpack Compose rule
+
+```
+@WithJunitRule
+class ComposeRuleHolder {
+
+    @get:Rule
+    val composeRule = createEmptyComposeRule()
+}
+```
+
+then inject this object in steps, e.g.
+(can be also inject as `lateinit var` field (depending on injection framework used)
+
+```
+class KotlinSteps(val composeRuleHolder: ComposeRuleHolder, val scenarioHolder: ActivityScenarioHolder):SemanticsNodeInteractionsProvider by composeRuleHolder.composeRule {
+
+    ...
+    
+    @Then("^\"([^\"]*)\" text is presented$")
+    fun textIsPresented(arg0: String) {
+        onNodeWithText(arg0).assertIsDisplayed()
+    }
+}
+```
+
+### Hilt
+
+Hilt requires to have rule in actual test class (which for cucumber is impossible
+because there is no such class). To workaround that:
+
+See https://developer.android.com/training/dependency-injection/hilt-testing#multiple-testrules
+how to use hilt with other rules (like compose rule)
+
+```
+@WithJunitRule(useAsTestClassInDescription = true)
+@HiltAndroidTest
+class HiltRuleHolder {
+
+    @Rule(order = 0) 
+    @JvmField
+    val hiltRule = HiltAndroidRule(this)
+
+   //if you need it to be injected   
+    @Inject
+    lateinit var greetingService: GreetingService
+
+    @Before
+    fun init() {
+        //if you have anything to inject here and/or used elsewhere in tests    
+        hiltRule.inject()
+    }
+
+}
+```

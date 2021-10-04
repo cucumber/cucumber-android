@@ -1,12 +1,12 @@
 package io.cucumber.junit;
 
+import org.junit.runner.Description;
+import org.junit.runner.notification.RunNotifier;
+
 import cucumber.runner.Runner;
 import cucumber.runtime.model.CucumberFeature;
 import gherkin.events.PickleEvent;
 import gherkin.pickles.PickleStep;
-
-import org.junit.runner.Description;
-import org.junit.runner.notification.RunNotifier;
 
 public class AndroidPickleRunner implements PickleRunners.PickleRunner {
 
@@ -16,13 +16,15 @@ public class AndroidPickleRunner implements PickleRunners.PickleRunner {
 	private Description description;
 	private final CucumberFeature feature;
 	private String scenarioName;
+	private RulesBackend rulesBackend;
 
-	public AndroidPickleRunner(Runner runner, PickleEvent pickleEvent, JUnitOptions jUnitOptions, CucumberFeature feature, String scenarioName) {
+	public AndroidPickleRunner(Runner runner, PickleEvent pickleEvent, JUnitOptions jUnitOptions, CucumberFeature feature, String scenarioName, RulesBackend rulesBackend) {
 		this.runner = runner;
 		this.pickleEvent = pickleEvent;
 		this.jUnitOptions = jUnitOptions;
 		this.feature = feature;
 		this.scenarioName = scenarioName;
+		this.rulesBackend = rulesBackend;
 	}
 
 	@Override
@@ -43,6 +45,7 @@ public class AndroidPickleRunner implements PickleRunners.PickleRunner {
 	public void run(final RunNotifier notifier)	{
 		JUnitReporter jUnitReporter = new JUnitReporter(runner.getBus(), jUnitOptions);
 		jUnitReporter.startExecutionUnit(this, notifier);
+		rulesBackend.setDescription(getDescription());
 		runner.runPickle(pickleEvent);
 		jUnitReporter.finishExecutionUnit();
 	}
