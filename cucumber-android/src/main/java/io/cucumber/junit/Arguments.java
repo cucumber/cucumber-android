@@ -13,6 +13,7 @@ public class Arguments {
      * Keys of supported arguments.
      */
     static class KEY {
+        static final String OPTIONS_ANNOTATION_LOCATION = "optionsAnnotationPackage";
         static final String COUNT_ENABLED = "count";
         static final String DEBUG_ENABLED = "debug";
         static final String COVERAGE_ENABLED = "coverage";
@@ -23,6 +24,7 @@ public class Arguments {
      * Default values of supported arguments.
      */
     static class DEFAULT {
+        static final String OPTIONS_ANNOTATION_LOCATION = "";
         static final String COVERAGE_DATA_FILE_PATH = "coverage.ec";
     }
 
@@ -31,6 +33,7 @@ public class Arguments {
     private final boolean coverageEnabled;
     private final String coverageDataFilePath;
     private final String cucumberOptions;
+    private final String optionsAnnotationPackageLocation;
 
     /**
      * Constructs a new instance with arguments extracted from the given {@code bundle}.
@@ -41,6 +44,7 @@ public class Arguments {
         countEnabled = getBooleanArgument(bundle, KEY.COUNT_ENABLED);
         debugEnabled = getBooleanArgument(bundle, KEY.DEBUG_ENABLED);
         coverageEnabled = getBooleanArgument(bundle, KEY.COVERAGE_ENABLED);
+        optionsAnnotationPackageLocation = getStringArgument(bundle, KEY.OPTIONS_ANNOTATION_LOCATION, DEFAULT.OPTIONS_ANNOTATION_LOCATION);
         coverageDataFilePath = getStringArgument(bundle, KEY.COVERAGE_DATA_FILE_PATH, DEFAULT.COVERAGE_DATA_FILE_PATH);
         cucumberOptions = getCucumberOptionsString(bundle);
     }
@@ -71,6 +75,19 @@ public class Arguments {
      */
     public boolean isCoverageEnabled() {
         return coverageEnabled;
+    }
+
+    /**
+     * @return customized location of the {@link CucumberOptions} annotation
+     */
+    public String getOptionsAnnotationPackageLocation() { return optionsAnnotationPackageLocation; }
+
+    /**
+     * @return whether or not the customized options annotation location was provided
+     */
+    public boolean hasOptionsAnnotationPackageLocation() {
+        String optionsAnnotationPackageLocation = getOptionsAnnotationPackageLocation();
+        return optionsAnnotationPackageLocation != null && !optionsAnnotationPackageLocation.isEmpty();
     }
 
     /**
