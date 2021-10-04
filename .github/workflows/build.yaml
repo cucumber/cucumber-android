@@ -11,6 +11,10 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
       - name: Checkout the code
         uses: actions/checkout@v2
       - name: Build the app
