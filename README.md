@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/cucumber/cucumber-android.svg)](http://travis-ci.org/cucumber/cucumber-android)
+[![Build](https://github.com/cucumber/cucumber-android/actions/workflows/build.yaml/badge.svg)](https://github.com/cucumber/cucumber-android/actions/workflows/build.yaml)
 
 # Cucumber-Android
 
