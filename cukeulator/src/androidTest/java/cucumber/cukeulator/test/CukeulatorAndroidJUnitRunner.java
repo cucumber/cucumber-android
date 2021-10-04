@@ -1,9 +1,12 @@
 package cucumber.cukeulator.test;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 
 import java.io.File;
 
+import dagger.hilt.android.testing.HiltTestApplication;
 import io.cucumber.android.runner.CucumberAndroidJUnitRunner;
 import io.cucumber.junit.CucumberOptions;
 
@@ -57,5 +60,10 @@ public class CukeulatorAndroidJUnitRunner extends CucumberAndroidJUnitRunner {
         //sdcard/Android/data/cucumber.cukeulator
         File directory = getTargetContext().getExternalFilesDir(null);
         return new File(directory, "reports").getAbsolutePath();
+    }
+
+    @Override
+    public Application newApplication(ClassLoader cl, String className, Context context) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        return super.newApplication(cl, HiltTestApplication.class.getName(), context);
     }
 }

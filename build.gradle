@@ -1,40 +1,35 @@
 buildscript {
-    ext.kotlin_version = '1.5.20'
+    ext.kotlin_version = '1.5.30'
+    ext.hilt_version = '2.38.1'
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         mavenLocal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url 'https://jitpack.io' }
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath "com.jaredsburrows:gradle-spoon-plugin:1.5.0"
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.2"
-        classpath "com.github.marcphilipp.nexus-publish-plugin:nexus-publish-plugin:0.4.0"
-        classpath 'digital.wup:android-maven-publish:3.6.3'
+        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath "com.jaredsburrows:gradle-spoon-plugin:1.5.1"
+        classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
-apply plugin: 'io.codearte.nexus-staging'
+
+apply plugin: "io.github.gradle-nexus.publish-plugin"
 
 
 ext {
-    targetSdkVersion = 29
-    buildToolsVersion = '30.0.2'
+    targetSdkVersion = 30
+    buildToolsVersion = '30.0.3'
     minSdkVersion = '14'
 
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
     releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 
     isSnapshot = {project.version.endsWith('-SNAPSHOT')}
-}
-
-nexusStaging {
-    if (project.hasProperty('ossrhUsername')){
-        username = ossrhUsername
-        password = ossrhPassword
-    }
 }
 
 
@@ -50,7 +45,7 @@ allprojects {
             url releaseRepository
         }
     }
-    version = "4.8.4"
+    version = "4.9.0-SNAPSHOT"
     ext.cucumber_javaVersion = '4.8.1'
     group = 'io.cucumber'
 }

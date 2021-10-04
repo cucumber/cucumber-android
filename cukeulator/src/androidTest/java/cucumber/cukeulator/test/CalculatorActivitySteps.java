@@ -1,20 +1,21 @@
 package cucumber.cukeulator.test;
 
-import android.app.Activity;
-
-import androidx.test.core.app.ActivityScenario;
-import cucumber.cukeulator.CalculatorActivity;
-import cucumber.cukeulator.R;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
-import io.cucumber.junit.CucumberJUnitRunner;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertNotNull;
+
+import android.content.Intent;
+
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import cucumber.cukeulator.CalculatorActivity;
+import cucumber.cukeulator.R;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.junit.CucumberJUnitRunner;
 
 /**
  * We use {@link ActivityScenario} in order to have access to methods like getActivity
@@ -34,45 +35,18 @@ public class CalculatorActivitySteps {
      * test lifecycle, activity test rules must not be launched automatically. Automatic launching of test rules is only
      * feasible for JUnit tests. Fortunately, we are able to launch the activity in Cucumber's {@link Before} method.
      */
-    private ActivityScenario<CalculatorActivity> scenario;
+    private ActivityScenarioHolder scenario;
     private CalculatorActivity calculatorActivity;
 
-    public CalculatorActivitySteps(SomeDependency dependency) {
+    public CalculatorActivitySteps(SomeDependency dependency,ActivityScenarioHolder scenario) {
         assertNotNull(dependency);
+        this.scenario = scenario;
     }
 
-    /**
-     * We launch the activity in Cucumber's {@link Before} hook.
-     * See the notes above for the reasons why we are doing this.
-     */
-    @Before
-    public void launchActivity() {
-        scenario = ActivityScenario.launch(CalculatorActivity.class);
-        scenario.onActivity((activity) -> {
-            calculatorActivity = activity;
-        });
-    }
-
-    /**
-     * All the clean up of application's data and state after each scenario must happen here
-     */
-    @After
-    public void finishActivity() {
-        scenario.close();
-    }
-
-    /**
-     * Gets the activity from our test rule.
-     *
-     * @return the activity
-     */
-    private Activity getActivity() {
-        return calculatorActivity;
-    }
 
     @Given("I have a CalculatorActivity")
     public void I_have_a_CalculatorActivity() {
-        assertNotNull(getActivity());
+       scenario.launch(new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(),CalculatorActivity.class));
     }
 
     @When("I press {digit}")
