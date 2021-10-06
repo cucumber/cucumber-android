@@ -53,34 +53,34 @@ public class CalculatorActivitySteps {
     public void I_press_d(final int d) {
         switch (d) {
             case 0:
-                onView(withId(R.id.btn_d_0)).perform(click());
+                performClick(R.id.btn_d_0);
                 break;
             case 1:
-                onView(withId(R.id.btn_d_1)).perform(click());
+                performClick(R.id.btn_d_1);
                 break;
             case 2:
-                onView(withId(R.id.btn_d_2)).perform(click());
+                performClick(R.id.btn_d_2);
                 break;
             case 3:
-                onView(withId(R.id.btn_d_3)).perform(click());
+                performClick(R.id.btn_d_3);
                 break;
             case 4:
-                onView(withId(R.id.btn_d_4)).perform(click());
+                performClick(R.id.btn_d_4);
                 break;
             case 5:
-                onView(withId(R.id.btn_d_5)).perform(click());
+                performClick(R.id.btn_d_5);
                 break;
             case 6:
-                onView(withId(R.id.btn_d_6)).perform(click());
+                performClick(R.id.btn_d_6);
                 break;
             case 7:
-                onView(withId(R.id.btn_d_7)).perform(click());
+                performClick(R.id.btn_d_7);
                 break;
             case 8:
-                onView(withId(R.id.btn_d_8)).perform(click());
+                performClick(R.id.btn_d_8);
                 break;
             case 9:
-                onView(withId(R.id.btn_d_9)).perform(click());
+                performClick(withId(R.id.btn_d_9);
                 break;
         }
     }
@@ -89,21 +89,25 @@ public class CalculatorActivitySteps {
     public void I_press_op(final char op) {
         switch (op) {
             case '+':
-                onView(withId(R.id.btn_op_add)).perform(click());
+                performClick(R.id.btn_op_add);
                 break;
             case '–':
-                onView(withId(R.id.btn_op_subtract)).perform(click());
+                performClick(R.id.btn_op_subtract);
                 break;
             case 'x':
-                onView(withId(R.id.btn_op_multiply)).perform(click());
+                performClick(R.id.btn_op_multiply);
                 break;
             case '/':
-                onView(withId(R.id.btn_op_divide)).perform(click());
+                performClick(R.id.btn_op_divide);
                 break;
             case '=':
-                onView(withId(R.id.btn_op_equals)).perform(click());
+                performClick(R.id.btn_op_equals);
                 break;
         }
+    }
+    
+    private void performClick(int id) {
+        onView(withId(id)).perform(click());
     }
 
 }
