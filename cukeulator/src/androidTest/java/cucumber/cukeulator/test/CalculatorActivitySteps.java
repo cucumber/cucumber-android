@@ -80,7 +80,7 @@ public class CalculatorActivitySteps {
                 performClick(R.id.btn_d_8);
                 break;
             case 9:
-                performClick(withId(R.id.btn_d_9);
+                performClick(R.id.btn_d_9);
                 break;
         }
     }
