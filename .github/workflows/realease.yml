@@ -23,8 +23,8 @@ jobs:
 #          git merge-base --is-ancestor HEAD origin/main
       - name: Build the app
         run: ./gradlew build --stacktrace -x lint
-#      - name: run tests
-#        uses: ./.github/actions/android-test
+      - name: run tests
+        uses: ./.github/actions/android-test
       - name: Publish
         uses: ./.github/actions/action-publish-gradle
         with:
