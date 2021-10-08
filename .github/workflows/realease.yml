@@ -30,7 +30,7 @@ jobs:
 
   publish:
     name: Publish cucumber-android
-    needs: tests
+#    needs: tests
     runs-on: macos-latest
     environment: Release
 
