@@ -17,16 +17,16 @@ jobs:
       - name: Check commit has been pushed on origin/main
         run: |
           git fetch --quiet origin main
-          git merge-base --is-ancestor HEAD origin/main
-  tests:
-    needs: pre-release-check
-
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: run tests
-        uses: ./.github/actions/android-test
+#          git merge-base --is-ancestor HEAD origin/main
+#  tests:
+#    needs: pre-release-check
+#
+#    runs-on: macos-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: run tests
+#        uses: ./.github/actions/android-test
 
   publish:
     name: Publish cucumber-android
