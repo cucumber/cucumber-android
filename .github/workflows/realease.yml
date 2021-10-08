@@ -3,7 +3,7 @@ name: Release cucumber-android
 on:
   push:
     branches:
-      - github-release-test
+      - release/*
 
 jobs:
 
