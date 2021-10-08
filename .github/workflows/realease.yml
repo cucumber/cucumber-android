@@ -1,0 +1,61 @@
+name: Release cucumber-android
+
+on:
+  push:
+    branches:
+      - github-release-test
+
+jobs:
+
+  pre-release-check:
+    name: Perform checks before releasing
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Check commit has been pushed on origin/main
+        run: |
+          git fetch --quiet origin main
+          git merge-base --is-ancestor HEAD origin/main
+  tests:
+    needs: pre-release-check
+
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: run tests
+        uses: ./.github/actions/android-test
+
+  publish:
+    name: Publish cucumber-android
+    needs: tests
+    runs-on: macos-latest
+    environment: Release
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Publish
+        uses: ./.github/actions/action-publish-gradle
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          nexus-username: cukebot
+          nexus-password: ${{ secrets.SONATYPE_PASSWORD }}
+          gradle-tasks: ':cucumber-android:signReleasePublication'
+
+  create-github-release:
+    name: Create GitHub Release and Git tag
+    needs: publish
+    runs-on: macos-latest
+    environment: Release
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cucumber/action-create-github-release@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

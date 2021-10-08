@@ -1,0 +1,12 @@
+name: Run android tests
+description: Runs cukeulator android tests
+
+runs:
+  using: composite
+  steps:
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        emulator-options: -skin 1920x1080 -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        script: ./gradlew :cukeulator:connectedCheck

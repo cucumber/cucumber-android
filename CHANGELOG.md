@@ -1,4 +1,4 @@
-## 4.9.0
+## In Git
 * add support for Junit rules, fixes:
   * [#87](https://github.com/cucumber/cucumber-android/issues/87)
   * [#81](https://github.com/cucumber/cucumber-android/issues/81)

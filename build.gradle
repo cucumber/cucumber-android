@@ -50,8 +50,6 @@ allprojects {
     group = 'io.cucumber'
 }
 
-task closeAndReleaseRepositoryIfRelease(group: 'release',dependsOn: isSnapshot()?null:['closeAndReleaseRepository'])
-
 
 subprojects { subproject ->
 

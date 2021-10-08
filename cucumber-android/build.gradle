@@ -29,6 +29,7 @@ dependencies {
 task("generateJavadoc", type: Javadoc, group: 'documentation') {
     source = android.sourceSets.main.java.srcDirs
     destinationDir = new File("${project.buildDir}/javadoc")
+    failOnError = false
     options.addStringOption('Xdoclint:none', '-quiet')
 }
 
@@ -46,10 +47,8 @@ nexusPublishing {
     packageGroup = project.group
     repositories {
         sonatype {
-            if (project.hasProperty('ossrhUsername')) {
-                username = ossrhUsername
-                password = ossrhPassword
-            }
+            username = findProperty("INPUT_NEXUS_USERNAME")
+            password = findProperty("INPUT_NEXUS_PASSWORD")
         }
     }
     connectTimeout = Duration.ofMinutes(5)
@@ -98,6 +97,9 @@ afterEvaluate {
     }
 
     signing {
+        def signingKey = findProperty("signingKey")
+        def signingPassword = findProperty("signingPassword")
+        useInMemoryPgpKeys(signingKey, signingPassword)
         sign publishing.publications.release
     }
 }
