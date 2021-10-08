@@ -6,37 +6,25 @@ on:
       - release/*
 
 jobs:
-
-  pre-release-check:
-    name: Perform checks before releasing
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Check commit has been pushed on origin/main
-        run: |
-          git fetch --quiet origin main
-#          git merge-base --is-ancestor HEAD origin/main
-#  tests:
-#    needs: pre-release-check
-#
-#    runs-on: macos-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: run tests
-#        uses: ./.github/actions/android-test
-
   publish:
     name: Publish cucumber-android
-#    needs: tests
     runs-on: macos-latest
     environment: Release
 
     steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
       - uses: actions/checkout@v2
-
+      - name: Check commit has been pushed on origin/main
+        run: |
+          git fetch --quiet origin main
+#          git merge-base --is-ancestor HEAD origin/main
+      - name: Build the app
+        run: ./gradlew build --stacktrace -x lint
+#      - name: run tests
+#        uses: ./.github/actions/android-test
       - name: Publish
         uses: ./.github/actions/action-publish-gradle
         with:
