@@ -46,16 +46,16 @@ jobs:
           nexus-password: ${{ secrets.SONATYPE_PASSWORD }}
           gradle-tasks: ':cucumber-android:signReleasePublication'
 
-  create-github-release:
-    name: Create GitHub Release and Git tag
-    needs: publish
-    runs-on: macos-latest
-    environment: Release
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: cucumber/action-create-github-release@v1.1.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+#  create-github-release:
+#    name: Create GitHub Release and Git tag
+#    needs: publish
+#    runs-on: macos-latest
+#    environment: Release
+#    permissions:
+#      contents: write
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: cucumber/action-create-github-release@v1.1.0
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
