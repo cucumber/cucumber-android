@@ -39,8 +39,8 @@ nexusPublishing {
     packageGroup = project.group
     repositories {
         sonatype {
-            username = findProperty("INPUT_NEXUS_USERNAME")
-            password = findProperty("INPUT_NEXUS_PASSWORD")
+            username = findProperty("nexusUsername")
+            password = findProperty("nexusPassword")
         }
     }
     connectTimeout = Duration.ofMinutes(5)

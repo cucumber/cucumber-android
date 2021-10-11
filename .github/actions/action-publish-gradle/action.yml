@@ -26,8 +26,8 @@ runs:
         ./gradlew ${{ inputs.gradle-tasks }}
       shell: bash
       env:
-        INPUT_NEXUS_USERNAME: ${{ inputs.nexus-username }}
-        INPUT_NEXUS_PASSWORD: ${{ inputs.nexus-password }}
+        ORG_GRADLE_PROJECT_nexusUsername: ${{ inputs.nexus-username }}
+        ORG_GRADLE_PROJECT_nexusPassword: ${{ inputs.nexus-password }}
         ORG_GRADLE_PROJECT_signingPassword: ${{ inputs.gpg-passphrase }}
         ORG_GRADLE_PROJECT_signingKey: ${{ inputs.gpg-private-key }}
 
