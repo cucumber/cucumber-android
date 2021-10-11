@@ -1,5 +1,3 @@
-import java.time.Duration
-
 apply plugin: 'com.android.library'
 apply plugin: 'signing'
 apply plugin: 'kotlin-android'
@@ -41,18 +39,6 @@ task javadocJar(type: Jar, dependsOn: generateJavadoc) {
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     archiveClassifier.set 'sources'
-}
-
-nexusPublishing {
-    packageGroup = project.group
-    repositories {
-        sonatype {
-            username = findProperty("INPUT_NEXUS_USERNAME")
-            password = findProperty("INPUT_NEXUS_PASSWORD")
-        }
-    }
-    connectTimeout = Duration.ofMinutes(5)
-    clientTimeout = Duration.ofMinutes(5)
 }
 
 afterEvaluate {

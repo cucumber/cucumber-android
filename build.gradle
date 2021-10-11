@@ -1,3 +1,5 @@
+import java.time.Duration
+
 buildscript {
     ext.kotlin_version = '1.5.30'
     ext.hilt_version = '2.38.1'
@@ -31,6 +33,20 @@ ext {
 
     isSnapshot = {project.version.endsWith('-SNAPSHOT')}
 }
+
+
+nexusPublishing {
+    packageGroup = project.group
+    repositories {
+        sonatype {
+            username = findProperty("INPUT_NEXUS_USERNAME")
+            password = findProperty("INPUT_NEXUS_PASSWORD")
+        }
+    }
+    connectTimeout = Duration.ofMinutes(5)
+    clientTimeout = Duration.ofMinutes(5)
+}
+
 
 
 allprojects {
