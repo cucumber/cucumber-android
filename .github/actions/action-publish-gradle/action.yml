@@ -1,0 +1,36 @@
+name: 'Publish to Sonatype Nexus'
+description: 'Publish artifacts'
+inputs:
+  gpg-private-key:
+    description: GPG private key for signing the published artifacts
+    required: true
+  gpg-passphrase:
+    description: Passphrase for the GPG key
+    required: true
+  nexus-username:
+    description: Username (not email!) for your Nexus repository manager account
+    required: true
+  nexus-password:
+    description: Password for your Nexus account
+    required: true
+  gradle-tasks:
+    description: Gradle tasks to run
+    required: false
+    default: publishToSonatype closeAndReleaseSonatypeStagingRepository
+
+runs:
+  using: "composite"
+  steps:
+    - name: publish artifacts
+      run: |
+        ./gradlew ${{ inputs.gradle-tasks }}
+      shell: bash
+      env:
+        ORG_GRADLE_PROJECT_nexusUsername: ${{ inputs.nexus-username }}
+        ORG_GRADLE_PROJECT_nexusPassword: ${{ inputs.nexus-password }}
+        ORG_GRADLE_PROJECT_signingPassword: ${{ inputs.gpg-passphrase }}
+        ORG_GRADLE_PROJECT_signingKey: ${{ inputs.gpg-private-key }}
+
+branding:
+  icon: package
+  color: green

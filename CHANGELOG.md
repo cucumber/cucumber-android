@@ -1,7 +1,15 @@
-## 4.9.0
-* add support for Junit rules, fixes:
-  * [#87](https://github.com/cucumber/cucumber-android/issues/87)
-  * [#81](https://github.com/cucumber/cucumber-android/issues/81)
+# Changelog
+
+
+## [4.9.0-SNAPSHOT] - 2021-10-11
+
+### Added
+
+* add support for Junit rules
+
+### Fixed
+* [#87 Jetpack Compose support](https://github.com/cucumber/cucumber-android/issues/87)
+* [#81 Hilt support](https://github.com/cucumber/cucumber-android/issues/81)
 
 ## 4.8.2
 * exclude kotlin generated classes for inlined functions from glue scanning

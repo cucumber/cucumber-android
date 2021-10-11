@@ -1,5 +1,3 @@
-import java.time.Duration
-
 apply plugin: 'com.android.library'
 apply plugin: 'signing'
 apply plugin: 'kotlin-android'
@@ -29,6 +27,7 @@ dependencies {
 task("generateJavadoc", type: Javadoc, group: 'documentation') {
     source = android.sourceSets.main.java.srcDirs
     destinationDir = new File("${project.buildDir}/javadoc")
+    failOnError = false
     options.addStringOption('Xdoclint:none', '-quiet')
 }
 
@@ -40,20 +39,6 @@ task javadocJar(type: Jar, dependsOn: generateJavadoc) {
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     archiveClassifier.set 'sources'
-}
-
-nexusPublishing {
-    packageGroup = project.group
-    repositories {
-        sonatype {
-            if (project.hasProperty('ossrhUsername')) {
-                username = ossrhUsername
-                password = ossrhPassword
-            }
-        }
-    }
-    connectTimeout = Duration.ofMinutes(5)
-    clientTimeout = Duration.ofMinutes(5)
 }
 
 afterEvaluate {
@@ -98,6 +83,9 @@ afterEvaluate {
     }
 
     signing {
+        def signingKey = findProperty("signingKey")
+        def signingPassword = findProperty("signingPassword")
+        useInMemoryPgpKeys(signingKey, signingPassword)
         sign publishing.publications.release
     }
 }
