@@ -83,9 +83,3 @@ subprojects { subproject ->
 
     }
 }
-
-task printToken() {
-    doLast {
-        println findProperty("GITHUB_TOKEN").length
-    }
-}

@@ -23,8 +23,8 @@ jobs:
 #          git merge-base --is-ancestor HEAD origin/main
       - name: Build the app
         run: ./gradlew build --stacktrace -x lint
-#      - name: run tests
-#        uses: ./.github/actions/android-test
+      - name: run tests
+        uses: ./.github/actions/android-test
       - name: Publish
         uses: ./.github/actions/action-publish-gradle
         with:
@@ -32,18 +32,17 @@ jobs:
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           nexus-username: cukebot
           nexus-password: ${{ secrets.SONATYPE_PASSWORD }}
-          gradle-tasks: 'printToken'
 
-#  create-github-release:
-#    name: Create GitHub Release and Git tag
-#    needs: publish
-#    runs-on: macos-latest
-#    environment: Release
-#    permissions:
-#      contents: write
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: cucumber/action-create-github-release@v1.1.0
-#        with:
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
+  create-github-release:
+    name: Create GitHub Release and Git tag
+    needs: publish
+    runs-on: macos-latest
+    environment: Release
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cucumber/action-create-github-release@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
