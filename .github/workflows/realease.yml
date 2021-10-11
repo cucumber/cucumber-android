@@ -36,7 +36,7 @@ jobs:
   create-github-release:
     name: Create GitHub Release and Git tag
     needs: publish
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment: Release
     permissions:
       contents: write
