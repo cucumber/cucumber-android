@@ -1,7 +1,7 @@
 import java.time.Duration
 
 buildscript {
-    ext.kotlin_version = '1.5.30'
+    ext.kotlin_version = '1.5.31'
     ext.hilt_version = '2.38.1'
     repositories {
         google()
@@ -12,7 +12,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.5.1"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
