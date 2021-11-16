@@ -35,19 +35,6 @@ ext {
 }
 
 
-nexusPublishing {
-    packageGroup = project.group
-    repositories {
-        sonatype {
-            username = findProperty("nexusUsername")
-            password = findProperty("nexusPassword")
-        }
-    }
-    connectTimeout = Duration.ofMinutes(5)
-    clientTimeout = Duration.ofMinutes(5)
-}
-
-
 
 allprojects {
     repositories {
@@ -64,6 +51,18 @@ allprojects {
     version = "4.9.0"
     ext.cucumber_javaVersion = '4.8.1'
     group = 'io.cucumber'
+}
+
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            username = findProperty("nexusUsername")
+            password = findProperty("nexusPassword")
+        }
+    }
+    connectTimeout = Duration.ofMinutes(5)
+    clientTimeout = Duration.ofMinutes(5)
 }
 
 
