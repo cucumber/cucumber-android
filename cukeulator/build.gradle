@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 ext {
-    composeVersion = '1.0.3'
+    composeVersion = '1.0.5'
 }
 
 
