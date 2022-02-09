@@ -52,7 +52,7 @@ You can also use command line to provide these options to cucumber-android. Here
 
 4. Set instrumentation runner to `io.cucumber.android.runner.CucumberAndroidJUnitRunner` or class that extends it
 ```groovy
-android.defaultConfig.testInstrumentationRunner "cucumber.cukeulator.test.CukeulatorAndroidJUnitRunner"
+android.defaultConfig.testInstrumentationRunner "io.cucumber.android.runner.CucumberAndroidJUnitRunner"
 ```
 
 
