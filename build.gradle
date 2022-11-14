@@ -1,8 +1,8 @@
 import java.time.Duration
 
 buildscript {
-    ext.kotlin_version = '1.5.31'
-    ext.hilt_version = '2.38.1'
+    ext.kotlin_version = '1.7.20'
+    ext.hilt_version = '2.44'
     repositories {
         google()
         mavenCentral()
@@ -12,8 +12,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
-        classpath "com.jaredsburrows:gradle-spoon-plugin:1.5.1"
+        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath "com.jaredsburrows:gradle-spoon-plugin:1.6.0"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
@@ -24,8 +24,8 @@ apply plugin: "io.github.gradle-nexus.publish-plugin"
 
 
 ext {
-    targetSdkVersion = 30
-    buildToolsVersion = '30.0.3'
+    targetSdkVersion = 32
+    buildToolsVersion = '33.0.0'
     minSdkVersion = '14'
 
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
@@ -48,7 +48,7 @@ allprojects {
             url releaseRepository
         }
     }
-    version = "4.9.0"
+    version = "4.10.0-SNAPSHOT"
     ext.cucumber_javaVersion = '4.8.1'
     group = 'io.cucumber'
 }
