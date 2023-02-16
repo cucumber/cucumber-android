@@ -2,7 +2,7 @@ import java.time.Duration
 
 buildscript {
     ext.kotlin_version = '1.8.10'
-    ext.hilt_version = '2.44.2'
+    ext.hilt_version = '2.45'
     repositories {
         google()
         mavenCentral()
