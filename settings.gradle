@@ -1,3 +1,6 @@
 rootProject.name = 'cucumber-android-parent'
 
-include ':cucumber-android', ':cukeulator'
+include ':cucumber-android',
+        ':cukeulator',
+        ':cucumber-android-hilt',
+        ':cucumber-junit-rules-support'

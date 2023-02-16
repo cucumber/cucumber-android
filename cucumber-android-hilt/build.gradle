@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+
+addAndroidConfig()
+addLibraryPublishing('Cucumber-JVM: Android Hilt')
+
+dependencies {
+    api project(':cucumber-android')
+    implementation project(':cucumber-junit-rules-support')
+    api "com.google.dagger:hilt-android:$hilt_version"
+    api "com.google.dagger:hilt-android-testing:$hilt_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    testImplementation "org.robolectric:robolectric:4.9.2"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+}
+

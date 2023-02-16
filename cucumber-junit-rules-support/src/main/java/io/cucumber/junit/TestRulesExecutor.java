@@ -1,9 +1,6 @@
 package io.cucumber.junit;
 
-
 import android.util.Pair;
-
-import androidx.annotation.NonNull;
 
 import org.junit.rules.RunRules;
 import org.junit.rules.TestRule;
@@ -22,31 +19,31 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import cucumber.runtime.CucumberException;
 
-class RulesExecutor {
+public class TestRulesExecutor {
 
-    private final List<RulesData> rulesHolders;
+    private final List<TestRulesData> rulesHolders;
     private CountDownLatch wrappedStatementLatch = new CountDownLatch(1);
     private CountDownLatch rulesExecutionLatch = new CountDownLatch(1);
     private ExecutorService executorService;
     private Future<?> rulesFuture;
 
-    RulesExecutor(List<RulesData> rulesHolders, ExecutorService executorService) {
+    public TestRulesExecutor(List<TestRulesData> rulesHolders, ExecutorService executorService) {
         this.rulesHolders = rulesHolders;
         this.executorService = executorService;
     }
 
-    void startRules(Description description) {
+    public void startRules(Description description) {
         if (rulesHolders.isEmpty()) {
             return;
         }
         AtomicReference<Throwable> throwable = new AtomicReference<>();
         try {
             List<Pair<Integer,TestRule>> rulesWithOrders = new ArrayList<>(rulesHolders.size());
-            for (RulesData rulesData : rulesHolders) {
+            for (TestRulesData rulesData : rulesHolders) {
                 Object obj = rulesData.getDeclaringObject();
-                List<RulesBackend.RuleAccessor> accessors = rulesData.getAccessors();
+                List<TestRuleAccessor> accessors = rulesData.getAccessors();
 
-                for (RulesBackend.RuleAccessor accessor : accessors) {
+                for (TestRuleAccessor accessor : accessors) {
                     TestRule rule = getTestRule(rulesData, obj, accessor);
                     rulesWithOrders.add(Pair.create(accessor.getOrder(),rule));
                 }
@@ -63,7 +60,6 @@ class RulesExecutor {
         }
     }
 
-    @NonNull
     private Runnable getTask(Description description, AtomicReference<Throwable> throwable, List<TestRule> rules) {
         return new Runnable() {
             @Override
@@ -88,16 +84,15 @@ class RulesExecutor {
         };
     }
 
-    private TestRule getTestRule(RulesData rulesData, Object obj, RulesBackend.RuleAccessor accessor) throws IllegalAccessException, InvocationTargetException {
+    private TestRule getTestRule(TestRulesData rulesData, Object obj, TestRuleAccessor accessor) throws IllegalAccessException, InvocationTargetException {
         TestRule rule = accessor.getRule(obj);
-        if (rulesData.getAnnotation().useAsTestClassInDescription()){
+        if (rulesData.useAsTestClassInDescription()){
             TestRule finalRule = rule;
             rule = (base, description1) -> finalRule.apply(base, Description.createTestDescription(rulesData.getDeclaringClass(), description1.getMethodName()));
         }
         return rule;
     }
 
-    @NonNull
     private static List<TestRule> getTestRules(List<Pair<Integer, TestRule>> rulesWithOrders) {
         //noinspection ComparatorCombinators
         Collections.sort(rulesWithOrders,(o1, o2) -> o1.first.compareTo(o2.first) );
@@ -109,7 +104,7 @@ class RulesExecutor {
         return rules;
     }
 
-    void stopRules() {
+    public void stopRules() {
         if (rulesFuture == null) {
             return;
         }
