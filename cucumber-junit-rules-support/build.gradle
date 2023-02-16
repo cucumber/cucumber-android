@@ -1,0 +1,13 @@
+apply plugin: 'com.android.library'
+
+addAndroidConfig()
+addLibraryPublishing('Cucumber-JVM: JUnit Rules Support')
+
+dependencies {
+
+    api "io.cucumber:cucumber-java:$cucumber_javaVersion"
+    api "io.cucumber:cucumber-junit:$cucumber_javaVersion"
+    api 'junit:junit:4.13.2'
+
+}
+

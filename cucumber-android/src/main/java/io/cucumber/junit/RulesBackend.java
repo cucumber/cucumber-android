@@ -23,12 +23,12 @@ import cucumber.runtime.Glue;
 import cucumber.runtime.snippets.FunctionNameGenerator;
 import gherkin.pickles.PickleStep;
 
-class RulesBackend implements Backend {
+public class RulesBackend implements Backend {
 
     private final ClassFinder classFinder;
     private final ObjectFactory objectFactory;
-    private final List<RulesData> classesWithRules = new ArrayList<>();
-    private RulesExecutor rulesExecutor;
+    private final List<TestRulesData> classesWithRules = new ArrayList<>();
+    private TestRulesExecutor rulesExecutor;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Description description;
 
@@ -47,15 +47,15 @@ class RulesBackend implements Backend {
                 WithJunitRule annotation = clazz.getAnnotation(WithJunitRule.class);
                 if (annotation!=null){
                     if (objectFactory.addClass(clazz)){
-                        classesWithRules.add(new RulesData(annotation,clazz,getAccessors(clazz)));
+                        classesWithRules.add(new TestRulesData(annotation.useAsTestClassInDescription(), clazz, getAccessors(clazz)));
                     }
                 }
             }
         }
     }
 
-    private static List<RuleAccessor> getAccessors(Class<?> clazz) {
-        List<RuleAccessor> accessors = new ArrayList<>(1);
+    private static List<TestRuleAccessor> getAccessors(Class<?> clazz) {
+        List<TestRuleAccessor> accessors = new ArrayList<>(1);
         for (Method m : clazz.getMethods()) {
             Rule annotation = m.getAnnotation(Rule.class);
             if (annotation!=null){
@@ -74,12 +74,12 @@ class RulesBackend implements Backend {
     @Override
     public void buildWorld() {
 
-        List<RulesData> objects = new ArrayList<>(classesWithRules.size());
-        for (RulesData clazzRules : classesWithRules) {
+        List<TestRulesData> objects = new ArrayList<>(classesWithRules.size());
+        for (TestRulesData clazzRules : classesWithRules) {
             Object instance = objectFactory.getInstance(clazzRules.getDeclaringClass());
-            objects.add(new RulesData(clazzRules.getAnnotation(), instance, clazzRules.getAccessors()));
+            objects.add(new TestRulesData(clazzRules.useAsTestClassInDescription(), instance, clazzRules.getAccessors()));
         }
-        rulesExecutor = new RulesExecutor(objects, executorService);
+        rulesExecutor = new TestRulesExecutor(objects, executorService);
         rulesExecutor.startRules(description);
     }
 
@@ -98,13 +98,7 @@ class RulesBackend implements Backend {
         return Collections.emptyList();
     }
 
-    interface RuleAccessor {
-        TestRule getRule(Object obj) throws IllegalAccessException, InvocationTargetException;
-
-        int getOrder();
-     }
-
-    private static class FieldRuleAccessor implements RuleAccessor {
+    private static class FieldRuleAccessor implements TestRuleAccessor {
         final Field field;
         final int order;
 
@@ -124,7 +118,7 @@ class RulesBackend implements Backend {
         }
     }
 
-    private static class MethodRuleAccessor implements RuleAccessor {
+    private static class MethodRuleAccessor implements TestRuleAccessor {
         final Method method;
         final int order;
 

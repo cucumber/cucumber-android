@@ -1,23 +1,32 @@
 package cucumber.cukeulator.test
 
-import android.content.Intent
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
-import io.cucumber.java.en.Then
-import cucumber.cukeulator.R
-import org.picocontainer.annotations.Inject
-import io.cucumber.java.en.When
-import cucumber.api.PendingException
 import cucumber.cukeulator.ComposeTestActivity
+import cucumber.cukeulator.GreetingService
+import cucumber.cukeulator.R
+import dagger.hilt.android.testing.HiltAndroidTest
+import io.cucumber.java.en.Then
+import io.cucumber.java.en.When
+import org.junit.Assert
+import javax.inject.Inject
 
+@HiltAndroidTest
+class KotlinSteps(
+    val composeRuleHolder: ComposeRuleHolder,
+    val scenarioHolder: ActivityScenarioHolder
+):SemanticsNodeInteractionsProvider by composeRuleHolder.composeRule {
 
-class KotlinSteps(val composeRuleHolder: ComposeRuleHolder, val scenarioHolder: ActivityScenarioHolder):SemanticsNodeInteractionsProvider by composeRuleHolder.composeRule {
+    @Inject
+    lateinit var greetingService:GreetingService
+
 
     @Then("I should see {string} on the display")
     fun I_should_see_s_on_the_display(s: String?) {
@@ -38,5 +47,10 @@ class KotlinSteps(val composeRuleHolder: ComposeRuleHolder, val scenarioHolder: 
     fun iOpenComposeActivityWith(arg0: String?) {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         scenarioHolder.launch(ComposeTestActivity.create(instrumentation.targetContext,arg0))
+    }
+
+    @Then("^greeting service returns \"([^\"]*)\"$")
+    fun greetingServiceReturns(arg0: String) {
+        Assert.assertEquals(arg0,greetingService.greeting(ApplicationProvider.getApplicationContext()))
     }
 }

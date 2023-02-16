@@ -115,6 +115,48 @@ class KotlinSteps(val composeRuleHolder: ComposeRuleHolder, val scenarioHolder: 
 
 ### Hilt
 
+There are 2 solutions for using Hilt with Cucumber:
+
+##### 1. HiltObjectFactory
+
+Add dependency:
+```groovy
+androidTestImplementation "io.cucumber:cucumber-android-hilt:$cucumberVersion"
+```
+
+Don't use any other dependency with `ObjectFactory` like `cucumber-picocontainer`
+
+`HiltObjectFactory` will be automatically used as `ObjectFactory`.
+
+To inject object managed by Hilt into steps or hook or any other class managed by Cucumber:
+
+```kotlin
+@HiltAndroidTest
+class KotlinSteps(
+    val composeRuleHolder: ComposeRuleHolder,
+    val scenarioHolder: ActivityScenarioHolder
+):SemanticsNodeInteractionsProvider by composeRuleHolder.composeRule {
+
+    @Inject
+    lateinit var greetingService:GreetingService
+
+    @Then("I should see {string} on the display")
+    fun I_should_see_s_on_the_display(s: String?) {
+       Espresso.onView(withId(R.id.txt_calc_display)).check(ViewAssertions.matches(ViewMatchers.withText(s)))
+    }
+
+}
+```
+
+Such class:
+- must have `@HiltAndroidTest` annotation to let Hilt generate injecting code
+- can have Cucumber managed objects in constructor
+- can have Hilt managed objects injected only using field injection - cannot have them injected in constructor
+
+
+##### 2. @WithJunitRule
+
+
 Hilt requires to have rule in actual test class (which for cucumber is impossible
 because there is no such class). To workaround that:
 
@@ -142,3 +184,5 @@ class HiltRuleHolder {
 
 }
 ```
+
+then you can inject such class to steps class using Cucumber dependency injector (like picocontainer) 
