@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.10.0] - 2023-02-17
+
+### Added
+
+* add `HiltObjectFactory`
+* 
+### Fixed
+* [#111 Hilt gives me "Called inject() multiple times" exception](https://github.com/cucumber/cucumber-android/issues/111)
 
 ## [4.9.0] - 2021-11-16
 
