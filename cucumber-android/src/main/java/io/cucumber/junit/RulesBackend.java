@@ -23,7 +23,7 @@ import cucumber.runtime.Glue;
 import cucumber.runtime.snippets.FunctionNameGenerator;
 import gherkin.pickles.PickleStep;
 
-public class RulesBackend implements Backend {
+class RulesBackend implements Backend {
 
     private final ClassFinder classFinder;
     private final ObjectFactory objectFactory;
