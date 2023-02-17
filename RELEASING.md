@@ -9,7 +9,7 @@ To release `cucumber-android`, you'll need to be a member of the core team
 - Remove `-SNAPSHOT` in `build.gradle` `version =` entry
 - Update `CHANGELOG.md` with the upcoming version number and create a new `In Git` section
 - Remove empty sections from `CHANGELOG.md`
-- Commit the changes preferably using a verified signature, and push
+- Commit the changes preferably using a verified signature, and push to main branch
   ```shell
   git commit --gpg-sign -am "Release X.Y.Z"
   git push
