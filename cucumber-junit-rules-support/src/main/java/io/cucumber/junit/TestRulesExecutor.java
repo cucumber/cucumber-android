@@ -15,6 +15,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import cucumber.runtime.CucumberException;
@@ -26,10 +28,18 @@ public class TestRulesExecutor {
     private CountDownLatch rulesExecutionLatch = new CountDownLatch(1);
     private ExecutorService executorService;
     private Future<?> rulesFuture;
+    private final TimeUnit waitTimeUnit;
+    private final int maxWaitTime;
 
     public TestRulesExecutor(List<TestRulesData> rulesHolders, ExecutorService executorService) {
+        this(rulesHolders, executorService, 10,TimeUnit.MINUTES);
+    }
+
+    TestRulesExecutor(List<TestRulesData> rulesHolders, ExecutorService executorService, int maxWaitTime, TimeUnit waitTimeUnit) {
         this.rulesHolders = rulesHolders;
         this.executorService = executorService;
+        this.waitTimeUnit = waitTimeUnit;
+        this.maxWaitTime = maxWaitTime;
     }
 
     public void startRules(Description description) {
@@ -51,7 +61,9 @@ public class TestRulesExecutor {
             List<TestRule> rules = getTestRules(rulesWithOrders);
 
             rulesFuture = executorService.submit(getTask(description, throwable, rules));
-            rulesExecutionLatch.await();
+            if (!rulesExecutionLatch.await(maxWaitTime,waitTimeUnit)){
+                throw new TimeoutException(String.format("Unable to start rules within %d %s",maxWaitTime,waitTimeUnit));
+            }
         } catch (Throwable e) {
             throw new CucumberException(e);
         }
@@ -110,11 +122,13 @@ public class TestRulesExecutor {
         }
         wrappedStatementLatch.countDown();
         try {
-            rulesFuture.get();
+            rulesFuture.get(maxWaitTime, waitTimeUnit);
         } catch (ExecutionException e) {
             throw new CucumberException(e);
         } catch (InterruptedException e) {
             throw new CucumberException(e);
+        } catch (TimeoutException e) {
+            throw new CucumberException(String.format("Unable to stop rules within %d %s",maxWaitTime,waitTimeUnit),e);
         }
     }
 }

@@ -12,7 +12,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.1'
+        classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.6.0"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -27,6 +27,8 @@ ext {
     targetSdkVersion = 33
     buildToolsVersion = '33.0.0'
     minSdkVersion = '14'
+
+    robolectricVersion = '4.9.2'
 
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
     releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -94,7 +96,11 @@ subprojects { subproject ->
                 }
             }
         }
-
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
 
     }
 

@@ -14,7 +14,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
-    testImplementation "org.robolectric:robolectric:4.9.2"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
     kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
 }
