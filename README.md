@@ -186,3 +186,11 @@ class HiltRuleHolder {
 ```
 
 then you can inject such class to steps class using Cucumber dependency injector (like picocontainer) 
+
+
+
+### Running scenarios from IDE
+
+There is third-party plugin (not related with Cucumber organisation and this repository) which allows running scenarios directly from Android Studio or Intellij
+
+[Cucumber for Kotlin and Android](https://plugins.jetbrains.com/plugin/22107-cucumber-for-kotlin-and-android)
