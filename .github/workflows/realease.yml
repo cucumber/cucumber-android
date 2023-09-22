@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '17'
       - uses: actions/checkout@v2
       - name: Check commit has been pushed on origin/main
         run: |
