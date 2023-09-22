@@ -12,7 +12,7 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.util.concurrent.Executors
 
-class RulesBackend(
+internal class RulesBackend(
     private val objectFactorySupplier: ObjectFactorySupplier
 ) {
     private val classesWithRules: MutableList<TestRulesData> = ArrayList()
