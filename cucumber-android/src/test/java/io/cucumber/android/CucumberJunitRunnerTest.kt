@@ -43,7 +43,9 @@ class CucumberJunitRunnerTest {
         setArguments { }
         val numShards = 2
         val shardIndex = 0
+
         val runner = createCucumberJunitRunner()
+
         runner.filter(object :Filter() {
             override fun shouldRun(description: Description): Boolean {
                 return if (description.isTest) {
@@ -53,8 +55,11 @@ class CucumberJunitRunnerTest {
 
             override fun describe(): String  = "sharding"
         })
+
         assertEquals(2,runner.testCount())
+
         val allTests = runner.children.flatMap { it.description.children }.map { it.displayName }
+
         assertEquals(listOf(
             "Scenario Outline 1 1(Feature 1)",
             "Scenario Outline 1 2(Feature 2)",
