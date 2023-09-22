@@ -1,6 +1,6 @@
 package io.cucumber.junit
 
-import cucumber.runtime.CucumberException
+import io.cucumber.core.exception.CucumberException
 import org.junit.After
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -27,7 +27,7 @@ class TestRulesExecutorTest {
         val rulesData = testRulesData(after = {Thread.sleep(10_000)})
         val rulesExecutor = TestRulesExecutor(rulesData, service, 1,TimeUnit.SECONDS)
 
-        rulesExecutor.startRules(Description.createTestDescription(javaClass,"test"))
+        rulesExecutor.startRules(Description.createTestDescription(javaClass,"test"), emptyList())
         assertFailsWith(CucumberException::class) { rulesExecutor.stopRules() }
     }
 
@@ -37,7 +37,7 @@ class TestRulesExecutorTest {
         val rulesData = testRulesData(before = {Thread.sleep(10_000)})
         val rulesExecutor = TestRulesExecutor(rulesData, service, 1,TimeUnit.SECONDS)
 
-        assertFailsWith(CucumberException::class) { rulesExecutor.startRules(Description.createTestDescription(javaClass,"test")) }
+        assertFailsWith(CucumberException::class) { rulesExecutor.startRules(Description.createTestDescription(javaClass,"test"), emptyList()) }
 
     }
 
@@ -54,7 +54,7 @@ class TestRulesExecutorTest {
             }
 
             override fun getOrder(): Int = 0
-        })))
+        }), ""))
         return rulesData
     }
 }

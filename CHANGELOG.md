@@ -1,5 +1,26 @@
 # Changelog
 
+## [7.14.0-SNAPSHOT] - 2023-09-22
+
+
+* update `cucumber-jvm` dependencies to `7.14.0`
+  From now `cucumber-android` requires Java 8 api and Android API >= 26 or [desugaring](https://developer.android.com/studio/write/java8-support-table)
+
+  For changes in behaviour of `cucumber-jvm` check https://github.com/cucumber/cucumber-jvm/tree/main/release-notes
+* target android sdk version `34`
+* rewritten most of classes to [Kotlin](https://kotlinlang.org/) and moved to package `io.cucumber.android`
+* removed support for some of the arguments passed by instrumentation, check `CucumberAndroidJUnitArguments.PublicArgs` method for supported properties
+
+### Added
+
+* tag expression support in `@WithJunitRule` to execute particular rules in specific scenarios only
+
+### Fixed
+
+* [#118 @WithJunitRule executes rule for every scenario](https://github.com/cucumber/cucumber-android/issues/118)
+* [#102 Testing reusable composables without activity not possible](https://github.com/cucumber/cucumber-android/issues/102)
+* 
+
 ## [4.10.0] - 2023-02-17
 
 ### Added

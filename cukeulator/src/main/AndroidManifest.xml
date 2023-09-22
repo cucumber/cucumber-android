@@ -15,6 +15,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ComposeTestActivity"/>
+        <activity android:name="androidx.activity.ComponentActivity"/>
     </application>
 
 </manifest>

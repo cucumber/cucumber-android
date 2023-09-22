@@ -12,3 +12,9 @@ Feature: Compose Hello world
       | text        |
       | some text 1 |
       | some text 2 |
+
+
+  @CustomComposable
+  Scenario: Custom composable
+    When I show custom composable
+    Then custom "Custom composable" text is presented
