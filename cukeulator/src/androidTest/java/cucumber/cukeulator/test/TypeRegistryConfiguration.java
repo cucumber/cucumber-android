@@ -1,45 +1,17 @@
 package cucumber.cukeulator.test;
 
-import java.util.Locale;
+public final class TypeRegistryConfiguration  {
 
-import io.cucumber.core.api.TypeRegistry;
-import io.cucumber.core.api.TypeRegistryConfigurer;
-import io.cucumber.cucumberexpressions.ParameterType;
-import io.cucumber.cucumberexpressions.Transformer;
-
-import static java.util.Locale.ENGLISH;
-
-public class TypeRegistryConfiguration implements TypeRegistryConfigurer {
-
-    @Override
-    public Locale locale() {
-        return ENGLISH;
+    private TypeRegistryConfiguration() {
     }
 
-    @Override
-    public void configureTypeRegistry(TypeRegistry typeRegistry) {
-        typeRegistry.defineParameterType(new ParameterType<Integer>(
-                "digit",
-                "[0-9]",
-                Integer.class,
-                new Transformer<Integer>() {
-                    @Override
-                    public Integer transform(String text) {
-                        return Integer.parseInt(text);
-                    }
-                })
-        );
+    @io.cucumber.java.ParameterType("[0-9]")
+    public static int digit(String param) {
+        return Integer.parseInt(param);
+    }
 
-        typeRegistry.defineParameterType(new ParameterType<Character>(
-                "operator",
-                "[+–x\\/=]",
-                Character.class,
-                new Transformer<Character>() {
-                    @Override
-                    public Character transform(String text) {
-                        return text.charAt(0);
-                    }
-                })
-        );
+    @io.cucumber.java.ParameterType("[+–x\\/=]")
+    public static char operator(String param) {
+        return param.charAt(0);
     }
 }

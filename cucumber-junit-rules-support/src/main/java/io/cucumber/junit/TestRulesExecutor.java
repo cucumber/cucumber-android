@@ -19,7 +19,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import cucumber.runtime.CucumberException;
+import io.cucumber.core.exception.CucumberException;
+import kotlin.collections.CollectionsKt;
 
 public class TestRulesExecutor {
 
@@ -42,14 +43,15 @@ public class TestRulesExecutor {
         this.maxWaitTime = maxWaitTime;
     }
 
-    public void startRules(Description description) {
-        if (rulesHolders.isEmpty()) {
+    public void startRules(Description description, List<String> tags) {
+        List<TestRulesData> filteredRules = CollectionsKt.filter(rulesHolders, testRulesData -> testRulesData.getTagExpression().evaluate(tags));
+        if (filteredRules.isEmpty()) {
             return;
         }
         AtomicReference<Throwable> throwable = new AtomicReference<>();
         try {
-            List<Pair<Integer,TestRule>> rulesWithOrders = new ArrayList<>(rulesHolders.size());
-            for (TestRulesData rulesData : rulesHolders) {
+            List<Pair<Integer,TestRule>> rulesWithOrders = new ArrayList<>(filteredRules.size());
+            for (TestRulesData rulesData : filteredRules) {
                 Object obj = rulesData.getDeclaringObject();
                 List<TestRuleAccessor> accessors = rulesData.getAccessors();
 

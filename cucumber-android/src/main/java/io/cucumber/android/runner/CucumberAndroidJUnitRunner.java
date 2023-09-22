@@ -2,28 +2,20 @@ package io.cucumber.android.runner;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.test.runner.AndroidJUnitRunner;
 
-import io.cucumber.junit.CucumberArgumentsProvider;
-import io.cucumber.junit.CucumberAndroidJUnitArguments;
+import io.cucumber.android.CucumberAndroidJUnitArguments;
+import io.cucumber.android.CucumberArgumentsProvider;
 
 /**
  * {@link AndroidJUnitRunner} for cucumber tests. It supports running tests from Android Tests Orchestrator
  */
-public class CucumberAndroidJUnitRunner extends AndroidJUnitRunner implements CucumberArgumentsProvider {
-
-    private CucumberAndroidJUnitArguments cucumberJUnitRunnerCore;
+public class CucumberAndroidJUnitRunner extends AndroidJUnitRunner  {
 
     @Override
-    public void onCreate(final Bundle bundle) {
-        cucumberJUnitRunnerCore = new CucumberAndroidJUnitArguments(bundle);
-        super.onCreate(cucumberJUnitRunnerCore.processArgs());
-    }
-
-    @NonNull
-    @Override
-    public CucumberAndroidJUnitArguments getArguments() {
-        return cucumberJUnitRunnerCore;
+    public void onCreate(Bundle bundle) {
+        CucumberAndroidJUnitArguments cucumberAndroidJUnitArguments = new CucumberAndroidJUnitArguments(bundle);
+        CucumberArgumentsProvider.INSTANCE.setArguments(cucumberAndroidJUnitArguments);
+        super.onCreate(cucumberAndroidJUnitArguments.processArgs());
     }
 }

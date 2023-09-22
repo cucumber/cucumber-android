@@ -22,9 +22,9 @@ class HiltObjectFactory:ObjectFactory {
 
     override fun start() {
 
-        rulesExecutor = TestRulesExecutor(listOf(TestRulesData(false, this, listOf(ruleAccessor()))), executor)
+        rulesExecutor = TestRulesExecutor(listOf(TestRulesData(false, this, listOf(ruleAccessor()), "")), executor)
 
-        rulesExecutor.startRules(testDescription)
+        rulesExecutor.startRules(testDescription, emptyList())
     }
 
     private fun ruleAccessor(): TestRuleAccessor {

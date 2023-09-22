@@ -18,4 +18,9 @@ public @interface WithJunitRule {
      * class for its junit rules
      */
     boolean useAsTestClassInDescription() default false;
+
+    /**
+     * Tag expression. If the expression applies to the current scenario JUnit rule declared in class annotated by {@link WithJunitRule} will be used
+     */
+    String value() default "";
 }

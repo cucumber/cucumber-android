@@ -1,112 +1,112 @@
 package cucumber.cukeulator;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class CalculatorActivity extends Activity {
-    private static enum Operation {ADD, SUB, MULT, DIV, NONE}
+import androidx.activity.ComponentActivity;
 
-    private TextView txtCalcDisplay;
-    private TextView txtCalcOperator;
+import cucumber.cukeulator.databinding.ActivityCalculatorBinding;
+
+public class CalculatorActivity extends ComponentActivity {
+    private enum Operation {ADD, SUB, MULT, DIV, NONE}
     private Operation operation;
     private boolean decimals;
     private boolean resetDisplay;
     private boolean performOperation;
     private double value;
+    private ActivityCalculatorBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculator);
-        txtCalcDisplay = (TextView) findViewById(R.id.txt_calc_display);
-        txtCalcOperator = (TextView) findViewById(R.id.txt_calc_operator);
+        binding = ActivityCalculatorBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         operation = Operation.NONE;
+
+        binding.btnD0.setOnClickListener(this::onDigitPressed);
+        binding.btnD1.setOnClickListener(this::onDigitPressed);
+        binding.btnD2.setOnClickListener(this::onDigitPressed);
+        binding.btnD3.setOnClickListener(this::onDigitPressed);
+        binding.btnD4.setOnClickListener(this::onDigitPressed);
+        binding.btnD5.setOnClickListener(this::onDigitPressed);
+        binding.btnD6.setOnClickListener(this::onDigitPressed);
+        binding.btnD7.setOnClickListener(this::onDigitPressed);
+        binding.btnD8.setOnClickListener(this::onDigitPressed);
+        binding.btnD9.setOnClickListener(this::onDigitPressed);
+
+        binding.btnOpAdd.setOnClickListener(v -> onOperatorPressed(v, Operation.ADD));
+        binding.btnOpSubtract.setOnClickListener(v -> onOperatorPressed(v, Operation.SUB));
+        binding.btnOpMultiply.setOnClickListener(v -> onOperatorPressed(v, Operation.MULT));
+        binding.btnOpDivide.setOnClickListener(v -> onOperatorPressed(v, Operation.DIV));
+        binding.btnOpEquals.setOnClickListener(v -> {
+            if (performOperation) {
+                performOperation();
+                performOperation = false;
+            }
+            resetDisplay = true;
+            value = getDisplayValue();
+        });
+
+        TextView txtCalcDisplay = binding.txtCalcDisplay;
+        binding.btnSpecClear.setOnClickListener(v -> onSpecialPressed(() -> {
+            value = 0;
+            decimals = false;
+            operation = Operation.NONE;
+            txtCalcDisplay.setText(null);
+            binding.txtCalcOperator.setText(null);
+        }));
+
+        binding.btnSpecComma.setOnClickListener(v -> onSpecialPressed(() -> {
+            if (!decimals) {
+                String text = displayIsEmpty() ? "0." : ".";
+                txtCalcDisplay.append(text);
+                decimals = true;
+            }
+        }));
+        binding.btnSpecPercent.setOnClickListener(v -> onSpecialPressed(() -> {
+            double value = getDisplayValue();
+            double percent = value / 100.0F;
+            txtCalcDisplay.setText(Double.toString(percent));
+        }));
+        binding.btnSpecSqroot.setOnClickListener(v -> onSpecialPressed(() -> {
+            double value = getDisplayValue();
+            double sqrt = Math.sqrt(value);
+            txtCalcDisplay.setText(Double.toString(sqrt));
+        }));
+        binding.btnSpecPi.setOnClickListener(v -> onSpecialPressed(() -> {
+            resetDisplay = false;
+            binding.txtCalcOperator.setText(null);
+            txtCalcDisplay.setText(Double.toString(Math.PI));
+            if (operation != Operation.NONE) performOperation = true;
+        }));
     }
 
     public void onDigitPressed(View v) {
         if (resetDisplay) {
-            txtCalcDisplay.setText(null);
+            binding.txtCalcDisplay.setText(null);
             resetDisplay = false;
         }
-        txtCalcOperator.setText(null);
+        binding.txtCalcOperator.setText(null);
 
-        if (decimals || !only0IsDisplayed()) txtCalcDisplay.append(((Button) v).getText());
+        if (decimals || !only0IsDisplayed()) binding.txtCalcDisplay.append(((TextView) v).getText());
 
         if (operation != Operation.NONE) performOperation = true;
     }
 
-    public void onOperatorPressed(View v) {
+    public void onOperatorPressed(View v, Operation operation) {
         if (performOperation) {
             performOperation();
             performOperation = false;
         }
-        switch (v.getId()) {
-            case R.id.btn_op_divide:
-                operation = Operation.DIV;
-                txtCalcOperator.setText("/");
-                break;
-            case R.id.btn_op_multiply:
-                operation = Operation.MULT;
-                txtCalcOperator.setText("x");
-                break;
-            case R.id.btn_op_subtract:
-                operation = Operation.SUB;
-                txtCalcOperator.setText("–");
-                break;
-            case R.id.btn_op_add:
-                operation = Operation.ADD;
-                txtCalcOperator.setText("+");
-                break;
-            case R.id.btn_op_equals:
-                break;
-            default:
-                throw new RuntimeException("Unsupported operation.");
-        }
+        this.operation = operation;
+        binding.txtCalcOperator.setText(((TextView) v).getText());
         resetDisplay = true;
         value = getDisplayValue();
     }
 
-    public void onSpecialPressed(View v) {
-        switch (v.getId()) {
-            case R.id.btn_spec_sqroot: {
-                double value = getDisplayValue();
-                double sqrt = Math.sqrt(value);
-                txtCalcDisplay.setText(Double.toString(sqrt));
-                break;
-            }
-            case R.id.btn_spec_pi: {
-                resetDisplay = false;
-                txtCalcOperator.setText(null);
-                txtCalcDisplay.setText(Double.toString(Math.PI));
-                if (operation != Operation.NONE) performOperation = true;
-                return;
-            }
-            case R.id.btn_spec_percent: {
-                double value = getDisplayValue();
-                double percent = value / 100.0F;
-                txtCalcDisplay.setText(Double.toString(percent));
-                break;
-            }
-            case R.id.btn_spec_comma: {
-                if (!decimals) {
-                    String text = displayIsEmpty() ? "0." : ".";
-                    txtCalcDisplay.append(text);
-                    decimals = true;
-                }
-                break;
-            }
-            case R.id.btn_spec_clear: {
-                value = 0;
-                decimals = false;
-                operation = Operation.NONE;
-                txtCalcDisplay.setText(null);
-                txtCalcOperator.setText(null);
-                break;
-            }
-        }
+    public void onSpecialPressed(Runnable action) {
+        action.run();
         resetDisplay = false;
         performOperation = false;
     }
@@ -132,21 +132,21 @@ public class CalculatorActivity extends Activity {
             default:
                 throw new RuntimeException("Unsupported operation.");
         }
-        txtCalcOperator.setText(null);
-        txtCalcDisplay.setText(Double.toString(value));
+        binding.txtCalcOperator.setText(null);
+        binding.txtCalcDisplay.setText(Double.toString(value));
     }
 
     private boolean only0IsDisplayed() {
-        CharSequence text = txtCalcDisplay.getText();
+        CharSequence text = binding.txtCalcDisplay.getText();
         return text.length() == 1 && text.charAt(0) == '0';
     }
 
     private boolean displayIsEmpty() {
-        return txtCalcDisplay.getText().length() == 0;
+        return binding.txtCalcDisplay.getText().length() == 0;
     }
 
     private double getDisplayValue() {
-        String display = txtCalcDisplay.getText().toString();
+        String display = binding.txtCalcDisplay.getText().toString();
         return display.isEmpty() ? 0.0F : Double.parseDouble(display);
     }
 }

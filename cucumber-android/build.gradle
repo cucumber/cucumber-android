@@ -10,6 +10,15 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
+android {
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigField 'String', 'VERSION', "\"${version}\""
+    }
+}
 
 dependencies {
     api "io.cucumber:cucumber-java:$cucumber_javaVersion"
@@ -18,10 +27,8 @@ dependencies {
     api "androidx.test:runner:1.5.2"
     implementation project(':cucumber-junit-rules-support')
 
-    testImplementation "org.robolectric:robolectric:4.9.2"
-    testImplementation "org.hamcrest:hamcrest-library:1.3"
-    testImplementation "org.powermock:powermock-api-mockito2:2.0.2"
-    testImplementation "org.powermock:powermock-module-junit4:2.0.2"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation "org.hamcrest:hamcrest-library:2.2"
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 

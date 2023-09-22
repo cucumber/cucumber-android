@@ -12,10 +12,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import cucumber.cukeulator.CalculatorActivity;
 import cucumber.cukeulator.R;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import io.cucumber.junit.CucumberJUnitRunner;
 
 /**
  * We use {@link ActivityScenario} in order to have access to methods like getActivity
@@ -30,11 +28,6 @@ import io.cucumber.junit.CucumberJUnitRunner;
  */
 public class CalculatorActivitySteps {
 
-    /**
-     * Since {@link CucumberJUnitRunner} has the control over the
-     * test lifecycle, activity test rules must not be launched automatically. Automatic launching of test rules is only
-     * feasible for JUnit tests. Fortunately, we are able to launch the activity in Cucumber's {@link Before} method.
-     */
     private ActivityScenarioHolder scenario;
     private CalculatorActivity calculatorActivity;
 
