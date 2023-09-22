@@ -155,12 +155,15 @@ subprojects { subproject ->
                     }
                 }
             }
-//            signing {
-//                def signingKey = findProperty("signingKey")
-//                def signingPassword = findProperty("signingPassword")
-//                useInMemoryPgpKeys(signingKey, signingPassword)
-//                sign publishing.publications.release
-//            }
+            if (findProperty("cucumber.disableSigning") != "true"){
+
+                signing {
+                    def signingKey = findProperty("signingKey")
+                    def signingPassword = findProperty("signingPassword")
+                    useInMemoryPgpKeys(signingKey, signingPassword)
+                    sign publishing.publications.release
+                }
+            }
         }
 
 
