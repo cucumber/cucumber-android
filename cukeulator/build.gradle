@@ -58,7 +58,7 @@ android {
     testOptions {
         animationsDisabled true
 //        uncomment this to run tests with orchestrator
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+//        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
 }
