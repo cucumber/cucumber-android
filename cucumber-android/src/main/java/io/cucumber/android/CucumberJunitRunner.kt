@@ -1,7 +1,6 @@
 package io.cucumber.android
 
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import androidx.test.platform.app.InstrumentationRegistry
 import io.cucumber.core.eventbus.EventBus
@@ -132,10 +131,6 @@ internal class CucumberJunitRunner(testClass: Class<*>) : ParentRunner<AndroidFe
             val classPackage = it.substring(0, it.lastIndexOf('.'))
             classPackage == packageName
         }.firstOrNull { it.isAnnotationPresent(CucumberOptions::class.java) } ?: throw CucumberException("No CucumberOptions annotated class present in package $packageName")
-    }
-
-    private fun getRunnerBundle(): Bundle {
-        return CucumberArgumentsProvider.arguments?.runnerArgs ?: Bundle.EMPTY
     }
 
     public override fun getChildren(): List<AndroidFeatureRunner> {
