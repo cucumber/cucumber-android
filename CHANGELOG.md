@@ -1,6 +1,6 @@
 # Changelog
 
-## [7.14.0-SNAPSHOT] - 2023-09-22
+## [7.14.0] - 2023-09-25
 
 
 * update `cucumber-jvm` dependencies to `7.14.0`
