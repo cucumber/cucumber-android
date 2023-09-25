@@ -19,7 +19,7 @@
 
 * [#118 @WithJunitRule executes rule for every scenario](https://github.com/cucumber/cucumber-android/issues/118)
 * [#102 Testing reusable composables without activity not possible](https://github.com/cucumber/cucumber-android/issues/102)
-* 
+
 
 ## [4.10.0] - 2023-02-17
 
