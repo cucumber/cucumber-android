@@ -40,7 +40,7 @@ androidTestImplementation "io.cucumber:cucumber-android:$cucumberVersion"
 
 1. Create a class in your test package (usually `<package name from AndroidManifest>.test` and add @CucumberOptions annotation to that class. This class doesn't need to have anything in it, but you can also put some codes in it if you want. The purpose of doing this is to provide cucumber options. A simple example can be found in `cukeulator`. Or a more complicated example here:
 ```java
-@CucumberOptions(glue = "com.mytest.steps", format = {"junit:/data/data/com.mytest/JUnitReport.xml", "json:/data/data/com.mytest/JSONReport.json"}, tags = { "~@wip" }, features = "features")
+@CucumberOptions(glue = { "com.mytest.steps" }, tags = "~@wip" , features = { "features" })
 public class MyTests 
 {
 }
@@ -71,7 +71,7 @@ To create a virtual device and start an [Android emulator](https://developer.and
 $ANDROID_HOME/tools/android avd
 ```
 
-## Junit rules support
+### Junit rules support
 
 Experimental support for Junit rules was added in version `4.9.0`.
 Cucumber works differently than junit - you cannot just add rule to some steps class
@@ -87,6 +87,14 @@ class ClassWithRules {
     ...
 }
 ```
+
+You can specify tag expression like `@WithJunitRule("@MyTag")` to control for which scenarios this rule should be executed. See `compose.feature` and `ComposeRuleHolder` for example
+
+
+### Sharding and running with Android Test Orchestrator
+
+`CucumberAndroidJUnitRunner` works with Android Test Orchestrator and sharding because it reports tests and classes as feature names and scenario names like `My feature#My scenario` and is able to parse `-e class` argument from instrumentation. 
+It also supports multiple names in `-e class` argument separated by comma. This means that feature and scenario name cannot have comma in it's name because it is reserved for separating multiple names (only if you want to use Orchestrator or in general `class` argument, for other use cases comma is allowed).
 
 
 ### Jetpack Compose rule

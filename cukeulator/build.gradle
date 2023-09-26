@@ -56,7 +56,7 @@ android {
     }
 
     testOptions {
-        animationsDisabled true
+        animationsDisabled findProperty("disableAnimations") == "true"
 //        uncomment this to run tests with orchestrator
 //        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
