@@ -80,7 +80,7 @@ public class CucumberAndroidJUnitArguments {
 	/**
 	 * Runner argument are linked to the {@link androidx.test.internal.runner.RunnerArgs}.
 	 */
-	private static class AndroidJunitRunnerArgs {
+	static class AndroidJunitRunnerArgs {
 
 		/**
 		 * {@link androidx.test.internal.runner.RunnerArgs#ARGUMENT_RUNNER_BUILDER}
@@ -89,7 +89,7 @@ public class CucumberAndroidJUnitArguments {
 		/**
 		 * {@link androidx.test.internal.runner.RunnerArgs#ARGUMENT_TEST_CLASS}
 		 */
-		private static final String ARGUMENT_ORCHESTRATOR_CLASS = "class";
+		static final String ARGUMENT_ORCHESTRATOR_CLASS = "class";
 	}
 
 	private static final String TRUE = Boolean.TRUE.toString();
@@ -121,7 +121,7 @@ public class CucumberAndroidJUnitArguments {
 			processedArgs.putString(InternalCucumberAndroidArgs.CUCUMBER_ANDROID_TEST_CLASS, testClass);
 		}
 
-		//there is no need to scan all classes - we can fake this execution to be for single class
+		//there is no need to scan all classes especially that class name is a gherkin feature name and loading such class will fail - we can fake this execution to be for single class
 		//because we delegate test execution to CucumberJUnitRunner
 		processedArgs.putString(AndroidJunitRunnerArgs.ARGUMENT_ORCHESTRATOR_CLASS, CucumberJUnitRunnerBuilder.class.getName());
 
@@ -207,7 +207,7 @@ public class CucumberAndroidJUnitArguments {
     }
 
     @Nullable
-    String getTestClassAndMethod(){
+    String getClassArgument(){
         return getRunnerArgs().getString(InternalCucumberAndroidArgs.CUCUMBER_ANDROID_TEST_CLASS);
     }
 

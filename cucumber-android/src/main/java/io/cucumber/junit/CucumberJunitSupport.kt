@@ -37,7 +37,7 @@ internal object CucumberJunitSupport {
         featureFilter: (String) -> Boolean,
         cucumberOptionsClass: Class<*>,
         rulesBackend: RulesBackend,
-        scenarioFilter: (String) -> Boolean,
+        scenarioFilter: (feature:String,scenario: String) -> Boolean,
         pickleFilter: Predicate<Pickle>,
         executionContext: CucumberAndroidExecutionContext,
     ): List<AndroidFeatureRunner> {
@@ -48,7 +48,7 @@ internal object CucumberJunitSupport {
 
             if (!featureFilter(featureName)) return@mapNotNull null
 
-            AndroidFeatureRunner(feature, featureName, scenarioFilter, pickleFilter, executionContext, junitOptions, rulesBackend).takeIf { !it.isEmpty}
+            AndroidFeatureRunner(feature, featureName, {scenarioFilter(featureName,it)}, pickleFilter, executionContext, junitOptions, rulesBackend).takeIf { !it.isEmpty}
         }
     }
 

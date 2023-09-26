@@ -3,7 +3,7 @@ Feature: Calculate a result
   """The purpose of this feature is to illustrate how existing step-definitions
   can be efficiently reused."""
 
-  Scenario Outline: Enter a digit, an operator and another digit
+  Scenario Outline: Enter a digit an operator and another digit
     Given I have a CalculatorActivity
     When I press <num1>
     And I press <op>

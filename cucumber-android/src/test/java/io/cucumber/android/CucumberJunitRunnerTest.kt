@@ -79,6 +79,40 @@ class CucumberJunitRunnerTest {
     }
 
     @Test
+    fun `single feature is executed if specified as class`() {
+        setArguments {
+            putString("class","Feature 2")
+        }
+        val runner = createCucumberJunitRunner()
+
+        assertEquals(3,runner.testCount())
+        val allScenarios = runner.children.flatMap { it.description.children }.map { it.displayName }
+        assertEquals(listOf(
+            "Scenario Outline 1 1(Feature 2)",
+            "Scenario Outline 1 2(Feature 2)",
+            "Scenario Outline 1 3(Feature 2)",
+        ),allScenarios)
+    }
+
+    @Test
+    fun `properly parses class argument with multiple values`() {
+        setArguments {
+            putString("class","Feature 2#Scenario Outline 1 2,Feature 1,Feature 2#Scenario Outline 1 3")
+        }
+        val runner = createCucumberJunitRunner()
+
+        assertEquals(4,runner.testCount())
+        val allScenarios = runner.children.flatMap { it.description.children }.map { it.displayName }
+        assertEquals(listOf(
+            "Scenario Outline 1 1(Feature 1)",
+            "Scenario Outline 1 2(Feature 1)",
+            "Scenario Outline 1 2(Feature 2)",
+            "Scenario Outline 1 3(Feature 2)",
+        ),allScenarios)
+    }
+
+
+    @Test
     fun `single scenario is executed if specified as feature path with line`() {
         setArguments {
             putString(CucumberAndroidJUnitArguments.PublicArgs.FEATURES,"assets:features/feature2.feature:11")

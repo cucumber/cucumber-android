@@ -1,5 +1,9 @@
 # Changelog
 
+## In Git
+
+* handle multiple classes (features) and methods (scenarios) specified in `class` argument to better align with tools which requests specific scenarios to be executed
+
 ## [7.14.0] - 2023-09-25
 
 

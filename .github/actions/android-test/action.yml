@@ -9,4 +9,4 @@ runs:
       with:
         api-level: 29
         emulator-options: -skin 1920x1080 -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        script: ./gradlew :cukeulator:connectedCheck
+        script: ./gradlew :cukeulator:connectedCheck -PdisableAnimations=true

@@ -100,18 +100,21 @@ internal class CucumberJunitRunner(testClass: Class<*>) : ParentRunner<AndroidFe
         )
         executionContext = CucumberAndroidExecutionContext(bus, exitStatus, runnerSupplier)
         val filters = Filters(runtimeOptions)
-        val testClassNameFromRunner = arguments.testClassAndMethod
+        val testClassNameFromRunner = arguments.classArgument
         var featureFilter = { _: String -> true }
-        var scenarioFilter = { _: String -> true }
+        var scenarioFilter = { _: String, _:String -> true }
         if (testClassNameFromRunner != null) {
-            val split = testClassNameFromRunner.split("#".toRegex()).dropLastWhile { it.isEmpty() }
-            if (split.size > 1) {
-                val requestedFeatureName = split[0]
-                val requestedScenarioName = split[1]
-                featureFilter = { it == requestedFeatureName }
-                scenarioFilter = { it == requestedScenarioName }
+            Log.i(TAG, "${CucumberAndroidJUnitArguments.AndroidJunitRunnerArgs.ARGUMENT_ORCHESTRATOR_CLASS}=$testClassNameFromRunner")
+
+            val allFeaturesAndScenarios = getFeaturesAndScenariosNamesFromClassArgument(testClassNameFromRunner)
+
+            if (allFeaturesAndScenarios.isNotEmpty()) {
+                featureFilter = { allFeaturesAndScenarios.containsKey(it) }
+                scenarioFilter =  { feature,scenario -> allFeaturesAndScenarios[feature]?.let {
+                    it.isEmpty() || it.contains(scenario)
+                }?:false }
             } else {
-                Log.e(TAG, "CucumberJUnitRunner: invalid argument '" + CucumberAndroidJUnitArguments.InternalCucumberAndroidArgs.CUCUMBER_ANDROID_TEST_CLASS + "' = '" + testClassNameFromRunner + "'")
+                Log.e(TAG, "CucumberJUnitRunner: invalid argument ${CucumberAndroidJUnitArguments.AndroidJunitRunnerArgs.ARGUMENT_ORCHESTRATOR_CLASS}=$testClassNameFromRunner")
             }
         }
         children = CucumberJunitSupport.createChildren(
@@ -123,6 +126,18 @@ internal class CucumberJunitRunner(testClass: Class<*>) : ParentRunner<AndroidFe
             pickleFilter = filters,
             executionContext = executionContext
         )
+    }
+
+    private fun getFeaturesAndScenariosNamesFromClassArgument(testClassNameFromRunner: String): Map<String, List<String>> {
+        //it can contain many classes and methods names separated by comma
+        //as described in androidx.test.internal.runner.ClassPathScanner
+        val allClassesAndMethods = testClassNameFromRunner.split(',').filter { it.isNotEmpty() }
+
+        return allClassesAndMethods.mapNotNull {
+            it.split('#').takeIf { it.size in 1..2 }?.let { featureAndScenario ->
+                featureAndScenario[0] to featureAndScenario.getOrNull(1)
+            }
+        }.groupBy(keySelector = {it.first}, valueTransform = {it.second}).mapValues { it.value.filterNotNull() }
     }
 
     private fun getCucumberOptionsClass(testClassesScanner: TestClassesScanner, arguments: CucumberAndroidJUnitArguments, context: Context): Class<*> {
