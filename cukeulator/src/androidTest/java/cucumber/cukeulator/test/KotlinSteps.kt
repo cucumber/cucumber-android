@@ -1,6 +1,5 @@
 package cucumber.cukeulator.test
 
-import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
@@ -10,22 +9,17 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import cucumber.cukeulator.ComposeTestActivity
-import cucumber.cukeulator.GreetingService
 import cucumber.cukeulator.R
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.junit.Assert
-import javax.inject.Inject
 
 @HiltAndroidTest
 class KotlinSteps(
-    val composeRuleHolder: ComposeRuleHolder,
     val scenarioHolder: ActivityScenarioHolder
-):SemanticsNodeInteractionsProvider by composeRuleHolder.composeRule {
+): BaseKotlinSteps() {
 
-    @Inject
-    lateinit var greetingService:GreetingService
 
 
     @Then("I should see {string} on the display")

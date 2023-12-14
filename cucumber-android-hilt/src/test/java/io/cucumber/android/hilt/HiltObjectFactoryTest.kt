@@ -87,4 +87,18 @@ class HiltObjectFactoryTest {
         hiltObjectFactory.stop()
 
     }
+
+    @Test
+    fun `inject cucumber and hilt dependencies using field injection into base class`() {
+        hiltObjectFactory.start()
+
+        val someSteps1 = hiltObjectFactory.getInstance(StepsWithBaseClass::class.java)
+        val hook = hiltObjectFactory.getInstance(SomeCucumberHook::class.java)
+
+
+        assertNotNull(someSteps1.someDependencies)
+        assertNotNull(someSteps1.someSingletonDependency)
+        assertSame(someSteps1.someCucumberHook, hook)
+    }
+
 }
