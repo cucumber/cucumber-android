@@ -5,8 +5,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 ext {
-    composeCompilerVersion = '1.5.3'
-    composeVersion = '1.5.1'
+    composeCompilerVersion = '1.5.6'
+    composeVersion = '1.5.4'
     composeMaterialVersion = composeVersion
 }
 
@@ -71,8 +71,8 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.activity:activity-compose:1.8.2'
     implementation "com.google.accompanist:accompanist-themeadapter-appcompat:0.28.0"
     implementation "androidx.compose.ui:ui-tooling:$composeVersion"
     implementation "androidx.compose.runtime:runtime:$composeVersion"
@@ -93,6 +93,6 @@ dependencies {
     androidTestImplementation project(":cucumber-android-hilt")
 
     //desugaring
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.3"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
 
 }
