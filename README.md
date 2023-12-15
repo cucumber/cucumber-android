@@ -162,7 +162,7 @@ Such class:
 - must have `@HiltAndroidTest` annotation to let Hilt generate injecting code
 - can have Cucumber managed objects like hooks injected in constructor
 - can have Cucumber managed objects injected in fields but such objects have to be annotated with `@Singleton` annotation and constructor has to be annotated with `@Inject` annotation 
-- can have Hilt managed objects injected only using field injection - cannot have them injected in constructor
+- can have Hilt managed objects injected using field injection or constructor
 - can have objects injected in base class
 
 Also:
