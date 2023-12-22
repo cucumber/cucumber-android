@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'dagger.hilt.android.plugin'
 
 addAndroidConfig()
@@ -12,10 +12,10 @@ dependencies {
     api "com.google.dagger:hilt-android:$hilt_version"
     api "com.google.dagger:hilt-android-testing:$hilt_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    ksp "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    kspTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
 }
 

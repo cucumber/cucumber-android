@@ -2,7 +2,8 @@ import java.time.Duration
 
 buildscript {
     ext.kotlin_version = '1.9.21'
-    ext.hilt_version = '2.48.1'
+    ext.ksp_version = "$kotlin_version-1.0.16"
+    ext.hilt_version = '2.50'
     repositories {
         google()
         mavenCentral()
@@ -15,6 +16,7 @@ buildscript {
         classpath "io.github.gradle-nexus:publish-plugin:1.3.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$ksp_version"
     }
 }
 
@@ -49,7 +51,7 @@ allprojects {
         }
     }
     version = "7.15.0-SNAPSHOT"
-    ext.cucumber_javaVersion = '7.14.0'
+    ext.cucumber_javaVersion = '7.15.0'
     group = 'io.cucumber'
 }
 
