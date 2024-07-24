@@ -20,6 +20,8 @@ Not all features from `cucumber-jvm` are supported in `cucumber-android` due to 
 This is ordinary multimodule Android project
 
 * `cucumber-android` - main library
+* `cucumber-android-hilt` - Hilt object factory
+* `cucumber-junit-rules-support` - internal module for Junit rules support
 * `cukeulator` - sample application with instrumented tests
 
 ### Building
@@ -38,15 +40,33 @@ androidTestImplementation "io.cucumber:cucumber-android:$cucumberVersion"
 
 ### Using Cucumber-Android
 
-1. Create a class in your test package (usually `<package name from AndroidManifest>.test` and add @CucumberOptions annotation to that class. This class doesn't need to have anything in it, but you can also put some codes in it if you want. The purpose of doing this is to provide cucumber options. A simple example can be found in `cukeulator`. Or a more complicated example here:
+1. Create a class in your testApplicationId package (usually it's a `namespace` from `build.gradle` with `.test` suffix) and add `@CucumberOptions` annotation to that class. You can also put such class in different package or have many such classes in different packages but then you have to provide path to it in instrumentation argument `optionsAnnotationPackage`. 
+
+Gradle example:
+```groovy
+android {
+    defaultConfig {
+        testInstrumentationRunner "io.cucumber.android.runner.CucumberAndroidJUnitRunner"
+        testInstrumentationRunnerArguments(optionsAnnotationPackage: "some.other.package")
+    }
+}
+```
+
+Commandline example:
+```
+adb shell am instrument -w -e optionsAnnotationPackage some.other.package com.mycompany.app.test/com.mycompany.app.test.MyTests
+```
+
+This class doesn't need to have anything in it, but you can also put some codes in it if you want. The purpose of doing this is to provide cucumber options. A simple example can be found in `cukeulator`. Or a more complicated example here:
 ```java
+package com.mycompany.app.test;
+
 @CucumberOptions(glue = { "com.mytest.steps" }, tags = "~@wip" , features = { "features" })
 public class MyTests 
 {
 }
 ```
-glue is the path to step definitions, format is the path for report outputs, tags is the tags you want cucumber-android to run or not run, features is the path to the feature files.  
-You can also use command line to provide these options to cucumber-android. Here is the detailed documentation on how to use command line to provide these options: [Command Line Options for Cucumber Android](https://github.com/cucumber/cucumber-jvm/pull/597)
+glue is the list of packages which contain step definitions classes and also classes annotated with `@WithJunitRule`, tags is the tags placed above scenarios titles you want cucumber-android to run or not run, features is the path to the feature files in android test assets directory.
 
 2. Write your .feature files under your test project's assets/<features-folder> folder. If you specify features = "features" like the example above then it's assets/features.
 
@@ -57,6 +77,12 @@ You can also use command line to provide these options to cucumber-android. Here
 android.defaultConfig.testInstrumentationRunner "io.cucumber.android.runner.CucumberAndroidJUnitRunner"
 ```
 
+If needed you can specify some cucumber options using instrumentation arguments. Check available options in `io.cucumber.android.CucumberAndroidJUnitArguments.PublicArgs` class 
+
+For example to specify glue package use:
+```groovy
+android.defaultConfig.testInstrumentationRunnerArguments(glue: "com.mytest.steps")
+```
 
 ### Debugging
 Please read [the Android documentation on debugging](https://developer.android.com/tools/debugging/index.html).
@@ -87,6 +113,8 @@ class ClassWithRules {
     ...
 }
 ```
+
+and put this class in glue package. Glue packages are specified in `@CucumberOptions` annotation, see [Using Cucumber-Android](#using-cucumber-android)
 
 You can specify tag expression like `@WithJunitRule("@MyTag")` to control for which scenarios this rule should be executed. See `compose.feature` and `ComposeRuleHolder` for example
 
@@ -122,6 +150,8 @@ class KotlinSteps(val composeRuleHolder: ComposeRuleHolder, val scenarioHolder: 
     }
 }
 ```
+
+Check [Junit rules support](#junit-rules-support) for more information of adding classes with JUnit rules
 
 ### Hilt
 
@@ -208,3 +238,14 @@ then you can inject such class to steps class using Cucumber dependency injector
 There is third-party plugin (not related with Cucumber organisation and this repository) which allows running scenarios directly from Android Studio or Intellij
 
 [Cucumber for Kotlin and Android](https://plugins.jetbrains.com/plugin/22107-cucumber-for-kotlin-and-android)
+
+
+## Troubleshooting
+
+1. Compose tests fails
+
+`java.lang.IllegalStateException: Test not setup properly. Use a ComposeTestRule in your test to be able to interact with composables`
+
+##### Solution
+
+Check [Jetpack Compose rule](#jetpack-compose-rule) section. Make sure that your class with `@WithJunitRule` annotation is placed in glue package as described in [Using Cucumber-Android](#using-cucumber-android)

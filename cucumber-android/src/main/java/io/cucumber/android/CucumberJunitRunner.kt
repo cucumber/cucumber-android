@@ -142,10 +142,14 @@ internal class CucumberJunitRunner(testClass: Class<*>) : ParentRunner<AndroidFe
 
     private fun getCucumberOptionsClass(testClassesScanner: TestClassesScanner, arguments: CucumberAndroidJUnitArguments, context: Context): Class<*> {
         val packageName = arguments.optionsAnnotationPackageLocation ?: context.packageName
-        return testClassesScanner.getClassesFromRootPackages {
-            val classPackage = it.substring(0, it.lastIndexOf('.'))
+        val classes = testClassesScanner.getClassesFromRootPackages {
+            val lastIndexOfPackage = it.lastIndexOf('.')
+            val classPackage = if (lastIndexOfPackage == -1) "" else it.substring(0, lastIndexOfPackage)
             classPackage == packageName
-        }.firstOrNull { it.isAnnotationPresent(CucumberOptions::class.java) } ?: throw CucumberException("No CucumberOptions annotated class present in package $packageName")
+        }.filter { it.isAnnotationPresent(CucumberOptions::class.java) }
+        Log.i(TAG, "Found ${classes.size} ${if (classes.size==1) "class" else "classes"} with CucumberOptions annotation in package $packageName: ${classes.map { it.name }}")
+
+        return classes.firstOrNull() ?: throw CucumberException("No CucumberOptions annotated class present in package $packageName")
     }
 
     public override fun getChildren(): List<AndroidFeatureRunner> {

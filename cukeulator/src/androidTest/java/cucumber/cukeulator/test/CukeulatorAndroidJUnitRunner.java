@@ -14,6 +14,7 @@ import io.cucumber.junit.CucumberOptions;
  */
 @CucumberOptions(
         features = "features"
+//        ,useFileNameCompatibleName = true
 )
 public class CukeulatorAndroidJUnitRunner extends CucumberAndroidJUnitRunner {
 

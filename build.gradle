@@ -1,20 +1,22 @@
 import java.time.Duration
 
 buildscript {
-    ext.kotlin_version = '1.9.21'
-    ext.ksp_version = "$kotlin_version-1.0.16"
-    ext.hilt_version = '2.50'
+    ext.kotlin_version = '2.0.0'
+    ext.ksp_version = "$kotlin_version-1.0.23"
+    ext.hilt_version = '2.51.1'
     repositories {
         google()
         mavenCentral()
         mavenLocal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url 'https://jitpack.io' }
+        maven { url = uri("https://plugins.gradle.org/m2/") }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.4'
-        classpath "io.github.gradle-nexus:publish-plugin:1.3.0"
+        classpath 'com.android.tools.build:gradle:8.5.1'
+        classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:compose-compiler-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$ksp_version"
     }
@@ -33,9 +35,8 @@ ext {
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
     releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 
-    isSnapshot = {project.version.endsWith('-SNAPSHOT')}
+    isSnapshot = { project.version.endsWith('-SNAPSHOT') }
 }
-
 
 
 allprojects {
@@ -50,8 +51,8 @@ allprojects {
             url releaseRepository
         }
     }
-    version = "7.15.0-SNAPSHOT"
-    ext.cucumber_javaVersion = '7.15.0'
+    version = "7.18.1-SNAPSHOT"
+    ext.cucumber_javaVersion = '7.18.1'
     group = 'io.cucumber'
 }
 
@@ -71,7 +72,7 @@ nexusPublishing {
 subprojects { subproject ->
 
 
-    ext.addAndroidConfig ={
+    ext.addAndroidConfig = {
         android {
             compileSdkVersion rootProject.ext.targetSdkVersion
             buildToolsVersion rootProject.ext.buildToolsVersion
@@ -107,7 +108,7 @@ subprojects { subproject ->
         apply plugin: 'signing'
         apply plugin: 'maven-publish'
         android {
-            namespace = "io.cucumber.android.${subproject.name.replace("-","_")}"
+            namespace = "io.cucumber.android.${subproject.name.replace("-", "_")}"
 
             publishing {
                 singleVariant('release') {
@@ -118,7 +119,7 @@ subprojects { subproject ->
 
         }
 
-        afterEvaluate{
+        afterEvaluate {
 
             publishing {
                 publications {
@@ -156,7 +157,7 @@ subprojects { subproject ->
                     }
                 }
             }
-            if (findProperty("cucumber.disableSigning") != "true"){
+            if (findProperty("cucumber.disableSigning") != "true") {
 
                 signing {
                     def signingKey = findProperty("signingKey")
