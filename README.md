@@ -40,7 +40,7 @@ androidTestImplementation "io.cucumber:cucumber-android:$cucumberVersion"
 
 ### Using Cucumber-Android
 
-1. Create a class in your testApplicationId package (usually it's a `namespace` from `build.gradle` with `.test` suffix) and add `@CucumberOptions` annotation to that class. You can also put such class in different package or have many such classes in different packages but then you have to provide path to it in instrumentation argument `optionsAnnotationPackage`. 
+1. Create a class in your testApplicationId package (usually it's a `namespace` from `build.gradle` with `.test` suffix) and add `@CucumberOptions` annotation to that class. You can also put such class in different package or have many such classes in different packages but then you have to provide path to it in instrumentation argument `optionsAnnotationPackage`.
 
 Gradle example:
 ```groovy
@@ -68,9 +68,9 @@ public class MyTests
 ```
 glue is the list of packages which contain step definitions classes and also classes annotated with `@WithJunitRule`, tags is the tags placed above scenarios titles you want cucumber-android to run or not run, features is the path to the feature files in android test assets directory.
 
-2. Write your .feature files under your test project's assets/<features-folder> folder. If you specify features = "features" like the example above then it's assets/features.
+2. Write your .feature files under your project's android test  `assets/<features-folder>` folder. If you specify `features = "features"` in `@CucumberOptions` like the example above then it's `androidTest/assets/features` (might be also `androidTest<Flavor/BuildType>/assets/features`).
 
-3. Write your step definitions under the package name specified in glue. For example, if you specified glue = "com.mytest.steps", then create a new package under your src folder named "com.mytest.steps" and put your step definitions under it. Note that all subpackages will also be included, so you can also put in "com.mytest.steps.mycomponent".
+3. Write your step definitions under the package name specified in glue. For example, if you specified `glue = ["com.mytest.steps"]`, then create a new package under your `androidTest/java` (or `androidTest/kotlin`) named `com.mytest.steps` and put your step definitions under it. Note that all subpackages will also be included, so you can also put in `com.mytest.steps.mycomponent`.
 
 4. Set instrumentation runner to `io.cucumber.android.runner.CucumberAndroidJUnitRunner` or class that extends it
 ```groovy
