@@ -8,7 +8,7 @@ on:
 jobs:
   publish:
     name: Publish cucumber-android
-    runs-on: macos-latest
+    runs-on: macos-13
     environment: Release
 
     steps:
