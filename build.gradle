@@ -51,7 +51,7 @@ allprojects {
             url releaseRepository
         }
     }
-    version = "7.18.1-SNAPSHOT"
+    version = "7.18.1"
     ext.cucumber_javaVersion = '7.18.1'
     group = 'io.cucumber'
 }

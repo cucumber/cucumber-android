@@ -2,10 +2,13 @@
 
 ## In Git
 
+## [7.18.1] - 2024-07-25
+
 * handle multiple classes (features) and methods (scenarios) specified in `class` argument to better align with tools which requests specific scenarios to be executed
 * support fields injection in steps classes with Hilt
 * fix [#131](https://github.com/cucumber/cucumber-android/issues/131)
 * update `cucumber-jvm` dependencies to `7.18.1`
+* update Kotlin to `2.0.0`
 
 ## [7.14.0] - 2023-09-25
 
