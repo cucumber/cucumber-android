@@ -8,5 +8,5 @@ runs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
-        emulator-options: -skin 1920x1080 -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        emulator-options: -skin 1920x1080 -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -arch x86_64
         script: ./gradlew :cukeulator:connectedCheck -PdisableAnimations=true
