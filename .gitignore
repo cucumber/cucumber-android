@@ -5,3 +5,4 @@ local.properties
 .gradle
 build
 /cucumber-android/build/
+.kotlin
