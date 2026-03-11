@@ -1,5 +1,7 @@
 name: Release cucumber-android
 
+permissions: { }
+
 on:
   push:
     branches:
@@ -17,6 +19,8 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Check commit has been pushed on origin/main
         run: |
           git fetch --quiet origin main

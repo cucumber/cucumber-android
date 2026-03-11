@@ -1,4 +1,7 @@
 name: Build
+
+permissions: { }
+
 on:
   # Trigger on every pull request and on push
   # to the `main` and `renovate/**` branch.
