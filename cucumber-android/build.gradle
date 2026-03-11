@@ -1,16 +1,17 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+plugins {
+    alias(libs.plugins.android.library)
+    id("android-conventions")
+    id("publishing-conventions")
+}
 
-addAndroidConfig()
-addLibraryPublishing('Cucumber-JVM: Android')
-
-
-configurations.all {
+configurations.configureEach {
     // check for updates every build
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
 android {
+    namespace = "io.cucumber.android"
+
     buildFeatures {
         buildConfig = true
     }
@@ -21,14 +22,12 @@ android {
 }
 
 dependencies {
-    api "io.cucumber:cucumber-java:$cucumber_javaVersion"
-    api "io.cucumber:cucumber-junit:$cucumber_javaVersion"
-    api 'junit:junit:4.13.2'
-    api "androidx.test:runner:1.5.2"
+    api libs.cucumber.java
+    api libs.cucumber.junit
+    api libs.junit4
+    api libs.androidx.test.runner
     implementation project(':cucumber-junit-rules-support')
 
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    testImplementation "org.hamcrest:hamcrest-library:2.2"
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testImplementation libs.robolectric
+    testImplementation libs.hamcrest
 }
-

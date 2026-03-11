@@ -1,0 +1,62 @@
+plugins {
+    id 'signing'
+    id 'maven-publish'
+}
+
+android {
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+
+}
+
+afterEvaluate {
+
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                pom {
+                    name = findProperty("io.cucumber.pom.name") ?: project.name
+                    packaging = 'aar'
+                    description = 'Android support for Cucumber-JVM'
+                    url = 'https://github.com/cucumber/cucumber-android'
+
+                    scm {
+                        connection = 'scm:git:https://github.com/cucumber/cucumber-android.git'
+                        developerConnection = 'scm:git:git@github.com:cucumber/cucumber-android.git'
+                        url = 'https://github.com/cucumber/cucumber-android'
+                    }
+
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'http://www.opensource.org/licenses/mit-license'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'lsuski'
+                            name = 'Łukasz Suski'
+                            email = 'lukasz.suski@finanteq.com'
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (findProperty("cucumber.disableSigning") != "true") {
+
+        signing {
+            def signingKey = findProperty("signingKey")
+            def signingPassword = findProperty("signingPassword")
+            useInMemoryPgpKeys(signingKey, signingPassword)
+            sign publishing.publications.release
+        }
+    }
+}

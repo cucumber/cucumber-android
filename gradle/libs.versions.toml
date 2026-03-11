@@ -1,0 +1,57 @@
+[versions]
+agp = "9.1.0"
+kotlin = "2.3.10"
+ksp = "2.3.6"
+hilt = "2.59.2"
+nexusPublish = "2.0.0"
+cucumber = "7.34.3"
+junit4 = "4.13.2"
+androidxTestRunner = "1.7.0"
+robolectric = "4.16.1"
+hamcrest = "3.0"
+appcompat = "1.7.1"
+activityCompose = "1.12.4"
+composeBom = "2026.02.01"
+espressoCore = "3.7.0"
+androidxTestCore = "1.7.0"
+androidxTestRules = "1.7.0"
+orchestrator = "1.6.1"
+desugarJdkLibs = "2.1.5"
+
+[libraries]
+cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
+cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+hamcrest = { module = "org.hamcrest:hamcrest-library", version.ref = "hamcrest" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-runtime = { module = "androidx.compose.runtime:runtime" }
+compose-material = { module = "androidx.compose.material:material" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTestCore" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxTestRules" }
+androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "orchestrator" }
+desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+gradlePlugin-kotlin = { group = "org.jetbrains.kotlin.android", name = "org.jetbrains.kotlin.android.gradle.plugin", version.ref = "kotlin" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
+

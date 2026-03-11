@@ -1,10 +1,12 @@
+@file:Suppress("DEPRECATION")
+
 package io.cucumber.android
 
 import android.os.Bundle
 import io.cucumber.android.runner.CucumberAndroidJUnitRunner
 import io.cucumber.android.shadows.ShadowDexFile
 import io.cucumber.junit.CucumberOptions
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.Description

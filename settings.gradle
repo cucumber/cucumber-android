@@ -1,4 +1,27 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+        google()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/' }
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 rootProject.name = 'cucumber-android-parent'
+
+includeBuild('build-logic')
 
 include ':cucumber-android',
         ':cukeulator',

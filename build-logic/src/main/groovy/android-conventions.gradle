@@ -1,0 +1,38 @@
+def javaVersion = 21
+
+android {
+    compileSdk rootProject.ext.targetSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion.toInteger()
+        targetSdk rootProject.ext.targetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError false
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+kotlin {
+    jvmToolchain(javaVersion)
+    compilerOptions {
+        allWarningsAsErrors = true
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(javaVersion)
+    }
+}

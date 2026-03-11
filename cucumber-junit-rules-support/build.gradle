@@ -1,18 +1,18 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
-addAndroidConfig()
-addLibraryPublishing('Cucumber-JVM: JUnit Rules Support')
-
-dependencies {
-
-    api "io.cucumber:cucumber-java:$cucumber_javaVersion"
-    api "io.cucumber:cucumber-junit:$cucumber_javaVersion"
-    api 'junit:junit:4.13.2'
-
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-
+plugins {
+    alias(libs.plugins.android.library)
+    id("android-conventions")
+    id("publishing-conventions")
 }
 
+android {
+    namespace = "io.cucumber.android.junit.rules.support"
+}
+
+dependencies {
+    api libs.cucumber.java
+    api libs.cucumber.junit
+    api libs.junit4
+
+    testImplementation libs.robolectric
+    testImplementation libs.kotlin.test.junit
+}

@@ -80,4 +80,4 @@ internal class AndroidFeatureSupplier(
 
 }
 
-private fun URI.pathInAssets() = schemeSpecificPart.removePrefix("assets:").removePrefix("/")
+private fun URI.pathInAssets() = schemeSpecificPart.removePrefix("assets:").removePrefix("///").removePrefix("/")

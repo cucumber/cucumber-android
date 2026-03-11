@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- update `cucumber-jvm` dependencies to `7.34.3`
+- update Kotlin to `2.3.10`
+- update Gradle to `9.4.0`
+- update Android Gradle plugin to `9.1.0`
+- update target Android SDK to `36`
+- update Hilt to `2.59.2`
+- update Jetpack Compose to `2026.02.01`
+- update Espresso to `3.7.0`
+- update androidx test dependencies to `1.7.0`
+- refactor Gradle setup to use version catalogs 
 
 ## [7.18.1] - 2024-07-25
 ### Changed

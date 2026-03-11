@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION") // Android uses Junit4
+
 package io.cucumber.android
 
 import android.content.Context

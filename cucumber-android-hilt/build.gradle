@@ -1,21 +1,22 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.google.devtools.ksp'
-apply plugin: 'dagger.hilt.android.plugin'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
+    id("android-conventions")
+    id("publishing-conventions")
+}
 
-addAndroidConfig()
-addLibraryPublishing('Cucumber-JVM: Android Hilt')
+android {
+    namespace = "io.cucumber.android.hilt"
+}
 
 dependencies {
     api project(':cucumber-android')
     implementation project(':cucumber-junit-rules-support')
-    api "com.google.dagger:hilt-android:$hilt_version"
-    api "com.google.dagger:hilt-android-testing:$hilt_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    ksp "com.google.dagger:hilt-android-compiler:$hilt_version"
+    api libs.hilt.android
+    api libs.hilt.android.testing
+    ksp libs.hilt.android.compiler
 
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
-    kspTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-
+    testImplementation libs.robolectric
+    kspTest libs.hilt.android.compiler
 }
-
