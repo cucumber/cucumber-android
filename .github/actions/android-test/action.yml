@@ -5,7 +5,7 @@ inputs:
   api-level:
     description: Android API level used for the emulator
     required: false
-    default: '30'
+    default: '34'
 
 runs:
   using: composite
@@ -24,6 +24,7 @@ runs:
       uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b # v2.35.0
       with:
         api-level: ${{ inputs.api-level }}
+        arch: x86_64
         force-avd-creation: false
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: false
@@ -33,6 +34,7 @@ runs:
       uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b # v2.35.0
       with:
         api-level: ${{ inputs.api-level }}
+        arch: x86_64
         force-avd-creation: false
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
