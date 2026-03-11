@@ -1,11 +1,14 @@
 name: Build
 on:
   # Trigger on every pull request and on push
-  # to the `main` branch.
+  # to the `main` and `renovate/**` branch.
   pull_request:
+    branches:
+      - '**'
   push:
     branches:
       - main
+      - renovate/**
 
 jobs:
   build:
