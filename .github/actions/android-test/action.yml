@@ -5,7 +5,7 @@ inputs:
   api-level:
     description: Android API level used for the emulator
     required: false
-    default: '30'
+    default: '35'
 
 runs:
   using: composite
@@ -19,23 +19,10 @@ runs:
           ~/.android/adb*
         key: avd-${{ inputs.api-level }}
 
-    - name: create AVD and generate snapshot for caching
-      if: steps.avd-cache.outputs.cache-hit != 'true'
-      uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b # v2.35.0
-      with:
-        api-level: ${{ inputs.api-level }}
-        arch: x86_64
-        force-avd-creation: false
-        emulator-options: -skin 1920x1080 -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        disable-animations: false
-        script: echo "Generated AVD snapshot for caching."
-
     - name: run tests
       uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b # v2.35.0
       with:
         api-level: ${{ inputs.api-level }}
         arch: x86_64
-        force-avd-creation: false
         emulator-options: -skin 1920x1080 -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-        disable-animations: true
         script: ./gradlew :cukeulator:connectedCheck -PdisableAnimations=true
