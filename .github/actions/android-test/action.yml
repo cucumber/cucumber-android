@@ -5,20 +5,11 @@ inputs:
   api-level:
     description: Android API level used for the emulator
     required: false
-    default: '35'
+    default: '30'
 
 runs:
   using: composite
   steps:
-    - name: AVD cache
-      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 #v5.0.3
-      id: avd-cache
-      with:
-        path: |
-          ~/.android/avd/*
-          ~/.android/adb*
-        key: avd-${{ inputs.api-level }}
-
     - name: run tests
       uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b # v2.35.0
       with:
