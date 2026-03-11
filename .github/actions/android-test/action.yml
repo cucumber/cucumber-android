@@ -5,7 +5,7 @@ inputs:
   api-level:
     description: Android API level used for the emulator
     required: false
-    default: '34'
+    default: '30'
 
 runs:
   using: composite
@@ -26,7 +26,7 @@ runs:
         api-level: ${{ inputs.api-level }}
         arch: x86_64
         force-avd-creation: false
-        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        emulator-options: -skin 1920x1080 -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: false
         script: echo "Generated AVD snapshot for caching."
 
@@ -36,6 +36,6 @@ runs:
         api-level: ${{ inputs.api-level }}
         arch: x86_64
         force-avd-creation: false
-        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        emulator-options: -skin 1920x1080 -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         script: ./gradlew :cukeulator:connectedCheck -PdisableAnimations=true
