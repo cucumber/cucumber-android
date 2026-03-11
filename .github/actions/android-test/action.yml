@@ -5,9 +5,9 @@ runs:
   using: composite
   steps:
     - name: run tests
-      uses: reactivecircus/android-emulator-runner@v2.32.0
+      uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b # v2.35.0
       with:
-        api-level: 30
+        api-level: 35
         emulator-options: -skin 1920x1080 -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         arch: x86_64
         script: ./gradlew :cukeulator:connectedCheck -PdisableAnimations=true
