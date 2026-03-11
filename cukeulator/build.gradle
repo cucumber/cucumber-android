@@ -1,23 +1,22 @@
-apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
-apply plugin: "kotlin-android"
-apply plugin: 'com.google.devtools.ksp'
-apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: 'org.jetbrains.kotlin.plugin.compose'
-
+plugins {
+    alias(libs.plugins.android.application)
+    id 'jacoco'
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.compose)
+    id("android-conventions")
+}
 
 // ==================================================================
 // Android configuration
 // ==================================================================
-
-addAndroidConfig()
 
 android {
 
     namespace = "cucumber.cukeulator"
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
         multiDexEnabled true
         applicationId "cucumber.cukeulator"
         testApplicationId "cucumber.cukeulator.test"
@@ -61,31 +60,30 @@ android {
 
 dependencies {
 
-    def composeBom = platform('androidx.compose:compose-bom:2024.06.00')
+    def composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'androidx.activity:activity-compose:1.9.0'
-    implementation "androidx.compose.ui:ui-tooling"
-    implementation "androidx.compose.runtime:runtime"
-    implementation "androidx.compose.material:material"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    ksp "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation libs.appcompat
+    implementation libs.activity.compose
+    implementation libs.compose.ui.tooling
+    implementation libs.compose.runtime
+    implementation libs.compose.material
+    implementation libs.hilt.android
+    ksp libs.hilt.compiler
 
     androidTestImplementation(composeBom)
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    androidTestImplementation 'androidx.test:core:1.6.1'
-    androidTestImplementation 'androidx.test:rules:1.6.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kspAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation libs.espresso.core
+    androidTestImplementation libs.androidx.test.core
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.compose.ui.test.junit4
+    androidTestImplementation libs.hilt.android.testing
+    kspAndroidTest libs.hilt.android.compiler
 
-    androidTestUtil 'androidx.test:orchestrator:1.5.0'
+    androidTestUtil libs.androidx.test.orchestrator
 
     androidTestImplementation project(":cucumber-android")
     androidTestImplementation project(":cucumber-android-hilt")
 
     //desugaring
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
+    coreLibraryDesugaring libs.desugar.jdk.libs
 
 }

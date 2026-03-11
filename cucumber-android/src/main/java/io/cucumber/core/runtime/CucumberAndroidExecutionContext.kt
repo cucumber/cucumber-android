@@ -2,7 +2,7 @@ package io.cucumber.core.runtime
 
 import android.annotation.SuppressLint
 import android.os.Build
-import io.cucumber.android.cucumber_android.BuildConfig
+import io.cucumber.android.BuildConfig
 import io.cucumber.core.eventbus.EventBus
 import io.cucumber.core.exception.ExceptionUtils
 import io.cucumber.core.exception.UnrecoverableExceptions
@@ -73,7 +73,7 @@ internal class CucumberAndroidExecutionContext(
         log.debug { "Sending run test started event" }
         start = bus.instant
         bus.send(TestRunStarted(start))
-        bus.send(Envelope.of(io.cucumber.messages.types.TestRunStarted(Convertor.toMessage(start))))
+        bus.send(Envelope.of(io.cucumber.messages.types.TestRunStarted(Convertor.toMessage(start), null)))
     }
 
     fun runBeforeAllHooks() {
@@ -107,7 +107,8 @@ internal class CucumberAndroidExecutionContext(
             if (exception != null) ExceptionUtils.printStackTrace(exception) else null,
             exception == null && exitStatus.isSuccess,
             Convertor.toMessage(instant),
-            if (exception == null) null else Convertor.toMessage(exception)
+            if (exception == null) null else Convertor.toMessage(exception),
+            null
         )
         bus.send(Envelope.of(testRunFinished))
     }

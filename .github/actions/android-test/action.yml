@@ -1,13 +1,19 @@
 name: Run android tests
 description: Runs cukeulator android tests
 
+inputs:
+  api-level:
+    description: Android API level used for the emulator
+    required: false
+    default: '30'
+
 runs:
   using: composite
   steps:
     - name: run tests
-      uses: reactivecircus/android-emulator-runner@f0d1ed2dcad93c7479e8b2f2226c83af54494915 #v2.32.0
+      uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b # v2.35.0
       with:
-        api-level: 30
-        emulator-options: -skin 1920x1080 -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        api-level: ${{ inputs.api-level }}
         arch: x86_64
+        emulator-options: -skin 1920x1080 -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         script: ./gradlew :cukeulator:connectedCheck -PdisableAnimations=true

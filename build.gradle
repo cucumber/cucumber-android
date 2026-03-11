@@ -1,36 +1,15 @@
 import java.time.Duration
 
-buildscript {
-    ext.kotlin_version = '2.0.0'
-    ext.ksp_version = "$kotlin_version-1.0.23"
-    ext.hilt_version = '2.51.1'
-    repositories {
-        google()
-        mavenCentral()
-        mavenLocal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        maven { url 'https://jitpack.io' }
-        maven { url = uri("https://plugins.gradle.org/m2/") }
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.1'
-        classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:compose-compiler-gradle-plugin:$kotlin_version"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$ksp_version"
-    }
+plugins {
+    alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
 }
 
-apply plugin: "io.github.gradle-nexus.publish-plugin"
-
-
 ext {
-    targetSdkVersion = 34
-    buildToolsVersion = '34.0.0'
+    targetSdkVersion = 36
     minSdkVersion = '14'
-
-    robolectricVersion = '4.11.1'
 
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
     releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -38,24 +17,10 @@ ext {
     isSnapshot = { project.version.endsWith('-SNAPSHOT') }
 }
 
-
 allprojects {
-    repositories {
-        mavenLocal()
-        google()
-        mavenCentral()
-        maven {
-            url snapshotRepository
-        }
-        maven {
-            url releaseRepository
-        }
-    }
     version = "7.19.0-SNAPSHOT"
-    ext.cucumber_javaVersion = '7.18.1'
     group = 'io.cucumber'
 }
-
 
 nexusPublishing {
     repositories {
@@ -66,108 +31,4 @@ nexusPublishing {
     }
     connectTimeout = Duration.ofMinutes(5)
     clientTimeout = Duration.ofMinutes(5)
-}
-
-
-subprojects { subproject ->
-
-
-    ext.addAndroidConfig = {
-        android {
-            compileSdkVersion rootProject.ext.targetSdkVersion
-            buildToolsVersion rootProject.ext.buildToolsVersion
-
-            defaultConfig {
-                minSdkVersion rootProject.ext.minSdkVersion
-                targetSdkVersion rootProject.ext.targetSdkVersion
-            }
-
-            compileOptions {
-                sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
-            }
-
-            lintOptions {
-                abortOnError false
-            }
-
-            testOptions {
-                unitTests {
-                    includeAndroidResources = true
-                }
-            }
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-
-    }
-
-    ext.addLibraryPublishing = { pomName ->
-
-        apply plugin: 'signing'
-        apply plugin: 'maven-publish'
-        android {
-            namespace = "io.cucumber.android.${subproject.name.replace("-", "_")}"
-
-            publishing {
-                singleVariant('release') {
-                    withSourcesJar()
-                    withJavadocJar()
-                }
-            }
-
-        }
-
-        afterEvaluate {
-
-            publishing {
-                publications {
-                    release(MavenPublication) {
-                        from components.release
-
-                        pom {
-                            name = pomName
-                            packaging = 'aar'
-                            // optionally artifactId can be defined here
-                            description = 'Android support for Cucumber-JVM'
-                            url = 'https://github.com/cucumber/cucumber-android'
-
-                            scm {
-                                connection = 'scm:git:https://github.com/cucumber/cucumber-android.git'
-                                developerConnection = 'scm:git:git@github.com:cucumber/cucumber-android.git'
-                                url = 'https://github.com/cucumber/cucumber-android'
-                            }
-
-                            licenses {
-                                license {
-                                    name = 'MIT License'
-                                    url = 'http://www.opensource.org/licenses/mit-license'
-                                }
-                            }
-
-                            developers {
-                                developer {
-                                    id = 'lsuski'
-                                    name = 'Łukasz Suski'
-                                    email = 'lukasz.suski@finanteq.com'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (findProperty("cucumber.disableSigning") != "true") {
-
-                signing {
-                    def signingKey = findProperty("signingKey")
-                    def signingPassword = findProperty("signingPassword")
-                    useInMemoryPgpKeys(signingKey, signingPassword)
-                    sign publishing.publications.release
-                }
-            }
-        }
-
-
-    }
 }
