@@ -13,17 +13,13 @@ inputs:
   nexus-password:
     description: Password for your Nexus account
     required: true
-  gradle-tasks:
-    description: Gradle tasks to run
-    required: false
-    default: publishToSonatype closeAndReleaseSonatypeStagingRepository
 
 runs:
   using: "composite"
   steps:
     - name: publish artifacts
       run: |
-        ./gradlew ${{ inputs.gradle-tasks }}
+        ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
       shell: bash
       env:
         ORG_GRADLE_PROJECT_nexusUsername: ${{ inputs.nexus-username }}
