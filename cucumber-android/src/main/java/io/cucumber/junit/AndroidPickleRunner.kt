@@ -34,7 +34,7 @@ internal class AndroidPickleRunner(
 
     override fun getDescription(): Description = _description
 
-    override fun describeChild(step: Step?): Description {
+    override fun describeChild(step: Step): Description {
         throw UnsupportedOperationException("This pickle runner does not wish to describe its children")
     }
 }

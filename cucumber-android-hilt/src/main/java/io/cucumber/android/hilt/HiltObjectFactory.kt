@@ -35,7 +35,7 @@ class HiltObjectFactory : ObjectFactory {
     private fun ruleAccessor(): TestRuleAccessor {
         val hiltRule = HiltAndroidRule(this)
         return object : TestRuleAccessor {
-            override fun getRule(obj: Any?): TestRule = hiltRule
+            override fun getRule(obj: Any): TestRule = hiltRule
 
             override fun getOrder(): Int = 0
         }
@@ -46,9 +46,9 @@ class HiltObjectFactory : ObjectFactory {
         objects.clear()
     }
 
-    override fun addClass(glueClass: Class<*>?): Boolean = true
+    override fun addClass(glueClass: Class<*>): Boolean = true
 
-    override fun <T : Any?> getInstance(glueClass: Class<T>): T {
+    override fun <T: Any> getInstance(glueClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return objects.getOrPut(glueClass) {
             val instance = createInstance(glueClass)

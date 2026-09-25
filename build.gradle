@@ -8,8 +8,8 @@ plugins {
 }
 
 ext {
-    targetSdkVersion = 36
-    minSdkVersion = '14'
+    targetSdkVersion = 37
+    minSdkVersion = '14' // this is only to not force consumers to update their app minSdk
 
     snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
     releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
