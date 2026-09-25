@@ -25,6 +25,7 @@ import io.cucumber.plugin.event.TestSourceParsed
 import io.cucumber.plugin.event.TestSourceRead
 import java.time.Duration
 import java.time.Instant
+import java.util.UUID
 
 /**
  * This class is copied from [CucumberExecutionContext] to workaround issue with exception in [Ci] resolving
@@ -42,6 +43,7 @@ internal class CucumberAndroidExecutionContext(
 ) {
     private val collector = RethrowingThrowableCollector()
     private var start: Instant? = null
+    private var testRunStartedId: UUID? = null
 
     fun interface ThrowingRunnable {
         @Throws(Throwable::class)
@@ -71,19 +73,25 @@ internal class CucumberAndroidExecutionContext(
 
     private fun emitTestRunStarted() {
         log.debug { "Sending run test started event" }
-        start = bus.instant
-        bus.send(TestRunStarted(start))
-        bus.send(Envelope.of(io.cucumber.messages.types.TestRunStarted(Convertor.toMessage(start), null)))
+        val instant = bus.instant
+        start = instant
+        testRunStartedId = bus.generateId()
+        bus.send(TestRunStarted(instant))
+        bus.send(Envelope.of(io.cucumber.messages.types.TestRunStarted(Convertor.toMessage(instant), null)))
     }
 
     fun runBeforeAllHooks() {
         val runner = runner
-        collector.executeAndThrow { runner.runBeforeAllHooks() }
+        collector.executeAndThrow { runner.runBeforeAllHooks(requireTestRunStartedId()) }
     }
+
+    private fun requireTestRunStartedId(): String = requireNotNull(testRunStartedId) {
+        "testRunStartedId should not be null, did you forget to call startTestRun?"
+    }.toString()
 
     fun runAfterAllHooks() {
         val runner = runner
-        collector.executeAndThrow { runner.runAfterAllHooks() }
+        collector.executeAndThrow { runner.runAfterAllHooks(requireTestRunStartedId()) }
     }
 
     fun finishTestRun() {
@@ -117,7 +125,8 @@ internal class CucumberAndroidExecutionContext(
         log.debug { "Sending test source read event for " + feature.uri }
         bus.send(TestSourceRead(bus.instant, feature.uri, feature.source))
         bus.send(TestSourceParsed(bus.instant, feature.uri, listOf<Node>(feature)))
-        bus.sendAll(feature.parseEvents)
+        @Suppress("UNCHECKED_CAST")
+        bus.sendAll(feature.parseEvents as Iterable<Any>)
     }
 
     fun runTestCase(execution: (Runner) -> Unit) {

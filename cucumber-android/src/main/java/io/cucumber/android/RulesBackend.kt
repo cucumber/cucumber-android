@@ -28,7 +28,9 @@ internal class RulesBackend(
             objects.add(TestRulesData(clazzRules.useAsTestClassInDescription(), instance, clazzRules.accessors, clazzRules.tagExpression))
         }
         rulesExecutor = TestRulesExecutor(objects, executorService)
-        rulesExecutor?.startRules(description, tags)
+        rulesExecutor?.startRules(requireNotNull(description){
+            "Description should not be null, did you forget to call setDescription?"
+        }, tags)
     }
 
     fun setDescription(description: Description?, tags:List<String>) {
