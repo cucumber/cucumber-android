@@ -1,17 +1,17 @@
 [versions]
-agp = "9.1.0"
-kotlin = "2.3.10"
-ksp = "2.3.6"
-hilt = "2.59.2"
+agp = "9.4.1"
+kotlin = "2.4.20"
+ksp = "2.3.12"
+hilt = "2.60.1"
 nexusPublish = "2.0.0"
-cucumber = "7.34.3"
+cucumber = "8.0.2"
 junit4 = "4.13.2"
 androidxTestRunner = "1.7.0"
-robolectric = "4.16.1"
+robolectric = "4.17"
 hamcrest = "3.0"
-appcompat = "1.7.1"
-activityCompose = "1.12.4"
-composeBom = "2026.02.01"
+appcompat = "1.8.0"
+activityCompose = "1.13.0"
+composeBom = "2026.09.00"
 espressoCore = "3.7.0"
 androidxTestCore = "1.7.0"
 androidxTestRules = "1.7.0"
@@ -44,6 +44,7 @@ androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTes
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxTestRules" }
 androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "orchestrator" }
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+desugar-nio-jdk-libs = { module = "com.android.tools:desugar_jdk_libs_nio", version.ref = "desugarJdkLibs" }
 gradlePlugin-kotlin = { group = "org.jetbrains.kotlin.android", name = "org.jetbrains.kotlin.android.gradle.plugin", version.ref = "kotlin" }
 
 [plugins]

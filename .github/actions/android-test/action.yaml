@@ -5,7 +5,7 @@ inputs:
   api-level:
     description: Android API level used for the emulator
     required: false
-    default: '30'
+    default: '35'
 
 runs:
   using: composite
@@ -17,3 +17,11 @@ runs:
         arch: x86_64
         emulator-options: -skin 1920x1080 -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         script: ./gradlew :cukeulator:connectedCheck -PdisableAnimations=true
+    - name: Upload Test Reports On Failure
+      if: failure()
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+         name: android-test-reports
+         path: |
+            **/build/reports/androidTests/connected/
+            **/build/outputs/androidTest-results/

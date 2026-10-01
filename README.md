@@ -7,10 +7,10 @@ running cucumber tests with Android Test Orchestrator and using
 sharding. 
 
 NOTE: Although minSdkVersion for `cucumber-android` is 14 it requires
-Java 8 language features and minimum Android API level 26. This is done
+Java 15 language features and minimum Android API level 35 (due to `cucumber-jvm` requirement. This is done
 purposely to allow using cucumber in apps with lower minSdk (to avoid
-compile errors) but tests should be run on devices with API >= 26. 
-However with desugaring enabled it may work in some configurations on lower API levels assuming that desugaring covers all the Java 8 api.
+compile errors) but tests should be run on devices with API >= 35. 
+
 Not all features from `cucumber-jvm` are supported in `cucumber-android` due to differences in Android vs JDK (especially junit and html plugins which requires xml factory classes not available in Android)
 
 ## Developers

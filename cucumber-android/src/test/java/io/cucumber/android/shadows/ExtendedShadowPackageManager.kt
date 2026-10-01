@@ -7,7 +7,7 @@ import org.robolectric.annotation.Implementation
 import org.robolectric.annotation.Implements
 import org.robolectric.shadows.ShadowApplicationPackageManager
 
-@Implements(className = "android.app.ApplicationPackageManager", isInAndroidSdk = false, looseSignatures = true)
+@Implements(className = "android.app.ApplicationPackageManager", isInAndroidSdk = false)
 class ExtendedShadowPackageManager:ShadowApplicationPackageManager() {
 
     @Implementation

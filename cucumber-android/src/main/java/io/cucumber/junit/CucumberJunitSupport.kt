@@ -53,7 +53,7 @@ internal object CucumberJunitSupport {
     }
 
 
-    fun <K, V> createName(obj: V, options: JUnitOptions, groupedByName: Map<K, List<V>>, key: (V) -> K, name: (K) -> String): String {
+    fun <K: Any, V: Any> createName(obj: V, options: JUnitOptions, groupedByName: Map<K, List<V>>, key: (V) -> K, name: (K) -> String): String {
         val uniqueSuffix = FileNameCompatibleNames.uniqueSuffix(groupedByName, obj) { key(it) }
             ?.let { " $it" }.orEmpty()
         val originalName = obj.let(key).let(name)

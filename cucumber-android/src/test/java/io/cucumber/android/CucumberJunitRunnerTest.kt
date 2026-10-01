@@ -13,7 +13,6 @@ import org.junit.runner.Description
 import org.junit.runner.RunWith
 import org.junit.runner.manipulation.Filter
 import org.robolectric.RobolectricTestRunner
-import kotlin.math.abs
 
 @RunWith(RobolectricTestRunner::class)
 class CucumberJunitRunnerTest {
@@ -43,18 +42,21 @@ class CucumberJunitRunnerTest {
     fun `description test count is correct when tests are filtered`() {
 
         setArguments { }
-        val numShards = 2
-        val shardIndex = 0
 
         val runner = createCucumberJunitRunner()
 
+        val expected = listOf(
+            "Scenario Outline 1 1(Feature 1)",
+            "Scenario Outline 1 2(Feature 2)",
+        )
+
         runner.filter(object :Filter() {
+
             override fun shouldRun(description: Description): Boolean {
                 return if (description.isTest) {
-                    abs(description.hashCode()) % numShards == shardIndex
+                    description.displayName in expected
                 } else true
             }
-
             override fun describe(): String  = "sharding"
         })
 
@@ -62,10 +64,7 @@ class CucumberJunitRunnerTest {
 
         val allTests = runner.children.flatMap { it.description.children }.map { it.displayName }
 
-        assertEquals(listOf(
-            "Scenario Outline 1 1(Feature 1)",
-            "Scenario Outline 1 2(Feature 2)",
-        ),allTests)
+        assertEquals(expected,allTests)
     }
 
     @Test

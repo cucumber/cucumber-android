@@ -84,6 +84,7 @@ dependencies {
     androidTestImplementation project(":cucumber-android-hilt")
 
     //desugaring
-    coreLibraryDesugaring libs.desugar.jdk.libs
+//    coreLibraryDesugaring libs.desugar.jdk.libs
+    coreLibraryDesugaring libs.desugar.nio.jdk.libs
 
 }

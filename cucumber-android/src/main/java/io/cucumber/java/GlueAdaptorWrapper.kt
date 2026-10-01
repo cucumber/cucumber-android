@@ -7,7 +7,7 @@ import java.lang.reflect.Method
 /**
  * Allows internal access to [GlueAdaptor]
  */
-internal class GlueAdaptorWrapper(lookup:Lookup, glue: Glue) {
+internal class GlueAdaptorWrapper(private val lookup:Lookup, private val glue: Glue) {
 
     private val glueAdaptor = GlueAdaptor(lookup, glue)
 

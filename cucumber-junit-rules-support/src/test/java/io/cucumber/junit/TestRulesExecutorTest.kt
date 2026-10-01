@@ -43,7 +43,7 @@ class TestRulesExecutorTest {
 
     private fun testRulesData(before:() -> Unit = {},after:() -> Unit = {}): List<TestRulesData> {
         val rulesData = listOf(TestRulesData(false, this, listOf(object : TestRuleAccessor {
-            override fun getRule(obj: Any?): TestRule = TestRule { base, _ ->
+            override fun getRule(obj: Any): TestRule = TestRule { base, _ ->
                 object : Statement() {
                     override fun evaluate() {
                         before()
