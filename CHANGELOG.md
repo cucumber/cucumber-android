@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Changed
-- update `cucumber-jvm` dependencies to `7.34.3`
-- update Kotlin to `2.3.10`
-- update Gradle to `9.4.0`
-- update Android Gradle plugin to `9.1.0`
-- update target Android SDK to `36`
-- update Hilt to `2.59.2`
-- update Jetpack Compose to `2026.02.01`
+- update `cucumber-jvm` dependencies to `7.34.9`
+- update Kotlin to `2.4.20`
+- update Gradle to `9.8.0`
+- update Android Gradle plugin to `9.4.1`
+- update target Android SDK to `37`
+- update Hilt to `2.60.1`
+- update Jetpack Compose to `2026.09.00`
 - update Espresso to `3.7.0`
 - update androidx test dependencies to `1.7.0`
 - refactor Gradle setup to use version catalogs 
