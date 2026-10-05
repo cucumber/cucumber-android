@@ -1,7 +1,7 @@
 package cucumber.cukeulator.test
 
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import io.cucumber.junit.WithJunitRule
 import org.junit.Rule
 import javax.inject.Inject
