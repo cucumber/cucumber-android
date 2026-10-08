@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [7.19.0] - 2026-10-08
 ### Changed
 - update `cucumber-jvm` dependencies to `7.34.9`
 - update Kotlin to `2.4.20`

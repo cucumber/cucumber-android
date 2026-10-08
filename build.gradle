@@ -18,7 +18,7 @@ ext {
 }
 
 allprojects {
-    version = "7.19.0-SNAPSHOT"
+    version = "7.19.0"
     group = 'io.cucumber'
 }
 
