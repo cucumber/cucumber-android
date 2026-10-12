@@ -1,6 +1,7 @@
 plugins {
-    id 'signing'
     id 'maven-publish'
+    id 'signing'
+    id 'com.gradleup.nmcp'
 }
 
 android {
@@ -12,7 +13,6 @@ android {
     }
 
 }
-
 afterEvaluate {
 
     publishing {
@@ -51,7 +51,6 @@ afterEvaluate {
         }
     }
     if (findProperty("cucumber.disableSigning") != "true") {
-
         signing {
             def signingKey = findProperty("signingKey")
             def signingPassword = findProperty("signingPassword")
