@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-To release `cucumber-android`, you'll need to be a member of the core team
+To release `cucumber-android`, you'll need to be a member of the core team. The `Release` GitHub environment must provide `SONATYPE_USERNAME` and `SONATYPE_PASSWORD` with a Maven Central Portal user token, plus `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` for artifact signing.
 
 ## Releasing cucumber-android
 
@@ -18,5 +18,5 @@ To release `cucumber-android`, you'll need to be a member of the core team
   ```shell
   git push origin main:release/vX.Y.Z
   ```
-- Monitor the [github workflow](https://github.com/cucumber/cucumber-android/actions/workflows/release.yml)
+- Monitor the [Maven Central workflow](https://github.com/cucumber/cucumber-android/actions/workflows/release-gradle.yaml). Gradle signs all three libraries, then Nmcp uploads them together through the Maven Central Publisher API.
 - Check the release has been successfully pushed to [Maven Central](https://search.maven.org/artifact/io.cucumber/cucumber-android)

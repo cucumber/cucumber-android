@@ -1,5 +1,5 @@
-name: 'Publish to Sonatype Nexus'
-description: 'Publish artifacts'
+name: 'Publish to Maven Central with Nmcp'
+description: 'Sign and publish the Android libraries as one deployment'
 inputs:
   gpg-private-key:
     description: GPG private key for signing the published artifacts
@@ -7,23 +7,22 @@ inputs:
   gpg-passphrase:
     description: Passphrase for the GPG key
     required: true
-  nexus-username:
-    description: Username (not email!) for your Nexus repository manager account
+  maven-central-username:
+    description: Maven Central Portal user token username
     required: true
-  nexus-password:
-    description: Password for your Nexus account
+  maven-central-password:
+    description: Maven Central Portal user token password
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: publish artifacts
-      run: |
-        ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+    - name: Publish artifacts
+      run: ./gradlew publishAggregationToCentralPortal
       shell: bash
       env:
-        ORG_GRADLE_PROJECT_nexusUsername: ${{ inputs.nexus-username }}
-        ORG_GRADLE_PROJECT_nexusPassword: ${{ inputs.nexus-password }}
+        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ inputs.maven-central-username }}
+        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ inputs.maven-central-password }}
         ORG_GRADLE_PROJECT_signingPassword: ${{ inputs.gpg-passphrase }}
         ORG_GRADLE_PROJECT_signingKey: ${{ inputs.gpg-private-key }}
 

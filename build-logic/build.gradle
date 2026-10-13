@@ -5,4 +5,5 @@ plugins {
 
 dependencies {
     implementation(libs.gradlePlugin.kotlin)
+    implementation(libs.gradlePlugin.nmcp)
 }

@@ -1,7 +1,5 @@
-import java.time.Duration
-
 plugins {
-    alias(libs.plugins.nexus.publish)
+    alias(libs.plugins.nmcp.aggregation)
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
@@ -10,11 +8,6 @@ plugins {
 ext {
     targetSdkVersion = 37
     minSdkVersion = '14'
-
-    snapshotRepository = "https://oss.sonatype.org/content/repositories/snapshots"
-    releaseRepository = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-
-    isSnapshot = { project.version.endsWith('-SNAPSHOT') }
 }
 
 allprojects {
@@ -22,13 +15,16 @@ allprojects {
     group = 'io.cucumber'
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            username = findProperty("nexusUsername")
-            password = findProperty("nexusPassword")
-        }
+nmcpAggregation {
+    centralPortal {
+        username.set(providers.gradleProperty('mavenCentralUsername'))
+        password.set(providers.gradleProperty('mavenCentralPassword'))
+        publishingType = 'AUTOMATIC'
     }
-    connectTimeout = Duration.ofMinutes(5)
-    clientTimeout = Duration.ofMinutes(5)
+}
+
+dependencies {
+    nmcpAggregation(project(':cucumber-android'))
+    nmcpAggregation(project(':cucumber-android-hilt'))
+    nmcpAggregation(project(':cucumber-junit-rules-support'))
 }
